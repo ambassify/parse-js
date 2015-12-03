@@ -1,0 +1,37 @@
+{
+    "stage": 0,
+    "comments": false,
+    "ignore": "*.json",
+    "optional": [
+        "runtime",
+        "validation.react",
+        "spec.undefinedToVoid",
+        "minification.propertyLiterals",
+        "utility.inlineEnvironmentVariables",
+        "minification.memberExpressionLiterals"
+    ],
+    "env": {
+        "production": {
+            "compact": true,
+            "optional": [
+                "minification.removeDebugger"
+            ]
+        },
+        "development": {
+            "sourceMaps": "inline"
+        },
+        "experimental": {
+            "_comment": "These were experimental, so I put them here were they do not hurt our code.",
+            "optional": [
+                "minification.constantFolding",
+                "minification.deadCodeElimination"
+            ],
+
+            "_comment": "This is for when we switch to React 0.14: https://babeljs.io/blog/2015/03/31/5.0.0/#react-optimisations",
+            "optional": [
+                "optimisation.react.constantElements",
+                "optimisation.react.inlineElements"
+            ]
+        }
+    }
+}

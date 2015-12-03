@@ -1,0 +1,95 @@
+'use strict';
+
+import _ from 'lodash';
+import { parse, reverse } from './parse';
+import * as parsers from './parsers';
+import * as reversers from './reversers';
+import { realPath } from './utils';
+
+export * as parsers from './parsers';
+export * as reversers from './reversers';
+export * from './transform';
+
+/**
+ * Generates the parser method that will invoke the real parser with the
+ * correct data.
+ */
+export
+function createParser( path, parser, ...args ) {
+    const p = data => parse( path, parser, data, ...args );
+    p.path = path;
+    return p;
+}
+
+/**
+ * Generates the reverser method that will invoke the real reverser with
+ * the correct data.
+ */
+export
+function createReverse( path, reverser, ...args ) {
+    return data => reverse( path, reverser, data, ...args );
+}
+
+export
+function matchKey( path, key ) {
+    return createParser( path, parsers.matchKey, key );
+}
+
+export
+function matchPrefixStrip( path, key, restoreCamelCase = true ) {
+    const f = createParser( path, parsers.matchPrefixStrip, key);
+    f.reverse = createReverse( path, reversers.matchPrefixStrip, realPath(key), restoreCamelCase );
+    return f;
+}
+
+export
+function boolean( path ) {
+    return createParser( path, parsers.boolean );
+}
+
+export
+function equals( path, shouldEqual, notEqualReverseValue = undefined ) {
+    const f = createParser( path, parsers.equals, shouldEqual );
+    f.reverse = createReverse(path, reversers.equals, shouldEqual, notEqualReverseValue );
+    return f;
+}
+
+export
+function date( path, nowOnInvalid = false ) {
+    const f = createParser( path, parsers.date, nowOnInvalid );
+    f.reverse = createReverse(path, reversers.date);
+    return f;
+}
+
+export
+function array( path, valueParser ) {
+    const f = createParser( path, parsers.array, valueParser );
+    f.reverse = createReverse(path, reversers.array);
+    return f;
+}
+
+export
+function string( path ) {
+    return createParser( path, parsers.string );
+}
+
+export
+function multilingual( path, valueParser, group = false ) {
+    // const originalPath = _.isFunction(path) ? path.path : path;
+    const parser = group ? parsers.groupingMultilingual : parsers.multilingual;
+    const reverser = group ? reversers.groupingMultilingual : reversers.multilingual;
+
+    // We go up one in the hierarchy such that `reverse` can set the
+    // language properties on the parent.
+    let prefix = path;
+    let key = realPath(path);
+    if( _.isString(prefix) )
+        prefix = path.replace(/(\.|^)[^\.]+$/, '');
+
+    if( _.isString(key) )
+        key = key.split('.').pop();
+
+    const f = createParser( prefix, parser, key, valueParser );
+    f.reverse = createReverse(prefix, reverser, key);
+    return f;
+}

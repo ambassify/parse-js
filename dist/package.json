@@ -1,0 +1,24 @@
+{
+  "name": "parse-js",
+  "version": "0.1.0",
+  "description": "Utility library for object structure conversion.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bubobox/parse-js.git"
+  },
+  "keywords": [
+    "parse",
+    "object",
+    "transform"
+  ],
+  "author": "Ambassify <npm@ambassify.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bubobox/parse-js/issues"
+  },
+  "homepage": "https://github.com/bubobox/parse-js#readme",
+  "dependencies": {
+    "lodash": "^3.10.1"
+  }
+}
