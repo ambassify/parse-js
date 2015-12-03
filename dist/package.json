@@ -1,6 +1,6 @@
 {
   "name": "parse-js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Utility library for object structure conversion.",
   "main": "index.js",
   "repository": {
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/bubobox/parse-js#readme",
   "dependencies": {
-    "lodash": "^3.10.1"
+    "lodash": "^3.10.1",
+    "babel-runtime": "^5.8.34"
   }
 }
