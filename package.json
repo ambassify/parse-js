@@ -5,7 +5,7 @@
   "description": "Utility library for object structure conversion.",
   "main": "src/index.js",
   "scripts": {
-    "test": "npm test",
+    "test": "grunt test",
     "publish": "npm publish dist"
   },
   "repository": {

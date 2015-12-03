@@ -1,4 +1,4 @@
-# parse-js
+# parse-js [![Circle CI](https://circleci.com/gh/bubobox/parse-js.svg?style=svg)](https://circleci.com/gh/bubobox/parse-js)
 
 Utility library for object structure conversion.
 
@@ -55,9 +55,9 @@ var specification = {
     name: 'user.fullname',
     firstname: 'user.fname',
     lastname: 'user.lname',
-    
+
     interests: parse.array('interests'),
-    
+
     activated: parse.boolean('subscription.activated')
 }
 ```
@@ -119,7 +119,7 @@ console.log(target);
   Merges key with the same prefix and a language suffix into a single key as an object which has a key for each language. Can run *&lt;valueParser>* on each language value. If *&lt;group>* is set to true it will auto detect keys that have a language suffix and group them together correctly.
 
 
-- **matchKey**(&lt;path>, &lt;key>): Key can be a string or a regular expression. If it is a string any property containing *&lt;key>* will 
+- **matchKey**(&lt;path>, &lt;key>): Key can be a string or a regular expression. If it is a string any property containing *&lt;key>* will
 match.
 
 - **matchPrefixStrip**(&lt;path>, &lt;key>, &lt;restoreCamelCase>)

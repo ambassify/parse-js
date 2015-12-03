@@ -1,0 +1,17 @@
+machine:
+  node:
+    version: v0.12.7
+general:
+  artifacts:
+    - "coverage"
+  branches:
+    ignore:
+      - gh-pages
+checkout:
+  post:
+    - npm install grunt-cli -g
+    - git config --global user.email "$GIT_EMAIL"
+    - git config --global user.name "$GIT_NAME"
+  override:
+    - npm install --no-optional
+
