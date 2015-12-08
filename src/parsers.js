@@ -5,6 +5,18 @@ import { ucfirst, lcfirst, trim } from './utils';
 import { parse } from './parse.js';
 
 const AVAILABLE_LANGUAGES = [ 'en', 'nl', 'fr' ];
+
+/**
+ * Ensures result is a number
+ */
+export
+function number(value, NaNValue = 0) {
+    // regex: match all dots and commas but the last one and remove
+    const norm = _.isString(value) ? value.replace(/(,|\.)(?=[^,.]*(\,|\.))/g, '').replace(',', '.') : value;
+    const num = parseFloat(norm);
+    return isNaN(num) ? NaNValue : num;
+}
+
 /**
  * Ensures result is a string
  */
@@ -161,4 +173,3 @@ function matchPrefixStrip(value, match ) {
 
     return result;
 }
-

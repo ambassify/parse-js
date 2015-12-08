@@ -54,3 +54,7 @@ function matchPrefixStrip( path, data, key, restoreCamelCase ) {
     }, {});
 }
 
+export
+function number(value, NaNValue = 0) {
+    return isNaN(value) ? NaNValue : value;
+}
