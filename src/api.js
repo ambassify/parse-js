@@ -55,6 +55,14 @@ function equals( path, shouldEqual, notEqualReverseValue = undefined ) {
 }
 
 export
+function number( path, NaNValue = 0 ) {
+    const f = createParser( path, parsers.number, NaNValue );
+    f.reverse = createReverse(path, reversers.number, NaNValue);
+    return f;
+}
+
+
+export
 function date( path, nowOnInvalid = false ) {
     const f = createParser( path, parsers.date, nowOnInvalid );
     f.reverse = createReverse(path, reversers.date);

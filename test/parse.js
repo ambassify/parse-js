@@ -396,4 +396,65 @@ describe('parse.js', function() {
         });
     });
 
+    describe('#parse.number', function() {
+        const NaN_VALUE = 'nanval';
+
+        const subject = {
+            a: 'one',
+            b: '123',
+            c: '123,345',
+            d: '123.345',
+            f: '-123.345',
+            g: '-0',
+            h: 1234,
+            i: true,
+            j: false,
+            k: undefined,
+            l: null
+        };
+
+        const results = {
+            a: NaN_VALUE,
+            b: 123,
+            c: 123.345,
+            d: 123.345,
+            f: -123.345,
+            g: 0,
+            h: 1234,
+            i: NaN_VALUE,
+            j: NaN_VALUE,
+            k: NaN_VALUE,
+            l: NaN_VALUE
+        };
+
+        const reverseResults = {
+            a: NaN_VALUE,
+            b: 123,
+            c: 123.345,
+            d: 123.345,
+            f: -123.345,
+            g: 0,
+            h: 1234,
+            i: NaN_VALUE,
+            j: NaN_VALUE,
+            k: NaN_VALUE,
+            l: NaN_VALUE
+        };
+
+        it('Should convert all values to numbers', function() {
+            _.each(subject, function(v, k) {
+                assert.equal(parse.number(k, NaN_VALUE)(subject), results[k],
+                    'key ' + k + ' with value "' + v + '" should be a number and equal "' + results[k] + '" but was "' + parse.number(k, NaN_VALUE)(subject) + '"');
+            });
+        });
+
+        it('Should reverse numbers taking NaN values into account', function() {
+            _.each(results, function(v, k) {
+                const reversed = parse.number(k, NaN_VALUE).reverse(v)[k];
+                assert.equal(reversed, reverseResults[k],
+                    'key ' + k + ' with value "' + v + '" should be reversed to "' + reverseResults[k] + '" but was "' + reversed + '"');
+            });
+        });
+    });
+
 });
