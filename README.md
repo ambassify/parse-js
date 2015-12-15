@@ -92,6 +92,19 @@ console.log(target);
 
 ```
 
+### Changing languages support by the multilingual parsers
+
+Custom language sets can be configured by setting the `AVAILABLE_LANGUAGES` property of the `multilingual` parser.
+Alternatively you can specify the set of supported languages with each call to the `multilingual` parser.
+
+```javascript
+// Change the global available languages
+parse.multilingual.AVAILABLE_LANGUAGES = [ 'en', 'nl', 'fr', 'de', 'pl' ];
+
+// Create a parsers with a different set of supported languages.
+parse.multilingual('path.to.key', x => x, false, [ 'en', 'de' ]);
+```
+
 ### Available parsers
 
 - **string**(&lt;path>)

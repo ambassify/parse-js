@@ -3,8 +3,6 @@
 import _ from 'lodash';
 import { ucfirst } from './utils';
 
-const AVAILABLE_LANGUAGES = ['en', 'nl', 'fr'];
-
 export
 function multilingual( path, data, name ) {
     return _.transform(data, (output, value, lang) => {
@@ -14,9 +12,9 @@ function multilingual( path, data, name ) {
 }
 
 export
-function groupingMultilingual( path, data ) {
+function groupingMultilingual( path, data, name = null, languages = [] ) {
     return _.transform(data, (output, values, key) => {
-        if( !_.isObject(values) || _.difference(_.keys(values), AVAILABLE_LANGUAGES).length > 0 ) {
+        if( !_.isObject(values) || _.difference(_.keys(values), languages).length > 0 ) {
             output[key] = values;
             return;
         }

@@ -4,8 +4,6 @@ import _ from 'lodash';
 import { ucfirst, lcfirst, trim } from './utils';
 import { parse } from './parse.js';
 
-const AVAILABLE_LANGUAGES = [ 'en', 'nl', 'fr' ];
-
 /**
  * Ensures result is a number
  */
@@ -96,11 +94,11 @@ function equals(value, shouldEqual) {
  * Group key with language suffixes ( testNl, testFr ) into a single object ( { nl: , fr: }).
  */
 export
-function multilingual(data, path, valueParser = (x => x) ) {
+function multilingual(data, path, valueParser = (x => x), languages = [] ) {
     const parser = (...args) => _.isUndefined(args[0]) ? undefined : valueParser(...args);
 
     const values = {};
-    AVAILABLE_LANGUAGES.forEach((lang) => {
+    languages.forEach((lang) => {
         const key = path + ucfirst(lang);
         const value = parse(key, parser, data);
 
@@ -115,8 +113,8 @@ function multilingual(data, path, valueParser = (x => x) ) {
  * { testNl, testFr, abc, valueEn, valueFr } becomes { test: { nl: , fr: }, abc: , value: { en: , fr: } }
  */
 export
-function groupingMultilingual(data, path, valueParser = (x => x) ) {
-    const regex = new RegExp('([^\\.]+)(' + AVAILABLE_LANGUAGES.map(ucfirst).join('|') + ')$');
+function groupingMultilingual(data, path, valueParser = (x => x), languages = [] ) {
+    const regex = new RegExp('([^\\.]+)(' + languages.map(ucfirst).join('|') + ')$');
     const multilingualKeys = _(data)
         .keys()
         .map(key => regex.test(key) ? regex.exec(key)[1] : null)
@@ -130,7 +128,7 @@ function groupingMultilingual(data, path, valueParser = (x => x) ) {
         .value();
 
     const values = _.transform(multilingualKeys, ( r, k ) => {
-        r[k] = multilingual(data, k, valueParser);
+        r[k] = multilingual(data, k, valueParser, languages);
     }, {});
 
     // attach regular keys to values object

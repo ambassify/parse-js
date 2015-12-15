@@ -82,7 +82,7 @@ function string( path ) {
 }
 
 export
-function multilingual( path, valueParser, group = false ) {
+function multilingual( path, valueParser, group = false, languages = null ) {
     // const originalPath = _.isFunction(path) ? path.path : path;
     const parser = group ? parsers.groupingMultilingual : parsers.multilingual;
     const reverser = group ? reversers.groupingMultilingual : reversers.multilingual;
@@ -97,7 +97,11 @@ function multilingual( path, valueParser, group = false ) {
     if( _.isString(key) )
         key = key.split('.').pop();
 
-    const f = createParser( prefix, parser, key, valueParser );
-    f.reverse = createReverse(prefix, reverser, key);
+    const lang = languages || multilingual.AVAILABLE_LANGUAGES;
+    const f = createParser( prefix, parser, key, valueParser, lang );
+    f.reverse = createReverse(prefix, reverser, key, lang);
     return f;
 }
+
+multilingual.AVAILABLE_LANGUAGES = [ 'en', 'nl', 'fr' ];
+
