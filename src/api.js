@@ -82,10 +82,12 @@ function string( path ) {
 }
 
 export
-function multilingual( path, valueParser, group = false, languages = null ) {
+function multilingual( path, valueParser, group = false, parseType = null, languages = null ) {
     // const originalPath = _.isFunction(path) ? path.path : path;
     const parser = group ? parsers.groupingMultilingual : parsers.multilingual;
     const reverser = group ? reversers.groupingMultilingual : reversers.multilingual;
+
+    parseType = parseType || multilingual.TYPE_DEFAULT || multilingual.CAMELCASE;
 
     // We go up one in the hierarchy such that `reverse` can set the
     // language properties on the parent.
@@ -98,10 +100,13 @@ function multilingual( path, valueParser, group = false, languages = null ) {
         key = key.split('.').pop();
 
     const lang = languages || multilingual.AVAILABLE_LANGUAGES;
-    const f = createParser( prefix, parser, key, valueParser, lang );
-    f.reverse = createReverse(prefix, reverser, key, lang);
+    const f = createParser( prefix, parser, key, valueParser, parseType, lang );
+    f.reverse = createReverse(prefix, reverser, key, parseType, lang);
     return f;
 }
+
+multilingual.TYPE_CAMELCASE = 'camelCase';
+multilingual.TYPE_UNDERSCORE = 'underscore';
 
 multilingual.AVAILABLE_LANGUAGES = [ 'en', 'nl', 'fr' ];
 

@@ -3,16 +3,21 @@
 import _ from 'lodash';
 import { ucfirst } from './utils';
 
+const CAMELCASE = 'camelCase';
+const prefixUnderscore = ( x => '_' + x );
+
 export
-function multilingual( path, data, name ) {
+function multilingual( path, data, name, parseType = CAMELCASE ) {
+    const languageTransform = ( parseType == CAMELCASE ) ? ucfirst : prefixUnderscore;
     return _.transform(data, (output, value, lang) => {
-        const key = name + ucfirst(lang);
+        const key = name + languageTransform(lang);
         output[key] = value;
     }, {});
 }
 
 export
-function groupingMultilingual( path, data, name = null, languages = [] ) {
+function groupingMultilingual( path, data, name = null, parseType = CAMELCASE, languages = [] ) {
+    const languageTransform = ( parseType == CAMELCASE ) ? ucfirst : prefixUnderscore;
     return _.transform(data, (output, values, key) => {
         if( !_.isObject(values) || _.difference(_.keys(values), languages).length > 0 ) {
             output[key] = values;
@@ -20,7 +25,7 @@ function groupingMultilingual( path, data, name = null, languages = [] ) {
         }
 
         _.each(values, (value, lang) => {
-            output[key + ucfirst(lang)] = value;
+            output[key + languageTransform(lang)] = value;
         });
     }, {});
 }

@@ -4,6 +4,9 @@ import _ from 'lodash';
 import { ucfirst, lcfirst, trim } from './utils';
 import { parse } from './parse.js';
 
+const CAMELCASE = 'camelCase';
+const prefixUnderscore = ( x => '_' + x );
+
 /**
  * Ensures result is a number
  */
@@ -94,12 +97,13 @@ function equals(value, shouldEqual) {
  * Group key with language suffixes ( testNl, testFr ) into a single object ( { nl: , fr: }).
  */
 export
-function multilingual(data, path, valueParser = (x => x), languages = [] ) {
+function multilingual(data, path, valueParser = (x => x), parseType = CAMELCASE, languages = [] ) {
+    const languageTransform = ( parseType == CAMELCASE ) ? ucfirst : prefixUnderscore;
     const parser = (...args) => _.isUndefined(args[0]) ? undefined : valueParser(...args);
 
     const values = {};
     languages.forEach((lang) => {
-        const key = path + ucfirst(lang);
+        const key = path + languageTransform(lang);
         const value = parse(key, parser, data);
 
         if( !_.isUndefined(value) )
@@ -113,8 +117,9 @@ function multilingual(data, path, valueParser = (x => x), languages = [] ) {
  * { testNl, testFr, abc, valueEn, valueFr } becomes { test: { nl: , fr: }, abc: , value: { en: , fr: } }
  */
 export
-function groupingMultilingual(data, path, valueParser = (x => x), languages = [] ) {
-    const regex = new RegExp('([^\\.]+)(' + languages.map(ucfirst).join('|') + ')$');
+function groupingMultilingual(data, path, valueParser = (x => x), parseType = CAMELCASE, languages = [] ) {
+    const languageTransform = ( parseType == CAMELCASE ) ? ucfirst : prefixUnderscore;
+    const regex = new RegExp('([^\\.]+)(' + languages.map(languageTransform).join('|') + ')$');
     const multilingualKeys = _(data)
         .keys()
         .map(key => regex.test(key) ? regex.exec(key)[1] : null)
@@ -128,7 +133,7 @@ function groupingMultilingual(data, path, valueParser = (x => x), languages = []
         .value();
 
     const values = _.transform(multilingualKeys, ( r, k ) => {
-        r[k] = multilingual(data, k, valueParser, languages);
+        r[k] = multilingual(data, k, valueParser, parseType, languages);
     }, {});
 
     // attach regular keys to values object
