@@ -232,6 +232,18 @@ describe('parse.js', function() {
             }, 'Language values should be compacted into an array');
         });
 
+        it('Should read an array for multilingual fields using an underscore', function() {
+            assert.deepEqual(parse.multilingual('key', x => x, false, 'underscore')({
+                key_nl: 'een test',
+                key_fr: 'une test',
+                key_en: 'a test'
+            }), {
+                nl: 'een test',
+                fr: 'une test',
+                en: 'a test'
+            }, 'Language values should be compacted into an array');
+        });
+
         it('Should be able to parse multilingual values', function() {
             assert.deepEqual(parse.multilingual('key', valueParser)(subject), {
                 nl: 'EEN TEST',
@@ -259,6 +271,22 @@ describe('parse.js', function() {
             };
 
             assert.deepEqual(parser.reverse(data), subject, 'Reverse should match subject');
+        });
+
+
+        it('Should be able to reverse multilingual properties with underscores', function() {
+            var parser = parse.multilingual('key', x => x, false, 'underscore');
+            var data = {
+                nl: 'een test',
+                fr: 'une test',
+                en: 'a test'
+            };
+
+            assert.deepEqual(parser.reverse(data), {
+                key_nl: 'een test',
+                key_fr: 'une test',
+                key_en: 'a test'
+            }, 'Reverse should match subject');
         });
 
         it('Should be able to reverse nested multilingual properties', function() {
