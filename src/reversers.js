@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+import { Base64 } from 'js-base64';
 import { ucfirst } from './utils';
 
 const CAMELCASE = 'camelCase';
@@ -60,4 +61,9 @@ function matchPrefixStrip( path, data, key, restoreCamelCase ) {
 export
 function number(value, NaNValue = 0) {
     return isNaN(value) ? NaNValue : value;
+}
+
+export
+function base64(path, value) {
+    return Base64.encode(value);
 }

@@ -1,7 +1,8 @@
 'use strict';
 
 import _ from 'lodash';
-import { ucfirst, lcfirst, trim } from './utils';
+import { Base64 } from 'js-base64';
+import { ucfirst, lcfirst, trim, isBase64 } from './utils';
 import { parse } from './parse.js';
 
 const CAMELCASE = 'camelCase';
@@ -175,4 +176,17 @@ function matchPrefixStrip(value, match ) {
     }
 
     return result;
+}
+
+/**
+ * Decodes the result from base64
+ *
+ * Detects Base64 strings and decodes them
+ */
+export
+function base64(value) {
+    if(isBase64(value))
+        value = Base64.decode(value);
+
+    return value;
 }

@@ -17,6 +17,18 @@ function trim(v) {
     return v.replace(/(^\s+|\s+$)/g, '');
 }
 
+let _rBase64;
+export
+function isBase64(v) {
+    if (typeof v !== 'string')
+        return false;
+
+    if (!_rBase64)
+        _rBase64 = /^[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/]+=*$/;
+
+    return _rBase64.test(v);
+}
+
 /**
  * Retrieves the original path where the data was extracted.
  *
@@ -33,4 +45,3 @@ function realPath(path) {
 
     return real;
 }
-
