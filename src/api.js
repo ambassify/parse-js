@@ -105,8 +105,14 @@ function multilingual( path, valueParser, group = false, parseType = null, langu
     return f;
 }
 
+export
+function base64( path, valueParser ) {
+    const f = createParser( path, parsers.base64, valueParser );
+    f.reverse = createReverse(path, reversers.base64);
+    return f;
+}
+
 multilingual.TYPE_CAMELCASE = 'camelCase';
 multilingual.TYPE_UNDERSCORE = 'underscore';
 
 multilingual.AVAILABLE_LANGUAGES = [ 'en', 'nl', 'fr' ];
-

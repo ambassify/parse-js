@@ -373,6 +373,9 @@ describe('parse.js', function() {
             },
             test2: {
                 settingAnswersNl: '["a","b"]'
+            },
+            test3: {
+                settingAnswers: 'WyJhIiwiYiJd' // '["a","b"]'
             }
         };
 
@@ -421,6 +424,24 @@ describe('parse.js', function() {
             };
 
             assert.deepEqual(parser.reverse({ nl: ['a','b'] }), target, 'Should reverse arrays in multilingual fields');
+        });
+
+        it('Should parse base64 encoded arrays', function() {
+            var parser = parse.array(parse.base64('test3.settingAnswers'));
+            var target = ['a', 'b'];
+
+            assert.deepEqual(parser(subject), target, 'Should parse base64 encoded arrays');
+        });
+
+        it('Should reverse base64 encoded arrays', function() {
+            var parser = parse.array(parse.base64('test3.settingAnswers'));
+            var target = {
+                test3: {
+                    settingAnswers: 'WyJhIiwiYiJd'
+                }
+            };
+
+            assert.deepEqual(parser.reverse(['a','b']), target, 'Should reverse base64 encoded arrays');
         });
     });
 
@@ -482,6 +503,26 @@ describe('parse.js', function() {
                 assert.equal(reversed, reverseResults[k],
                     'key ' + k + ' with value "' + v + '" should be reversed to "' + reverseResults[k] + '" but was "' + reversed + '"');
             });
+        });
+    });
+
+    describe('#parse.base64', function() {
+        const subject = {
+            a: 'bG9yZW0gaXBzdW0gPGlmcmFtZT5odG1sIGNvZGU8L2lmcmFtZT4='
+        };
+
+        const result = {
+            a: 'lorem ipsum <iframe>html code</iframe>'
+        };
+
+        it('Should parse base64', function() {
+            var parser = parse.base64('a');
+            assert.deepEqual(parser(subject), result.a, 'Should parse base64');
+        });
+
+        it('Should convert to base64', function() {
+            var parser = parse.base64('a');
+            assert.deepEqual(parser.reverse(result.a), subject, 'Should convert to base64');
         });
     });
 
