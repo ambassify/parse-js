@@ -185,6 +185,9 @@ function matchPrefixStrip(value, match ) {
  */
 export
 function base64(value) {
+    if( _.isPlainObject(value) )
+        return _.transform(value, ( r, v, k ) => r[k] = base64(v), {});
+
     if(isBase64(value))
         value = Base64.decode(value);
 
