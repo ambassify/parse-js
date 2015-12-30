@@ -376,6 +376,9 @@ describe('parse.js', function() {
             },
             test3: {
                 settingAnswers: 'WyJhIiwiYiJd' // '["a","b"]'
+            },
+            test4: {
+                settingAnswersNl: 'bG9yZW0gaXBzdW0gPGlmcmFtZT5odG1sIGNvZGU8L2lmcmFtZT4=' // lorem ipsum <iframe>html code</iframe>
             }
         };
 
@@ -442,6 +445,26 @@ describe('parse.js', function() {
             };
 
             assert.deepEqual(parser.reverse(['a','b']), target, 'Should reverse base64 encoded arrays');
+        });
+
+        it('Should parse base64 in multilingual fields', function() {
+            var parser = parse.base64(parse.multilingual('test4.settingAnswers'));
+            var target = {
+                nl: 'lorem ipsum <iframe>html code</iframe>'
+            };
+
+            assert.deepEqual(parser(subject), target, 'Should parse base64 in multilingual fields');
+        });
+
+        it('Should reverse base64 in multilinual fields', function() {
+            var parser = parse.base64(parse.multilingual('test4.settingAnswers'));
+            var target = {
+                test4: {
+                    settingAnswersNl: 'bG9yZW0gaXBzdW0gPGlmcmFtZT5odG1sIGNvZGU8L2lmcmFtZT4='
+                }
+            };
+
+            assert.deepEqual(parser.reverse({ nl: 'lorem ipsum <iframe>html code</iframe>' }), target, 'Should reverse base64 in multilingual fields');
         });
     });
 
