@@ -15,7 +15,7 @@ function transform( spec, data ) {
         return spec(data);
 
     if( _.isString(spec) )
-        return _.get( data, spec, null );
+        return _.get( data, spec );
 
     const obj = {};
 
