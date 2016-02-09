@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var assert = require('assert');
 var parse = require('index');
+var Base64 = require('js-base64').Base64;
 
 describe('parse.js', function() {
 
@@ -363,7 +364,41 @@ describe('parse.js', function() {
     });
 
     describe('#nested', function() {
-        var subject = {
+        var html = `<p>Dit is een test abc</p>
+<p>Wat is er aan de hand</p>
+<p>test test test</p>
+<p>jajajajaj</p>
+<p>cacacaca</p>
+<p>tatata</p>
+<p>ddddd</p>
+<figure>
+<div class="figure__image"><img src="https://s3-eu-central-1.amazonaws.com/tmp.ambassify.eu/10782018-239c-4b57-a46b-25af8f53eeec.jpg" alt="lalla" />
+<figcaption>lalla</figcaption>
+</div>
+</figure>
+<figure class="inline-left" contenteditable="false">
+<div class="figure__image"><img src="https://s3-eu-central-1.amazonaws.com/tmp.ambassify.eu/200c25a7-efda-4e44-84d5-a69335acb6ba.jpg" alt="&nbsp;sfasdfsdf" />
+<figcaption>&nbsp;sfasdfsdf</figcaption>
+</div>
+</figure>
+<p>&nbsp;asdfadsf</p>
+<p>asdf</p>
+<p>ads</p>
+<p>fads</p>
+<p>f</p>
+<p>asd</p>
+<p>fads</p>
+<p>f</p>
+<p>asdf</p>
+<p>asd</p>
+<p>fa</p>
+<p>sdf</p>
+<p>ads</p>
+<p>fa</p>
+<p>sdf</p>
+<p>ds</p>
+<p>f</p>`,
+            subject = {
             test: {
                 'a_oneNl': true,
                 'a_oneEn': false,
@@ -379,6 +414,12 @@ describe('parse.js', function() {
             },
             test4: {
                 settingAnswersNl: 'bG9yZW0gaXBzdW0gPGlmcmFtZT5odG1sIGNvZGU8L2lmcmFtZT4=' // lorem ipsum <iframe>html code</iframe>
+            },
+            test5: {
+                settingAnswers: 'abcde'
+            },
+            test6: {
+                settingAnswers: Base64.encode(html)
             }
         };
 
@@ -434,6 +475,18 @@ describe('parse.js', function() {
             var target = ['a', 'b'];
 
             assert.deepEqual(parser(subject), target, 'Should parse base64 encoded arrays');
+        });
+
+        it('Should not parse invalid base64', function() {
+            var parser = parse.base64('test5.settingAnswers');
+            var target = 'abcde';
+
+            assert.deepEqual(parser(subject), target, 'Should not parse invalid base64');
+        });
+
+        it('Should parse base64 html', function() {
+            var parser = parse.base64('test6.settingAnswers');
+            assert.equal(parser(subject), html, 'Should not parse invalid base64');
         });
 
         it('Should reverse base64 encoded arrays', function() {

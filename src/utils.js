@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+import { Base64 } from 'js-base64';
 
 export
 function ucfirst(v) {
@@ -17,16 +18,19 @@ function trim(v) {
     return v.replace(/(^\s+|\s+$)/g, '');
 }
 
-let _rBase64;
+const _rBase64 = /^[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/]+=*$/;
+const _rNonPrintable = /[\x00-\x08\x0E-\x1F\x80-\xFF]/;
 export
 function isBase64(v) {
     if (typeof v !== 'string')
         return false;
 
-    if (!_rBase64)
-        _rBase64 = /^[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/]+=*$/;
+    if (!_rBase64.test(v))
+        return false;
 
-    return _rBase64.test(v);
+    const value = Base64.decode(v);
+
+    return !_rNonPrintable.test(value);
 }
 
 /**
