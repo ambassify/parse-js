@@ -27,6 +27,12 @@ function parse( path, parser, data, ...args ) {
     if( !_.isFunction(parser) )
         throw new Error('Invalid parser supplied to parse()');
 
+    // If path is a function and result is a function we might
+    // be dealing with a nested spec.
+    if( parser.requiresScalarInput && _.isFunction(path) && _.isPlainObject(result) )
+        return _.transform(result, ( r, v, k ) => r[k] = parser(v, ...args), {});
+
+
     return parser(result, ...args);
 }
 

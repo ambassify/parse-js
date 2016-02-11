@@ -422,29 +422,29 @@ describe('parse.js', function() {
 <p>ds</p>
 <p>f</p>`,
             subject = {
-            test: {
-                'a_oneNl': true,
-                'a_oneEn': false,
-                'a_two': 1,
-                'b_three': false,
-                'b_four': 'this is a test'
-            },
-            test2: {
-                settingAnswersNl: '["a","b"]'
-            },
-            test3: {
-                settingAnswers: 'WyJhIiwiYiJd' // '["a","b"]'
-            },
-            test4: {
-                settingAnswersNl: 'bG9yZW0gaXBzdW0gPGlmcmFtZT5odG1sIGNvZGU8L2lmcmFtZT4=' // lorem ipsum <iframe>html code</iframe>
-            },
-            test5: {
-                settingAnswers: 'abcde'
-            },
-            test6: {
-                settingAnswers: Base64.encode(html)
-            }
-        };
+                test: {
+                    'a_oneNl': true,
+                    'a_oneEn': false,
+                    'a_two': 1,
+                    'b_three': false,
+                    'b_four': 'this is a test'
+                },
+                test2: {
+                    settingAnswersNl: '["a","b"]'
+                },
+                test3: {
+                    settingAnswers: 'WyJhIiwiYiJd' // '["a","b"]'
+                },
+                test4: {
+                    settingAnswersNl: 'bG9yZW0gaXBzdW0gPGlmcmFtZT5odG1sIGNvZGU8L2lmcmFtZT4=' // lorem ipsum <iframe>html code</iframe>
+                },
+                test5: {
+                    settingAnswers: 'abcde'
+                },
+                test6: {
+                    settingAnswers: Base64.encode(html)
+                }
+            };
 
         it('Should select correct keys based on string selector', function() {
             var parser = parse.multilingual(parse.matchPrefixStrip('test', 'a_', false), undefined, true);

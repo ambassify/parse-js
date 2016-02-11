@@ -18,6 +18,7 @@ function number(value, NaNValue = 0) {
     const num = parseFloat(norm);
     return isNaN(num) ? NaNValue : num;
 }
+number.requiresScalarInput = true;
 
 /**
  * Ensures result is a string
@@ -26,6 +27,7 @@ export
 function string(value) {
     return ( _.isUndefined(value) || value === null ) ? '' : ('' + value);
 }
+string.requiresScalarInput = true;
 
 /**
  * Ensures result is a boolean
@@ -34,6 +36,7 @@ export
 function boolean(value) {
     return typeof value === 'string' ? _.contains(['1', 'true', 'yes'], value) : !!value;
 }
+boolean.requiresScalarInput = true;
 
 /**
  * Ensures result is a date
@@ -51,6 +54,7 @@ function date(value, nowOnInvalid = false ) {
 
     return parsedDate;
 }
+date.requiresScalarInput = true;
 
 /**
  * Ensures result is an array
@@ -60,9 +64,6 @@ function date(value, nowOnInvalid = false ) {
  */
 export
 function array(value, valueParser ) {
-    if( _.isPlainObject(value) )
-        return _.transform(value, ( r, v, k ) => r[k] = array(v, valueParser), {});
-
     let result = [];
     let validJson = true;
 
@@ -85,6 +86,7 @@ function array(value, valueParser ) {
 
     return result;
 }
+array.requiresScalarInput = true;
 
 /**
  * Return true if value equals the target value
@@ -185,11 +187,9 @@ function matchPrefixStrip(value, match ) {
  */
 export
 function base64(value) {
-    if( _.isPlainObject(value) )
-        return _.transform(value, ( r, v, k ) => r[k] = base64(v), {});
-
     if(isBase64(value))
         value = Base64.decode(value);
 
     return value;
 }
+base64.requiresScalarInput = true;
