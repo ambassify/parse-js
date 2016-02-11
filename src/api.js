@@ -93,7 +93,7 @@ function multilingual( path, valueParser, group = false, parseType = null, langu
     // language properties on the parent.
     let prefix = path;
     let key = realPath(path);
-    if( _.isString(prefix) )
+    if( !group && _.isString(prefix) )
         prefix = path.replace(/(\.|^)[^\.]+$/, '');
 
     if( _.isString(key) )

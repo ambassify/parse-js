@@ -217,7 +217,13 @@ describe('parse.js', function() {
         var subject = {
             keyNl: 'een test',
             keyFr: 'une test',
-            keyEn: 'a test'
+            keyEn: 'a test',
+
+            test: {
+                vNl: 'een test',
+                vFr: 'une test',
+                vEn: 'a test'
+            }
         };
 
         var valueParser = function(x) {
@@ -259,6 +265,21 @@ describe('parse.js', function() {
                     nl: 'een test',
                     fr: 'une test',
                     en: 'a test'
+                },
+                test: {
+                    vNl: 'een test',
+                    vFr: 'une test',
+                    vEn: 'a test'
+                }
+            }, 'Language values should be group together under their key');
+        });
+
+        it('Should be able to group multilingual values one level deep', function() {
+            assert.deepEqual(parse.multilingual('test', (x=>x), true)(subject), {
+                v: {
+                    nl: 'een test',
+                    fr: 'une test',
+                    en: 'a test'
                 }
             }, 'Language values should be group together under their key');
         });
@@ -271,7 +292,9 @@ describe('parse.js', function() {
                 en: 'a test'
             };
 
-            assert.deepEqual(parser.reverse(data), subject, 'Reverse should match subject');
+            assert.deepEqual(parser.reverse(data),
+                _.pick(subject, 'keyEn', 'keyNl', 'keyFr'),
+                'Reverse should match subject');
         });
 
 
