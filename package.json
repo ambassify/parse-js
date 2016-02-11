@@ -6,7 +6,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "grunt test",
-    "publish": "npm publish dist"
+    "publish": "npm publish dist",
+    "release": "grunt version build && npm publish dist"
   },
   "repository": {
     "type": "git",
