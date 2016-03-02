@@ -193,3 +193,16 @@ function base64(value) {
     return value;
 }
 base64.requiresScalarInput = true;
+
+/**
+ * Parses JSON strings
+ */
+export
+function json(value) {
+    try {
+        return JSON.parse(value);
+    } catch (e) {
+        return undefined;
+    }
+}
+json.requiresScalarInput = true;

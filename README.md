@@ -138,3 +138,7 @@ match.
 - **matchPrefixStrip**(&lt;path>, &lt;key>, &lt;restoreCamelCase>)
 
   Take each key from the object at *&lt;path> that has *&lt;key> as a prefix. If *&lt;reestoreCamelCase>* is set to `true` upper-case the first character of the key before adding the *&lt;key>* during reverse operation.
+
+- **json**(&lt;path>)
+
+Parses JSON string at *&lt;path>* to value.

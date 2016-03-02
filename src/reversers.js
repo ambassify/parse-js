@@ -70,3 +70,8 @@ function base64(path, value) {
 
     return Base64.encode(value);
 }
+
+export
+function json(path, value) {
+    return JSON.stringify(value);
+}
