@@ -112,6 +112,13 @@ function base64( path, valueParser ) {
     return f;
 }
 
+export
+function json( path, valueParser ) {
+    const f = createParser( path, parsers.json, valueParser );
+    f.reverse = createReverse(path, reversers.json);
+    return f;
+}
+
 multilingual.TYPE_CAMELCASE = 'camelCase';
 multilingual.TYPE_UNDERSCORE = 'underscore';
 

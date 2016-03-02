@@ -625,4 +625,24 @@ describe('parse.js', function() {
         });
     });
 
+    describe('#parse.json', function() {
+        const result = {
+            a: { all: 'the', things: 999 }
+        };
+
+        const subject = {
+            a: JSON.stringify(result.a)
+        };
+
+        it('Should parse json', function() {
+            var parser = parse.json('a');
+            assert.deepEqual(parser(subject), result.a, 'Should parse json');
+        });
+
+        it('Should convert to json', function() {
+            var parser = parse.json('a');
+            assert.deepEqual(parser.reverse(result.a), subject, 'Should convert to json');
+        });
+    });
+
 });
