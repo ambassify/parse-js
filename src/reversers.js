@@ -65,9 +65,6 @@ function number(value, NaNValue = 0) {
 
 export
 function base64(path, value) {
-    if( _.isPlainObject(value) )
-        return _.transform(value, (r, v, k) => r[k] = base64(null, v), {});
-
     return Base64.encode(value);
 }
 

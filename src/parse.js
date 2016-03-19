@@ -27,7 +27,7 @@ function parse( path, parser, data, ...args ) {
     if( !_.isFunction(parser) )
         throw new Error('Invalid parser supplied to parse()');
 
-    // If path is a function and result is a function we might
+    // If path is a function and result is an object we might
     // be dealing with a nested spec.
     if( parser.requiresScalarInput && _.isFunction(path) && _.isPlainObject(result) )
         return _.transform(result, ( r, v, k ) => r[k] = parser(v, ...args), {});
@@ -43,12 +43,20 @@ function parse( path, parser, data, ...args ) {
  */
 export
 function reverse( path, reverser, data, ...args ) {
-    const reversed = reverser( path, data, ...args );
 
     // If path is a function we might find a function that
     // controls how this value should be reversed.
-    if( _.isFunction(path) && _.isFunction(path.reverse) )
-        return path.reverse( reversed );
+    if( _.isFunction(path) && _.isFunction(path.reverse) ) {
+
+        if (path.nestsResult)
+            data = _.transform(data, ( r, v, k ) => r[k] = reverser( null, v, ...args), {});
+        else
+            data = reverser( null, data, ...args );
+
+        return path.reverse(data);
+    }
+
+    const reversed = reverser( path, data, ...args );
 
     // Only functions/strings are valid paths, so throw an error
     // if this is not a string.
@@ -67,4 +75,3 @@ function reverse( path, reverser, data, ...args ) {
 
     return result;
 }
-
