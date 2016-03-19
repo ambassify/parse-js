@@ -443,6 +443,10 @@ describe('parse.js', function() {
                 },
                 test6: {
                     settingAnswers: Base64.encode(html)
+                },
+                test7: {
+                    fooNl: JSON.stringify({ winning: '9999', times: '!' }),
+                    fooEn: JSON.stringify({ winning: '1111', times: '!' })
                 }
             };
 
@@ -541,6 +545,26 @@ describe('parse.js', function() {
             };
 
             assert.deepEqual(parser.reverse({ nl: 'lorem ipsum <iframe>html code</iframe>' }), target, 'Should reverse base64 in multilingual fields');
+        });
+
+        it('Should parse json in multilingual fields', function() {
+            var parser = parse.json(parse.multilingual('test7.foo'));
+            var target = {
+                nl: { winning: '9999', times: '!' },
+                en: { winning: '1111', times: '!' }
+            };
+
+            assert.deepEqual(parser(subject), target, 'Should parse json in multilingual fields');
+        });
+
+        it('Should reverse json in multilinual fields', function() {
+            var parser = parse.json(parse.multilingual('test7.foo'));
+            var target = {
+                nl: { winning: '9999', times: '!' },
+                en: { winning: '1111', times: '!' }
+            };
+
+            assert.deepEqual(parser.reverse(target), _.pick(subject, 'test7'), 'Should reverse base64 in multilingual fields');
         });
     });
 
