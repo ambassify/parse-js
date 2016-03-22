@@ -44,8 +44,8 @@ function matchPrefixStrip( path, key, restoreCamelCase = true ) {
 }
 
 export
-function boolean( path ) {
-    return createParser( path, parsers.boolean );
+function boolean( path, defaultValue ) {
+    return createParser( path, parsers.boolean, defaultValue );
 }
 
 export

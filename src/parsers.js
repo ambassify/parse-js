@@ -33,8 +33,13 @@ string.requiresScalarInput = true;
  * Ensures result is a boolean
  */
 export
-function boolean(value) {
-    return typeof value === 'string' ? _.contains(['1', 'true', 'yes'], value) : !!value;
+function boolean(value, defaultValue) {
+    if( _.isUndefined(value) && !_.isUndefined(defaultValue) )
+        return defaultValue;
+
+    return typeof value === 'string' ?
+        _.contains(['1', 'true', 'yes'], value) :
+        !!value;
 }
 boolean.requiresScalarInput = true;
 
