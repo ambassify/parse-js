@@ -114,6 +114,7 @@ function multilingual(data, path, valueParser = (x => x), parseType = CAMELCASE,
     });
     return values;
 }
+multilingual.nestsResult = true;
 
 /**
  * Group keys that have language suffixes as their respective prefix.
@@ -144,6 +145,7 @@ function groupingMultilingual(data, path, valueParser = (x => x), parseType = CA
 
     return values;
 }
+multilingual.nestsResult = true;
 
 /**
  * Only select keys that have a match with `match`.

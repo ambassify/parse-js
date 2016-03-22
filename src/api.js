@@ -18,6 +18,7 @@ export
 function createParser( path, parser, ...args ) {
     const p = data => parse( path, parser, data, ...args );
     p.path = path;
+    p.nestsResult = parser.nestsResult || false;
     return p;
 }
 
