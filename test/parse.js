@@ -43,6 +43,9 @@ describe('parse.js', function() {
                 assert(!parse.boolean('shouldBeFalse.' + k)(subject), 'key ' + k + ' with value "' + v + '" should equal false');
             });
 
+            assert(parse.boolean('key.is.missing', true)(subject), 'Should respect defaultValue for missing key');
+            assert(!parse.boolean('key.is.missing', false)(subject), 'Should respect defaultValue for missing key');
+
             _.each(subject.shouldBeTrue, function(v) {
                 if( _.isString(v) ) return;
 
