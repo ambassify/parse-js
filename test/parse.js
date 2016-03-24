@@ -634,11 +634,13 @@ describe('parse.js', function() {
 
     describe('#parse.base64', function() {
         const subject = {
-            a: 'bG9yZW0gaXBzdW0gPGlmcmFtZT5odG1sIGNvZGU8L2lmcmFtZT4='
+            a: 'bG9yZW0gaXBzdW0gPGlmcmFtZT5odG1sIGNvZGU8L2lmcmFtZT4=',
+            b: Base64.encode('é')
         };
 
         const result = {
-            a: 'lorem ipsum <iframe>html code</iframe>'
+            a: 'lorem ipsum <iframe>html code</iframe>',
+            b: 'é'
         };
 
         it('Should parse base64', function() {
@@ -648,7 +650,12 @@ describe('parse.js', function() {
 
         it('Should convert to base64', function() {
             var parser = parse.base64('a');
-            assert.deepEqual(parser.reverse(result.a), subject, 'Should convert to base64');
+            assert.deepEqual(parser.reverse(result.a), _.pick(subject, 'a'), 'Should convert to base64');
+        });
+
+        it('Should parse base64 with foreign characters', function() {
+            var parser = parse.base64('b');
+            assert.deepEqual(parser(subject), result.b, 'Should parse base64 with foreign characters');
         });
     });
 
