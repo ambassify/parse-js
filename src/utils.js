@@ -19,7 +19,7 @@ function trim(v) {
 }
 
 const _rBase64 = /^[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/]+=*$/;
-const _rNonPrintable = /[\x00-\x08\x0E-\x1F\x80-\xFF]/;
+const _rNonPrintable = /[\x00-\x08\x0E-\x1F\x7F\x80-\x9F]/;
 export
 function isBase64(v) {
     if (typeof v !== 'string')
