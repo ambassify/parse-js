@@ -169,6 +169,7 @@ function matchKey(value, match ) {
 
     return result;
 }
+matchKey.nestsResult = true;
 
 /**
  * Matches a specific prefix and then strips the prefix from the key.
@@ -186,6 +187,7 @@ function matchPrefixStrip(value, match ) {
 
     return result;
 }
+matchPrefixStrip.nestsResult = true;
 
 /**
  * Decodes the result from base64
