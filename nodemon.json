@@ -1,0 +1,12 @@
+{
+    "ignore": [ "node_modules" ],
+    "events": {
+        "restart": "echo test && npm run build --silent"
+    },
+    "watch": [
+        "src",
+        "tests"
+    ],
+    "env": {},
+    "ext": "js"
+}
