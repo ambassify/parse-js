@@ -108,10 +108,11 @@ export
 function multilingual(data, path, valueParser = (x => x), parseType = CAMELCASE, languages = [] ) {
     const languageTransform = ( parseType == CAMELCASE ) ? ucfirst : prefixUnderscore;
     const parser = (...args) => _.isUndefined(args[0]) ? undefined : valueParser(...args);
+    const prefix = /[^\.]+$/.exec(path)[0];
 
     const values = {};
     languages.forEach((lang) => {
-        const key = path + languageTransform(lang);
+        const key = prefix + languageTransform(lang);
         const value = parse(key, parser, data);
 
         if( !_.isUndefined(value) )
@@ -169,7 +170,6 @@ function matchKey(value, match ) {
 
     return result;
 }
-matchKey.nestsResult = true;
 
 /**
  * Matches a specific prefix and then strips the prefix from the key.
@@ -187,7 +187,6 @@ function matchPrefixStrip(value, match ) {
 
     return result;
 }
-matchPrefixStrip.nestsResult = true;
 
 /**
  * Decodes the result from base64

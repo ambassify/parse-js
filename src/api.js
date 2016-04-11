@@ -1,6 +1,5 @@
 'use strict';
 
-import _ from 'lodash';
 import { parse, reverse } from './parse';
 import * as parsers from './parsers';
 import * as reversers from './reversers';
@@ -28,7 +27,11 @@ function createParser( path, parser, ...args ) {
  */
 export
 function createReverse( path, reverser, ...args ) {
-    return data => reverse( path, reverser, data, ...args );
+    const r = data => reverse( path, reverser, data, ...args );
+    r.path = path;
+    r.nestsResult = reverser.nestsResult || false;
+    r.insertsParent = reverser.insertsParent || false;
+    return r;
 }
 
 export
@@ -45,7 +48,9 @@ function matchPrefixStrip( path, key, restoreCamelCase = true ) {
 
 export
 function boolean( path, defaultValue ) {
-    return createParser( path, parsers.boolean, defaultValue );
+    const f = createParser( path, parsers.boolean, defaultValue );
+    f.reverse = createReverse(path, reversers.boolean);
+    return f;
 }
 
 export
@@ -90,19 +95,9 @@ function multilingual( path, valueParser, group = false, parseType = null, langu
 
     parseType = parseType || multilingual.TYPE_DEFAULT || multilingual.CAMELCASE;
 
-    // We go up one in the hierarchy such that `reverse` can set the
-    // language properties on the parent.
-    let prefix = path;
-    let key = realPath(path);
-    if( !group && _.isString(prefix) )
-        prefix = path.replace(/(\.|^)[^\.]+$/, '');
-
-    if( _.isString(key) )
-        key = key.split('.').pop();
-
     const lang = languages || multilingual.AVAILABLE_LANGUAGES;
-    const f = createParser( prefix, parser, key, valueParser, parseType, lang );
-    f.reverse = createReverse(prefix, reverser, key, parseType, lang);
+    const f = createParser(path, parser, path, valueParser, parseType, lang );
+    f.reverse = createReverse(path, reverser, parseType, lang);
     return f;
 }
 
