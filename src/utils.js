@@ -4,6 +4,11 @@ import _ from 'lodash';
 import { Base64 } from 'js-base64';
 
 export
+function isScalar(obj) {
+    return (/string|number|boolean/).test(typeof obj);
+}
+
+export
 function ucfirst(v) {
     return v.replace(/^[a-z]/, c => c.toUpperCase());
 }

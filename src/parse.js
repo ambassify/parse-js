@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+import { realPath } from './utils';
 
 /**
  * Retrieve the value at `path` from `data` and run `parser` on it
@@ -12,6 +13,9 @@ function parse( path, parser, data, ...args ) {
 
     // Strings always represent paths into `data`.
     if( _.isString(path) ) {
+        if( parser.nestsResult )
+            path = path.replace(/(^|\.)[^\.]+$/, '');
+
         result = _.isEmpty(path) ? result : _.get( result, path );
 
     // Functions can be used to retrieve content from data without a fixed path
@@ -48,10 +52,15 @@ function reverse( path, reverser, data, ...args ) {
     // controls how this value should be reversed.
     if( _.isFunction(path) && _.isFunction(path.reverse) ) {
 
-        if (path.nestsResult)
-            data = _.transform(data, ( r, v, k ) => r[k] = reverser( null, v, ...args), {});
-        else
+        let p = realPath(path);
+
+        if (path.reverse.nestsResult && !reverser.nestsResult) {
+            data = _.transform(data, ( r, v, k ) => {
+                r[k] = reverser( p + '.' + k, v, ...args);
+            }, {});
+        } else {
             data = reverser( null, data, ...args );
+        }
 
         return path.reverse(data);
     }
@@ -70,7 +79,18 @@ function reverse( path, reverser, data, ...args ) {
     // Set the reversed data at the correct location within the structure.
     const result = {};
 
-    if( !_.isUndefined(reversed) )
+
+    if( reverser.nestsResult && !_.isUndefined(reversed) ) {
+        if( reverser.insertsParent ) {
+            path = path.split('.');
+            path.pop();
+            path = path.join('.');
+        }
+
+        _.each(reversed, (value, key) => {
+            _.set(result, path + '.' + key, value);
+        });
+    } else if( !_.isUndefined(reversed) )
         _.set(result, path, reversed);
 
     return result;

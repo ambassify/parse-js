@@ -468,6 +468,7 @@ describe('parse.js', function() {
             var parser = parse.multilingual(parse.matchPrefixStrip('test', 'a_', false), undefined, true);
             var target = {
                 'one': { nl: true, en: false },
+                'three': { en: false },
                 'two': 1
             };
 
@@ -475,7 +476,25 @@ describe('parse.js', function() {
                 test: {
                     'a_oneNl': true,
                     'a_oneEn': false,
+                    'a_threeEn': false,
                     'a_two': 1
+                }
+            }, 'Should have the correct reverted structure');
+        });
+
+        it('Should revert to the correct object', function() {
+            var parser = parse.boolean(parse.matchPrefixStrip('test', 'a_', false));
+            var target = {
+                'one': 'true',
+                'two': 'false',
+                'three': 'true'
+            };
+
+            assert.deepEqual(parser.reverse(target), {
+                test: {
+                    'a_one': true,
+                    'a_two': false,
+                    'a_three': true
                 }
             }, 'Should have the correct reverted structure');
         });
