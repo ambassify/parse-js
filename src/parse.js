@@ -1,5 +1,7 @@
 const _ = require('lodash');
 
+const options = {};
+
 function Parse(path, options = {}) {
     if (!(this instanceof Parse))
         return new Parse(path);
@@ -17,6 +19,24 @@ Parse.register = function(name, handler, { overwrite = false } = {}) {
         throw new Error(`${name} already has a handler.`);
 
     Parse.prototype[name] = handler;
+}
+
+Parse.setOption = function(key, value) {
+    _.set(options, key, value);
+    return Parse;
+}
+
+Parse.getOption = function(key) {
+    return _.get(options, key);
+}
+
+Parse.prototype.setOption = function(key, value) {
+    _.set(this._options, key, value);
+    return this;
+}
+
+Parse.prototype.getOption = function(key) {
+    return _.get(this._options, key, Parse.getOption(key));
 }
 
 Parse.prototype.transform = function(parser, reverser) {

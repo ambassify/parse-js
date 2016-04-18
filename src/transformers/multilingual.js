@@ -1,13 +1,11 @@
 const _ = require('lodash');
 
-const AVAILABLE_LANGUAGES = ['en', 'nl', 'fr'];
-
 function ucfirst(str) {
     return str.replace(/^[a-z]/, l => l.toUpperCase());
 }
 
-function compileRegex() {
-    const langSuffix = AVAILABLE_LANGUAGES
+function compileRegex(languages) {
+    const langSuffix = languages
         .map(l => ucfirst(l))
         .join('|');
 
@@ -22,8 +20,9 @@ function toPascalCase(key, value) {
     return ucfirst(key);
 }
 
-function MultilingualTransformer() {
-    const regex = compileRegex();
+function MultilingualTransformer(languages) {
+    languages = languages || this.getOption('multilingual.languages') || [];
+    const regex = compileRegex(languages);
 
     return this.match(regex)
         .group(regex, 1, 2)
@@ -31,11 +30,3 @@ function MultilingualTransformer() {
 }
 
 module.exports = MultilingualTransformer;
-
-// .match(matcher)
-//  .group(regex, keyIndex, groupIndex)
-//  .foreach(p =>
-//      p.foreach(
-//          p => p.rename(toLowerCase)
-//      )
-//  )
