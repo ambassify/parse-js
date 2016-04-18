@@ -1,26 +1,26 @@
 const _ = require('lodash');
 
-function Rename(parser, reverser) {
-    if( !(this instanceof Rename) ) {
-        return this.transform(new Rename(parser, reverser));
+function RenameTransformer(parser, reverser) {
+    if( !(this instanceof RenameTransformer) ) {
+        return this.transform(new RenameTransformer(parser, reverser));
     }
 
     this._parser = parser;
     this._reverser = reverser;
 }
 
-Rename.prototype.parse = function(source) {
+RenameTransformer.prototype.parse = function(source) {
     return _.transform(source, (result, value, key) => {
         key = this._parser(key, value);
         result[key] = value;
     }, {});
 }
 
-Rename.prototype.reverse = function(source) {
+RenameTransformer.prototype.reverse = function(source) {
     return _.transform(source, (result, value, key) => {
         key = this._reverser(key, value);
         result[key] = value;
     }, {});
 }
 
-module.exports = Rename;
+module.exports = RenameTransformer;

@@ -1,8 +1,8 @@
 const _ = require('lodash');
 
-function Matcher(match) {
-    if( !(this instanceof Matcher) ) {
-        return this.transform(new Matcher(match));
+function MatchTransformer(match) {
+    if( !(this instanceof MatchTransformer) ) {
+        return this.transform(new MatchTransformer(match));
     }
 
     if( typeof match === 'string' ) {
@@ -14,13 +14,13 @@ function Matcher(match) {
     this._match = match;
 }
 
-Matcher.prototype.parse = function(source) {
+MatchTransformer.prototype.parse = function(source) {
     return _.transform(source, (result, value, key) => {
         if( this._match.test(key) )
             result[key] = value;
     }, {});
 }
 
-Matcher.prototype.reverse = Matcher.prototype.parse;
+MatchTransformer.prototype.reverse = MatchTransformer.prototype.parse;
 
-module.exports = Matcher;
+module.exports = MatchTransformer;

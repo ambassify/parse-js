@@ -22,7 +22,7 @@ function toPascalCase(key, value) {
     return ucfirst(key);
 }
 
-function Multilingual() {
+function MultilingualTransformer() {
     const regex = compileRegex();
 
     return this.match(regex)
@@ -30,7 +30,7 @@ function Multilingual() {
         .map(p => p.rename(toLowerCase, toPascalCase));
 }
 
-module.exports = Multilingual;
+module.exports = MultilingualTransformer;
 
 // .match(matcher)
 //  .group(regex, keyIndex, groupIndex)

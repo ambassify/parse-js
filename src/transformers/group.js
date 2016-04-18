@@ -1,8 +1,8 @@
 const _ = require('lodash');
 
-function Group(regex, key, index) {
-    if( !(this instanceof Group) ) {
-        return this.transform(new Group(regex, key, index));
+function GroupTransformer(regex, key, index) {
+    if( !(this instanceof GroupTransformer) ) {
+        return this.transform(new GroupTransformer(regex, key, index));
     }
 
     this._regex = regex;
@@ -10,12 +10,12 @@ function Group(regex, key, index) {
     this._index = index;
 }
 
-Group.prototype.match = function(key) {
+GroupTransformer.prototype.match = function(key) {
     this._regex.lastIndex = 0;
     return this._regex.exec(key);
 }
 
-Group.prototype.parse = function(source) {
+GroupTransformer.prototype.parse = function(source) {
     return _.transform(source, (result, value, key) => {
         const match = this.match(key);
 
@@ -34,7 +34,7 @@ Group.prototype.parse = function(source) {
     }, {});
 }
 
-Group.prototype.reverse = function(source) {
+GroupTransformer.prototype.reverse = function(source) {
     return _.transform(source, (result, value, key) => {
         if( !_.isPlainObject(value) ) {
             result[key] = value;
@@ -47,4 +47,4 @@ Group.prototype.reverse = function(source) {
     });
 }
 
-module.exports = Group;
+module.exports = GroupTransformer;

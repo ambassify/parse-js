@@ -1,14 +1,14 @@
 const _ = require('lodash');
 
-function StripPrefix(prefix) {
-    if( !(this instanceof StripPrefix) ) {
-        return this.transform(new StripPrefix(prefix));
+function StripPrefixTransformer(prefix) {
+    if( !(this instanceof StripPrefixTransformer) ) {
+        return this.transform(new StripPrefixTransformer(prefix));
     }
 
     this._prefix = prefix;
 }
 
-StripPrefix.prototype.parse = function(source) {
+StripPrefixTransformer.prototype.parse = function(source) {
     const prefix = this._prefix;
     const length = prefix.length;
 
@@ -19,11 +19,11 @@ StripPrefix.prototype.parse = function(source) {
     }, {});
 }
 
-StripPrefix.prototype.reverse = function(source) {
+StripPrefixTransformer.prototype.reverse = function(source) {
     const prefix = this._prefix;
     return _.transform(source, (result, value, key) => {
         result[prefix + key] = value;
     }, {});
 }
 
-module.exports = StripPrefix;
+module.exports = StripPrefixTransformer;

@@ -48,12 +48,12 @@ Parse.prototype.reverse = function(obj) {
     return obj;
 }
 
-Parse.register('select', require('./parsers/select'));
-Parse.register('match', require('./parsers/match'));
-Parse.register('rename', require('./parsers/rename'));
-Parse.register('map', require('./parsers/map'));
-Parse.register('group', require('./parsers/group'));
+Parse.register('select', require('./transformers/select'));
+Parse.register('match', require('./transformers/match'));
+Parse.register('rename', require('./transformers/rename'));
+Parse.register('map', require('./transformers/map'));
+Parse.register('group', require('./transformers/group'));
 
-Parse.register('date', require('./parsers/date'));
-Parse.register('multilingual', require('./parsers/multilingual'));
-Parse.register('stripPrefix', require('./parsers/stripPrefix'));
+Parse.register('date', require('./transformers/date'));
+Parse.register('multilingual', require('./transformers/multilingual'));
+Parse.register('stripPrefix', require('./transformers/stripPrefix'));
