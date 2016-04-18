@@ -1,4 +1,4 @@
-const parse = require('./lib/parse');
+const parse = require('./parse');
 
 const test = parse('test').multilingual();
 
