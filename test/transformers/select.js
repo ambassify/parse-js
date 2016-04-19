@@ -1,50 +1,41 @@
 const assert = require('assert');
 
-describe('date', function() {
-    let DateTransformer = null;
+describe('select', function() {
+    let Select = null;
 
     before(function() {
-        DateTransformer = require('src/transformers/date');
+        Select = require('src/transformers/select');
+    })
+
+    describe('#constructor', function() {
+        it('Should create an instance without new keyword when attached', function() {
+            const obj = {
+                select: Select,
+                transform: instance => {
+                    assert(instance instanceof Select);
+                    assert.equal(instance._path, 'path');
+                }
+            };
+
+            obj.select('path');
+        })
     })
 
     describe('#parse', function() {
-        it('Should parse a date correctly', function() {
-            const instance = new DateTransformer();
-            const result = instance.parse('6-6-2006');
+        it('Should parse an object correctly', function() {
+            const instance = new Select('path');
+            const result = instance.parse({ path: 'value' });
 
-            assert.deepEqual(result, new Date('6-6-2006'));
-        })
-
-        it('Should fail on an invalid date', function() {
-            const instance = new DateTransformer();
-            const result = instance.parse('something invalid');
-
-            assert.equal(result, undefined);
-        })
-
-        it('Should return now on invalid', function() {
-            const instance = new DateTransformer(true);
-            const result = instance.parse('something invalid');
-
-            assert.deepEqual(result, new Date());
+            assert.equal(result, 'value');
         })
     })
 
     describe('#reverse', function() {
-        it('Should reverse a date correctly', function() {
-            const date = new Date( Date.now() - 2000 );
-            const instance = new DateTransformer();
-            const result = instance.reverse(date);
+        it('Should reverse an object correctly', function() {
+            const instance = new Select('path');
+            const result = instance.reverse('value');
 
-            assert.equal(result, date.toJSON());
-        })
-
-        it('Should pass through non-date values', function() {
-            const date = Date.now() - 2000;
-            const instance = new DateTransformer();
-            const result = instance.reverse(date);
-
-            assert.equal(result, date);
+            assert.deepEqual(result, { path: 'value' });
         })
     })
 });

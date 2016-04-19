@@ -7,6 +7,23 @@ describe('group', function() {
         Group = require('src/transformers/group');
     })
 
+    describe('#constructor', function() {
+        it('Should create an instance without new keyword when attached', function() {
+            const regex = /test/;
+            const obj = {
+                group: Group,
+                transform: instance => {
+                    assert(instance instanceof Group);
+                    assert.equal(instance._regex, regex);
+                    assert.equal(instance._key, 1);
+                    assert.equal(instance._index, 2);
+                }
+            };
+
+            obj.group(regex, 1, 2);
+        })
+    })
+
     describe('#parse', function() {
         it('Should group 1 prefix based on regex', function() {
             const instance = new Group(/^(prefix)(suf|fix)$/, 1, 2);
