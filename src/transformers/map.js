@@ -6,13 +6,15 @@ function MapTransformer(callback) {
     }
 
     this._callback = callback;
+    this._cache = {};
 }
 
 MapTransformer.prototype._createParse = (function() {
-    const cache = {};
     const Parse = require('../parse');
 
     return function(key) {
+        const cache = this._cache;
+
         if (!(key in cache)) {
             cache[key] = this._callback(new Parse(key));
         }
