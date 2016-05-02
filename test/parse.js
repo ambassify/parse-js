@@ -450,6 +450,9 @@ describe('parse.js', function() {
                 test7: {
                     fooNl: JSON.stringify({ winning: '9999', times: '!' }),
                     fooEn: JSON.stringify({ winning: '1111', times: '!' })
+                },
+                test8: {
+                    settingAnswers: 'undefined'
                 }
             };
 
@@ -529,6 +532,13 @@ describe('parse.js', function() {
         it('Should not parse invalid base64', function() {
             var parser = parse.base64('test5.settingAnswers');
             var target = 'abcde';
+
+            assert.deepEqual(parser(subject), target, 'Should not parse invalid base64');
+        });
+
+        it('Should not parse invalid base64', function() {
+            var parser = parse.base64('test8.settingAnswers');
+            var target = 'undefined';
 
             assert.deepEqual(parser(subject), target, 'Should not parse invalid base64');
         });
