@@ -30,6 +30,9 @@ function isBase64(v) {
     if (typeof v !== 'string')
         return false;
 
+    if ((v.length * 6) % 8 !== 0)
+        return false;
+
     if (!_rBase64.test(v))
         return false;
 
