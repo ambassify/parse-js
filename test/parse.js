@@ -81,6 +81,16 @@ describe('parse.js', function() {
             }), ['A','B','C','D','E','F']);
         });
 
+        it.only('Should leave arrays intact', function() {
+            var parser = parse.array('a');
+            var target = ['test', '123'];
+            var subject = {
+                a: target
+            };
+
+            assert.deepEqual(parser(subject), target, 'Should not touch arrays');
+        });
+
         it('Should convert empty values to an empty array', function() {
             var subject = {
                 a: '',
