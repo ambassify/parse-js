@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "parse-js",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "Utility library for object structure conversion.",
   "main": "src/index.js",
   "scripts": {
