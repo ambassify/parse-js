@@ -72,6 +72,9 @@ function array(value, valueParser ) {
     let result = [];
     let validJson = true;
 
+    if (_.isArray(value))
+        result = value;
+
     try {
         result = JSON.parse(value);
     } catch (e) {
