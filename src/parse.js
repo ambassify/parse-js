@@ -39,12 +39,12 @@ Parse.prototype.getOption = function(key) {
     return _.get(this._options, key, Parse.getOption(key));
 }
 
-Parse.prototype.transform = function(parser, reverser) {
-    if (typeof parser !== 'object') {
-        parser = { parser, reverser };
+Parse.prototype.transform = function(parse, reverse) {
+    if (typeof parse !== 'object') {
+        parse = { parse, reverse };
     }
 
-    this._chain = this._chain.concat(parser);
+    this._chain = this._chain.concat(parse);
 
     return this;
 }

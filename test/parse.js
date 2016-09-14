@@ -1,0 +1,180 @@
+const assert = require('assert');
+
+describe('Parse', function() {
+    let Parse = null;
+    const noop = function () {};
+
+    before(function() {
+        Parse = require('src/parse');
+    })
+
+    describe('#constructor', function() {
+        it('Should create an instance without new keyword', function() {
+            const instance = Parse('test');
+
+            assert.ok(instance instanceof Parse);
+        })
+
+        it('Should set options', function() {
+            const options = {
+                option: 'one'
+            };
+
+            const instance = new Parse('test', options);
+
+            assert.equal(instance._options, options);
+            assert.equal(instance.getOption('option'), 'one');
+        })
+    })
+
+    describe('#register', function() {
+        it('Should register transformers on the prototype', function() {
+            const handler = function() {};
+            Parse.register('test', handler);
+
+            assert.equal(Parse.prototype.test, handler);
+        })
+
+        it('Should throw error when re-registering handler', function() {
+            assert.throws(function() {
+                const handler = function() {};
+                Parse.register('test', handler);
+            });
+        })
+
+        it('Should overwrite when the options is set', function() {
+            const handler = function() {};
+            Parse.register('test', handler, { overwrite: true });
+        })
+    })
+
+    describe('#setOption/getOption', function() {
+        it('Should set option', function() {
+            Parse.setOption('test1', '12345');
+        })
+
+        it('Should fetch options', function() {
+            assert.equal(Parse.getOption('test1'), '12345');
+        })
+    })
+
+    describe('#setOption', function() {
+        it('Should set option on instance', function() {
+            const instance = new Parse('test');
+            instance.setOption('test2', '54321');
+
+            assert.deepEqual(instance._options, {
+                test2: '54321'
+            });
+        })
+    })
+
+    describe('#getOption', function() {
+        it('Should get option of instance', function() {
+            const instance = new Parse('test');
+            instance.setOption('test3', '54321');
+
+            assert.deepEqual(instance._options, {
+                test3: '54321'
+            });
+        })
+
+        it('Should fall through to global settings', function() {
+            Parse.setOption('test4', '0000');
+
+            const instance = new Parse('test');
+            const result = instance.getOption('test4');
+
+            assert.equal(result, '0000');
+        })
+    })
+
+    describe('#transform', function() {
+        it('Should accept object', function() {
+            const parser = {
+                parser: noop,
+                reverser: noop
+            };
+
+            const instance = new Parse('test');
+            instance.transform(parser);
+
+            assert.equal(instance._chain[1], parser);
+        })
+
+        it('Should accept parser and reverser functions', function() {
+            const parser = function() {};
+            const reverser = function() {};
+
+            const instance = new Parse('test');
+            instance.transform(parser, reverser);
+
+            assert.deepEqual(instance._chain[1], {
+                parse: parser,
+                reverse: reverser
+            });
+        })
+    })
+
+    describe('#parse', function() {
+        it('Should call the transform chain', function() {
+            const instance = new Parse('test');
+            const called = [];
+            instance._chain = [{
+                parse: function() { called.push('parse-1'); },
+                reverse: noop
+            }];
+
+            instance.parse({});
+
+            assert.deepEqual(called, ['parse-1']);
+        })
+
+        it('Should call the transform chain', function() {
+            const instance = new Parse('test');
+            const called = [];
+            instance._chain = [{
+                parse: function() { called.push('parse-1'); },
+                reverse: noop
+            },{
+                parse: function() { called.push('parse-2'); },
+                reverse: noop
+            }];
+
+            instance.parse({});
+
+            assert.deepEqual(called, ['parse-1','parse-2']);
+        })
+    })
+
+    describe('#reverse', function() {
+        it('Should call the transform chain in reverse', function() {
+            const instance = new Parse('test');
+            const called = [];
+            instance._chain = [{
+                parse: noop,
+                reverse: function() { called.push('reverse-1'); }
+            }];
+
+            instance.reverse({});
+
+            assert.deepEqual(called, ['reverse-1']);
+        })
+
+        it('Should call the transform chain in reverse', function() {
+            const instance = new Parse('test');
+            const called = [];
+            instance._chain = [{
+                parse: noop,
+                reverse: function() { called.push('reverse-1'); }
+            },{
+                parse: noop,
+                reverse: function() { called.push('reverse-2'); }
+            }];
+
+            instance.reverse({});
+
+            assert.deepEqual(called, ['reverse-2','reverse-1']);
+        })
+    })
+});
