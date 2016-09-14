@@ -13,7 +13,7 @@ function GroupTransformer(regex, key, index) {
 GroupTransformer.prototype.match = function(key) {
     this._regex.lastIndex = 0;
     return this._regex.exec(key);
-}
+};
 
 GroupTransformer.prototype.parse = function(source) {
     return _.transform(source, (result, value, key) => {
@@ -32,7 +32,7 @@ GroupTransformer.prototype.parse = function(source) {
 
         result[newKey][index] = value;
     }, {});
-}
+};
 
 GroupTransformer.prototype.reverse = function(source) {
     return _.transform(source, (result, value, key) => {
@@ -43,8 +43,8 @@ GroupTransformer.prototype.reverse = function(source) {
 
         _.each(value, (v, idx) => {
             result[key + idx] = v;
-        })
+        });
     });
-}
+};
 
 module.exports = GroupTransformer;

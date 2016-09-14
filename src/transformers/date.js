@@ -1,5 +1,3 @@
-const _ = require('lodash');
-
 const INVALID_DATE = 'Invalid Date';
 
 function DateTransformer(nowOnInvalid = false) {
@@ -19,13 +17,13 @@ DateTransformer.prototype.parse = function(value) {
         return new Date();
 
     return undefined;
-}
+};
 
 DateTransformer.prototype.reverse = function(source) {
     if (source instanceof Date && source.toJSON)
         return source.toJSON();
 
     return source;
-}
+};
 
 module.exports = DateTransformer;

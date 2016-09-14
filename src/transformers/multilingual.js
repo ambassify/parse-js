@@ -1,5 +1,3 @@
-const _ = require('lodash');
-
 function ucfirst(str) {
     return str.replace(/^[a-z]/, l => l.toUpperCase());
 }
@@ -12,11 +10,11 @@ function compileRegex(languages) {
     return new RegExp(`(.+)(${langSuffix})$`);
 }
 
-function toLowerCase(key, value) {
+function toLowerCase(key /* , value */) {
     return key.toLowerCase();
 }
 
-function toPascalCase(key, value) {
+function toPascalCase(key /* , value */) {
     return ucfirst(key);
 }
 

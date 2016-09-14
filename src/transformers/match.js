@@ -7,7 +7,7 @@ function MatchTransformer(match) {
 
     if( typeof match === 'string' ) {
         // Escape string
-        match = match.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        match = match.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         match = new RegExp(match);
     }
 
@@ -19,7 +19,7 @@ MatchTransformer.prototype.parse = function(source) {
         if( this._match.test(key) )
             result[key] = value;
     }, {});
-}
+};
 
 MatchTransformer.prototype.reverse = MatchTransformer.prototype.parse;
 

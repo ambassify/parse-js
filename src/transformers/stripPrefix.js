@@ -17,13 +17,13 @@ StripPrefixTransformer.prototype.parse = function(source) {
 
         result[key.substr(length)] = value;
     }, {});
-}
+};
 
 StripPrefixTransformer.prototype.reverse = function(source) {
     const prefix = this._prefix;
     return _.transform(source, (result, value, key) => {
         result[prefix + key] = value;
     }, {});
-}
+};
 
 module.exports = StripPrefixTransformer;

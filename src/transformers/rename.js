@@ -14,13 +14,13 @@ RenameTransformer.prototype.parse = function(source) {
         key = this._parser(key, value);
         result[key] = value;
     }, {});
-}
+};
 
 RenameTransformer.prototype.reverse = function(source) {
     return _.transform(source, (result, value, key) => {
         key = this._reverser(key, value);
         result[key] = value;
     }, {});
-}
+};
 
 module.exports = RenameTransformer;
