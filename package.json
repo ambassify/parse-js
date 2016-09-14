@@ -2,11 +2,13 @@
   "name": "parse-next",
   "version": "0.3.0",
   "description": "",
-  "main": "src/parse.js",
+  "main": "dist/parse.js",
   "scripts": {
     "test": "NODE_PATH=. istanbul cover node_modules/.bin/_mocha",
-    "build": "babel -d dist src",
     "start": "node dist",
+    "prepublish": "npm -s run build",
+    "release": "npm version patch && npm publish",
+    "build": "babel -d dist src",
     "dev": "nodemon dist"
   },
   "repository": {
