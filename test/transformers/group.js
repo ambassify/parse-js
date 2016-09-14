@@ -50,6 +50,22 @@ describe('group', function() {
                 test: { suf: 'test3' }
             });
         })
+
+        it('Should leave value intact when regex does not match', function() {
+            const instance = new Group(/^(prefix|test)(suf|fix)$/, 1, 2);
+            const result = instance.parse({
+                prefixsuf: 'test1',
+                prefixfix: 'test2',
+                testsuf: 'test3',
+                not: 'matching'
+            });
+
+            assert.deepEqual(result, {
+                prefix: { suf: 'test1', fix: 'test2' },
+                test: { suf: 'test3' },
+                not: 'matching'
+            });
+        })
     })
 
     describe('#reverse', function() {
@@ -76,6 +92,22 @@ describe('group', function() {
                 prefixsuf: 'test1',
                 prefixfix: 'test2',
                 testsuf: 'test3'
+            });
+        })
+
+        it('Should leave value intact when regex does not match', function() {
+            const instance = new Group(/^(prefix)(suf|fix)$/, 1, 2);
+            const result = instance.reverse({
+                prefix: { suf: 'test1', fix: 'test2' },
+                test: { suf: 'test3' },
+                not: 'matching'
+            });
+
+            assert.deepEqual(result, {
+                prefixsuf: 'test1',
+                prefixfix: 'test2',
+                testsuf: 'test3',
+                not: 'matching'
             });
         })
     })
