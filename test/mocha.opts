@@ -1,0 +1,3 @@
+-r babel-register
+--recursive
+--reporter mocha-circleci-reporter
