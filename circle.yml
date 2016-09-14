@@ -1,3 +1,8 @@
 general:
   artifacts:
     - "coverage"
+
+machine:
+  environment:
+    NPM_CONFIG_PROGRESS: false
+    MOCHA_FILE: $CIRCLE_TEST_REPORTS/mocha/tests.[hash].xml
