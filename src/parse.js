@@ -7,7 +7,10 @@ function Parse(path, options = {}) {
     this._chain = [];
     this._options = options;
 
-    return this.select(path);
+    if (_.isString(path))
+        return this.select(path);
+
+    return this;
 }
 
 module.exports = Parse;

@@ -25,6 +25,12 @@ describe('Parse', function() {
             assert.equal(instance._options, options);
             assert.equal(instance.getOption('option'), 'one');
         })
+
+        it('Should not add select transformer when no path is set', function() {
+            const instance = new Parse();
+
+            assert.deepEqual(instance._chain, []);
+        })
     })
 
     describe('#register', function() {
