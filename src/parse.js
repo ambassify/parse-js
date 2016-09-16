@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const CustomTransformer = require('./transformers/custom');
 
 function Parse(path, options = {}) {
     if (!(this instanceof Parse))
@@ -44,7 +45,7 @@ Parse.prototype.getOption = function(key) {
 
 Parse.prototype.transform = function(parse, reverse) {
     if (typeof parse !== 'object') {
-        parse = { parse, reverse };
+        parse = new CustomTransformer(parse, reverse);
     }
 
     this._chain = this._chain.concat(parse);
