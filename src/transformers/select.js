@@ -1,4 +1,5 @@
-const _ = require('lodash');
+const _get = require('lodash/get');
+const _set = require('lodash/set');
 
 function SelectTransformer(path) {
     if( !(this instanceof SelectTransformer) ) {
@@ -9,12 +10,12 @@ function SelectTransformer(path) {
 }
 
 SelectTransformer.prototype.parse = function(source) {
-    return _.get(source, this._path);
+    return _get(source, this._path);
 };
 
 SelectTransformer.prototype.reverse = function(source) {
     const result = {};
-    _.set(result, this._path, source);
+    _set(result, this._path, source);
     return result;
 };
 

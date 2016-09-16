@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const _transform = require('lodash/transform');
 
 function StripPrefixTransformer(prefix) {
     if( !(this instanceof StripPrefixTransformer) ) {
@@ -12,7 +12,7 @@ StripPrefixTransformer.prototype.parse = function(source) {
     const prefix = this._prefix;
     const length = prefix.length;
 
-    return _.transform(source, (result, value, key) => {
+    return _transform(source, (result, value, key) => {
         if( key.indexOf(prefix) !== 0 ) return;
 
         result[key.substr(length)] = value;
@@ -21,7 +21,7 @@ StripPrefixTransformer.prototype.parse = function(source) {
 
 StripPrefixTransformer.prototype.reverse = function(source) {
     const prefix = this._prefix;
-    return _.transform(source, (result, value, key) => {
+    return _transform(source, (result, value, key) => {
         result[prefix + key] = value;
     }, {});
 };

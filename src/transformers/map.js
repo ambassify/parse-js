@@ -1,4 +1,5 @@
-const _ = require('lodash');
+const _transform = require('lodash/transform');
+const _merge = require('lodash/merge');
 
 function MapTransformer(callback) {
     if( !(this instanceof MapTransformer) ) {
@@ -24,14 +25,14 @@ MapTransformer.prototype._createParse = (function() {
 }());
 
 MapTransformer.prototype.parse = function(source) {
-    return _.transform(source, (result, value, key) => {
+    return _transform(source, (result, value, key) => {
         result[key] = this._createParse(key).parse(source);
     }, {});
 };
 
 MapTransformer.prototype.reverse = function(source) {
-    return _.transform(source, (result, value, key) => {
-        _.merge(result, this._createParse(key).reverse(source[key]));
+    return _transform(source, (result, value, key) => {
+        _merge(result, this._createParse(key).reverse(source[key]));
     }, {});
 };
 

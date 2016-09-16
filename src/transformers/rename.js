@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const _transform = require('lodash/transform');
 
 function RenameTransformer(parser, reverser) {
     if( !(this instanceof RenameTransformer) ) {
@@ -10,14 +10,14 @@ function RenameTransformer(parser, reverser) {
 }
 
 RenameTransformer.prototype.parse = function(source) {
-    return _.transform(source, (result, value, key) => {
+    return _transform(source, (result, value, key) => {
         key = this._parser(key, value);
         result[key] = value;
     }, {});
 };
 
 RenameTransformer.prototype.reverse = function(source) {
-    return _.transform(source, (result, value, key) => {
+    return _transform(source, (result, value, key) => {
         key = this._reverser(key, value);
         result[key] = value;
     }, {});

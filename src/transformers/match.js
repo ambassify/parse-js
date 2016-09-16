@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const _transform = require('lodash/transform');
 
 function MatchTransformer(match) {
     if( !(this instanceof MatchTransformer) ) {
@@ -15,7 +15,7 @@ function MatchTransformer(match) {
 }
 
 MatchTransformer.prototype.parse = function(source) {
-    return _.transform(source, (result, value, key) => {
+    return _transform(source, (result, value, key) => {
         if( this._match.test(key) )
             result[key] = value;
     }, {});

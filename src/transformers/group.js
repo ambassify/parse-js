@@ -1,4 +1,6 @@
-const _ = require('lodash');
+const _each = require('lodash/each');
+const _transform = require('lodash/transform');
+const _isPlainObject = require('lodash/isPlainObject');
 
 function GroupTransformer(regex, key, index) {
     if( !(this instanceof GroupTransformer) ) {
@@ -16,7 +18,7 @@ GroupTransformer.prototype.match = function(key) {
 };
 
 GroupTransformer.prototype.parse = function(source) {
-    return _.transform(source, (result, value, key) => {
+    return _transform(source, (result, value, key) => {
         const match = this.match(key);
 
         if( !match ) {
@@ -35,13 +37,13 @@ GroupTransformer.prototype.parse = function(source) {
 };
 
 GroupTransformer.prototype.reverse = function(source) {
-    return _.transform(source, (result, value, key) => {
-        if( !_.isPlainObject(value) ) {
+    return _transform(source, (result, value, key) => {
+        if( !_isPlainObject(value) ) {
             result[key] = value;
             return;
         }
 
-        _.each(value, (v, idx) => {
+        _each(value, (v, idx) => {
             result[key + idx] = v;
         });
     });
