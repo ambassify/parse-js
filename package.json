@@ -3,6 +3,9 @@
   "version": "0.4.1",
   "description": "",
   "main": "dist/parse.js",
+  "engines": {
+    "node": "6.x.x"
+  },
   "scripts": {
     "test": "npm -s run test:lint && npm -s run test:unit",
     "test:unit": "NODE_PATH=. istanbul cover node_modules/.bin/_mocha",

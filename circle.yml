@@ -3,6 +3,8 @@ general:
     - "coverage"
 
 machine:
+  node:
+    version: 6.1.0
   environment:
     NPM_CONFIG_PROGRESS: false
     MOCHA_FILE: $CIRCLE_TEST_REPORTS/mocha/tests.[hash].xml
