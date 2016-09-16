@@ -78,6 +78,7 @@ Parse.register('rename', require('./transformers/rename'));
 Parse.register('map', require('./transformers/map'));
 Parse.register('group', require('./transformers/group'));
 
+Parse.register('spec', require('./transformers/spec'));
 Parse.register('date', require('./transformers/date'));
 Parse.register('multilingual', require('./transformers/multilingual'));
 Parse.register('stripPrefix', require('./transformers/stripPrefix'));
