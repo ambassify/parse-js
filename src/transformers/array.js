@@ -1,16 +1,9 @@
 const isArray = require('lodash/isArray');
+const parseJSON = require('../lib/json').parse;
 
 const MODE_ANY = 'ANY';
 const MODE_JSON = 'JSON';
 const MODE_SEPARATOR = 'SEPARATOR';
-
-function parseJSON(str) {
-    try {
-        return JSON.parse(str);
-    } catch(e) {
-        return null;
-    }
-}
 
 function ArrayTransformer(options = {}) {
     if( !(this instanceof ArrayTransformer) ) {

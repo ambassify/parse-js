@@ -83,6 +83,7 @@ Parse.register('bool', require('./transformers/bool'));
 Parse.register('number', require('./transformers/number'));
 Parse.register('array', require('./transformers/array'));
 Parse.register('base64', require('./transformers/base64'));
+Parse.register('json', require('./transformers/json'));
 
 Parse.register('spec', require('./transformers/spec'));
 Parse.register('multilingual', require('./transformers/multilingual'));
