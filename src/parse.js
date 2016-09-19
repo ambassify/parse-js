@@ -81,6 +81,7 @@ Parse.register('group', require('./transformers/group'));
 Parse.register('date', require('./transformers/date'));
 Parse.register('bool', require('./transformers/bool'));
 Parse.register('number', require('./transformers/number'));
+Parse.register('string', require('./transformers/string'));
 Parse.register('array', require('./transformers/array'));
 Parse.register('base64', require('./transformers/base64'));
 Parse.register('json', require('./transformers/json'));
