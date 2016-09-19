@@ -77,6 +77,7 @@ Parse.register('match', require('./transformers/match'));
 Parse.register('rename', require('./transformers/rename'));
 Parse.register('map', require('./transformers/map'));
 Parse.register('group', require('./transformers/group'));
+Parse.register('equals', require('./transformers/equals'));
 
 Parse.register('date', require('./transformers/date'));
 Parse.register('bool', require('./transformers/bool'));
