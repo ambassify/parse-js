@@ -5,14 +5,18 @@ function Base64Transformer(options = {}) {
         return this.transform(new Base64Transformer(options));
     }
 
-    this._allowBinary = options._allowBinary || false;
+    this._allowBinary = options.allowBinary || false;
+
+    this._validationOptions = {
+        allowBinary: this._allowBinary
+    };
 }
 
 Base64Transformer.prototype.parse = function(value) {
     if (this._allowBinary)
         return Base64.decode(value);
 
-    if (!Base64.isBase64(value))
+    if (!Base64.isBase64(value, this._validationOptions))
         return value;
 
     return Base64.decode(value);

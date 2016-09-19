@@ -80,5 +80,6 @@ Parse.register('group', require('./transformers/group'));
 
 Parse.register('spec', require('./transformers/spec'));
 Parse.register('date', require('./transformers/date'));
+Parse.register('base64', require('./transformers/base64'));
 Parse.register('multilingual', require('./transformers/multilingual'));
 Parse.register('stripPrefix', require('./transformers/stripPrefix'));
