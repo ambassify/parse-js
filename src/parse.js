@@ -108,6 +108,7 @@ Parse.register('map', require('./transformers/map'));
 Parse.register('group', require('./transformers/group'));
 Parse.register('equals', require('./transformers/equals'));
 
+Parse.register('constant', require('./transformers/constant'));
 Parse.register('date', require('./transformers/date'));
 Parse.register('bool', require('./transformers/bool'));
 Parse.register('number', require('./transformers/number'));
