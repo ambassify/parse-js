@@ -1,6 +1,10 @@
 const _ = require('lodash');
 const CustomTransformer = require('./transformers/custom');
 
+const DIRECTION_ANY = 'ANY';
+const DIRECTION_PARSE = 'PARSE';
+const DIRECTION_REVERSE = 'REVERSE';
+
 function Parse(path, options = {}) {
     if (!(this instanceof Parse))
         return new Parse(path);
@@ -13,6 +17,10 @@ function Parse(path, options = {}) {
 
     return this;
 }
+
+Parse.DIRECTION_ANY = DIRECTION_ANY;
+Parse.DIRECTION_PARSE = DIRECTION_PARSE;
+Parse.DIRECTION_REVERSE = DIRECTION_REVERSE;
 
 module.exports = Parse;
 
@@ -53,7 +61,21 @@ Parse.prototype.transform = function(parse, reverse) {
     return this;
 };
 
+Parse.prototype.isDirectionEnabled = function(direction) {
+    direction = direction.toUpperCase();
+    const configuredDirection = (this.getOption('direction') || DIRECTION_ANY);
+    const enabledDirection = configuredDirection.toUpperCase();
+
+    if (DIRECTION_ANY == enabledDirection)
+        return true;
+
+    return ([DIRECTION_ANY, enabledDirection].indexOf(direction) > -1);
+};
+
 Parse.prototype.parse = function(obj) {
+    if (!this.isDirectionEnabled(DIRECTION_PARSE))
+        return obj;
+
     const len = this._chain.length;
 
     for (let i = 0; i < len; i++)
@@ -63,6 +85,9 @@ Parse.prototype.parse = function(obj) {
 };
 
 Parse.prototype.reverse = function(obj) {
+    if (!this.isDirectionEnabled(DIRECTION_REVERSE))
+        return obj;
+
     let i = this._chain.length;
 
     while( i-- ) {

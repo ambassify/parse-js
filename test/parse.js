@@ -151,6 +151,32 @@ describe('Parse', function() {
 
             assert.deepEqual(called, ['parse-1','parse-2']);
         })
+
+        it('Should return original when parse is disabled', function() {
+            const instance = new Parse('test');
+            instance.setOption('direction', Parse.DIRECTION_REVERSE);
+
+            const obj = {
+                test: 'abc'
+            };
+
+            instance.parse(obj);
+
+            assert.equal(instance.parse(obj), obj);
+        })
+
+        it('Should parse when reverse is disabled', function() {
+            const instance = new Parse('test');
+            instance.setOption('direction', Parse.DIRECTION_PARSE);
+
+            const obj = {
+                test: 'abc'
+            };
+
+            instance.parse(obj);
+
+            assert.equal(instance.parse(obj), 'abc');
+        })
     })
 
     describe('#reverse', function() {
@@ -181,6 +207,28 @@ describe('Parse', function() {
             instance.reverse({});
 
             assert.deepEqual(called, ['reverse-2','reverse-1']);
+        })
+
+        it('Should return original when reverse is disabled', function() {
+            const instance = new Parse('test');
+            instance.setOption('direction', Parse.DIRECTION_PARSE);
+
+            const obj = {
+                test: 'abc'
+            };
+
+            assert.equal(instance.reverse(obj), obj);
+        })
+
+        it('Should reverse when parse is disabled', function() {
+            const instance = new Parse('test');
+            instance.setOption('direction', Parse.DIRECTION_REVERSE);
+
+            const obj = {
+                test: 'abc'
+            };
+
+            assert.deepEqual(instance.reverse('abc'), obj);
         })
     })
 });
