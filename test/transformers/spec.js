@@ -16,16 +16,41 @@ describe('spec', function() {
 
     describe('#constructor', function() {
         it('Should create an instance without new keyword when attached', function() {
-            const spec = { 'some': 'key' };
+            const spec = { 'some': new Parse('value', 'reverse') };
             const obj = {
                 spec: Spec,
                 transform: instance => {
                     assert(instance instanceof Spec);
-                    assert.equal(instance._spec, spec);
+                    assert.deepEqual(instance._spec, spec);
                 }
             };
 
             obj.spec(spec);
+        })
+
+        it('Should convert strings to parse().select() parsers.', function() {
+            const parser = new Parse('parse', 'reverse');
+            const instance = new Spec({
+                key: 'test',
+                some: parser,
+                value: {
+                    a: 'a'
+                }
+            });
+
+            const spec = instance._spec;
+
+            assert.equal(typeof spec.key, 'object');
+            assert.equal(typeof spec.key.parse, 'function');
+            assert.equal(typeof spec.key.reverse, 'function');
+
+            assert.equal(typeof spec.value, 'object');
+            assert.equal(typeof spec.value.a, 'object');
+            assert.equal(typeof spec.value.a.parse, 'function');
+            assert.equal(typeof spec.value.a.reverse, 'function');
+
+            assert.ok(spec.some instanceof Parse);
+            assert.equal(spec.some, parser);
         })
     })
 
