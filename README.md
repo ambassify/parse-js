@@ -17,6 +17,7 @@ Utility library for object structure conversion.
   - [.map()](#map)
   - [.group()](#group)
   - [.equals()](#equals)
+  - [.constant()](#constant)
   - [.date()](#date)
   - [.bool()](#bool)
   - [.number()](#number)
@@ -282,6 +283,29 @@ Example:
 ```javascript
 parse().equals('some-value').parse('some-other-value'); // false
 parse().equals('some-value').parse('some-value'); // true
+```
+
+#### .constant()
+
+```javascript
+parse().constant(constantValue, [options = {}])
+```
+
+Always returns `constantValue` from `parse` and `reverse`.
+The value returned from `reverse` can be different from `constantValue`
+using the `reverseValue` option.
+
+- `constantValue` the value that will be returned by this transformer.
+- `options`
+  - `reverseValue` If `reverse` should return a different value it can be configured using this option.
+
+Example:
+
+```javascript
+parse().constant('a-constant').parse('some-value'); // 'a-constant'
+parse().constant('a-constant', {
+    reverseValue: 'b-constant'
+}).reverse('some-value'); // 'b-constant'
 ```
 
 #### .date()
