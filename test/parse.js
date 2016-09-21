@@ -231,4 +231,28 @@ describe('Parse', function() {
             assert.deepEqual(instance.reverse('abc'), obj);
         })
     })
+
+    describe('#chain', function() {
+        it('Should call the configurator with correct arguments', function() {
+            const instance = new Parse();
+
+            const result = instance.chain(function(p) {
+                assert.equal(p, instance);
+            });
+
+            assert.equal(result, instance);
+        })
+
+        it('Should return the result of configurator', function() {
+            const instance = new Parse();
+
+            const result = instance.chain(function(p) {
+                assert.equal(p, instance);
+
+                return new Parse();
+            });
+
+            assert.notEqual(result, instance);
+        })
+    })
 });
