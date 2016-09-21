@@ -61,6 +61,10 @@ Parse.prototype.transform = function(parse, reverse) {
     return this;
 };
 
+Parse.prototype.chain = function(configurator) {
+    return configurator(this) || this;
+};
+
 Parse.prototype.isDirectionEnabled = function(direction) {
     direction = direction.toUpperCase();
     const configuredDirection = (this.getOption('direction') || DIRECTION_ANY);
