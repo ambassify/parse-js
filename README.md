@@ -2,6 +2,32 @@
 
 Utility library for object structure conversion.
 
+- [Installation](#installation)
+- [Usage](#usage)
+  - [.parse()](#parse)
+  - [.reverse()](#reverse)
+  - [.transform()](#transform)
+  - [.chain()](#chain)
+- [Configuration](#configuration)
+  - [.setOption() / .getOption()](#configuration)
+- [Transformers](#transformers)
+  - [.select()](#select)
+  - [.match()](#match)
+  - [.rename()](#rename)
+  - [.map()](#map)
+  - [.group()](#group)
+  - [.equals()](#equals)
+  - [.date()](#date)
+  - [.bool()](#bool)
+  - [.number()](#number)
+  - [.string()](#string)
+  - [.array()](#array)
+  - [.base64()](#base64)
+  - [.json()](#json)
+  - [.spec()](#spec)
+  - [.multilingual()](#multilingual)
+  - [.stripPrefix()](#stripPrefix)
+
 ## Installation
 
 ```shell
@@ -44,13 +70,121 @@ parse().select('a-key').parse({
 }); // 'a-value'
 ```
 
+#### .parse()
+
+```javascript
+.parse(data)
+```
+
+Whenever `.parse()` is called the configured chain will be executed on the first argument `data`.
+
+If the option `direction` is set to `REVERSE` this method will simply return
+the `data` argument as is without modifying it.
+
+Example:
+```javascript
+parse('test-key').base64().parse({ 'test-key': 'SGVsbG8gV29ybGQ=' });
+// Hello World
+```
+
+#### .reverse()
+
+```javascript
+.reverse(sourceData)
+```
+
+The `.reverse()` method will apply all the `reverse` methods of each transformer
+and attempts to reassembly the original object based on the sourceData.
+
+Example:
+
+```javascript
+parse('test-key').base64().reverse('Hello World');
+// {
+//    'test-key': 'SGVsbG8gV29ybGQ='
+// }
+```
+
+#### .transform()
+
+```javascript
+.transform(parser, [reverser])
+```
+
+This method allows you to chain your own custom `parser` and `reverser`. Both
+the `parser` and `reverser` take one argument as input which is the value to
+be parsed or reversed.
+
+Instead of supplying both methods as separator arguments you can also pass
+the `parser` and `reverser` as an object with both the keys defined.
+
+Example:
+
+```javascript
+// Increment / decrement transformer
+function parser(v) { return v + 1; };
+function reverser(v) { return v - 1; };
+
+parse().transform(parser, reverser).parse(1); // 2
+parse().transform(parser, reverser).reverse(3); // 2
+
+// or alternatively
+const transformer = {
+    parser: parser,
+    reverser: reverser
+}
+
+parse().transform(transformer).parse(1); // 2
+```
+
+#### .chain()
+
+```javascript
+.chain(configurator)
+```
+
+The `.chain()` method allows your to create pre-defined chains which can be
+easily re-used for different parsers.
+
+Example:
+
+This example created a pre-defined one-way base64 parser.
+
+```javascript
+function base64_decode(p) {
+    return p.base64().setOption('direction', 'PARSE');
+}
+
+parse().select('some-key')
+    .chain(base64_decode)
+    .parse({ 'some-key': 'SGVsbG8gV29ybGQ=' }); // Hello World
+```
+
 ### Configuration
 
-Both `parse-js` instances and the `parse` method have methods to set global options `setOption` and `getOption`, these can be used to configure transformers that have global settings. Currently only the [multilingual transformer](#multilingual) has such options.
+Both `parse-js` instances and the `parse` method have methods to set global
+options `setOption` and `getOption`, these can be used to configure
+transformers that have global settings.
+
+```javascript
+Parse.setOption(key, value);
+Parse.getOption(key);
+
+parse().setOption(key, value);
+parse().getOption(key);
+```
+
+Currently only the [multilingual transformer](#multilingual) has such options.
+
+The behaviour of a `parse-js` chain can be altered using the `direction` option
+which configures in which directions the transformers should be applied. When
+set to `PARSE` the `.reverse()` calls will not touch the data supplied. Similarly
+setting `direction` to `REVERSE` will leave the data untouched as `.parse()` is
+called. By default both directions are enabled and the option is set to `ANY`.
 
 ### Transformers
 
-#### select
+#### .select()
 
 ```javascript
 parse().select(key)
@@ -59,7 +193,7 @@ parse().select(key)
 Selects a value from the object provided to the final `.parse()` call, the key supplied here can be any key supported by [lodash get](https://lodash.com/docs/4.16.0#get).
 
 
-#### match
+#### .match()
 
 ```javascript
 parse().match(valueToMatch)
@@ -69,7 +203,7 @@ Only selects those properties from an object that match `valueToMatch`.
 
 - `valueToMatch` can either be a string or a regular expression.
 
-#### rename
+#### .rename()
 
 ```javascript
 parse().rename(nameParser, nameReverser);
@@ -80,7 +214,7 @@ Converts key names using a function for each transition.
 - `nameParser(key, value)` will be called with the original key and value as arguments and should return the new key.
 - `nameReverser(key, value)` will be called with the generated key and the value set on the object and should return the key to which this value should be written.
 
-#### map
+#### .map()
 
 ```javascript
 parse().map(callback)
@@ -101,7 +235,7 @@ parse().map(p => p.number()).parse({
 ```
 
 
-#### group
+#### .group()
 
 ```
 parse().group(regex, key, index)
@@ -130,7 +264,7 @@ parse().group(/(a|b|c)-(name|value)/, 1, 2).parse({
 // }
 ```
 
-#### equals
+#### .equals()
 
 ```javascript
 parse().equals(valueToMatch, [options = {}])
@@ -150,7 +284,7 @@ parse().equals('some-value').parse('some-other-value'); // false
 parse().equals('some-value').parse('some-value'); // true
 ```
 
-#### date
+#### .date()
 
 ```javascript
 parse().date([nowOnInvalid = false])
@@ -160,7 +294,7 @@ Converts the selected value into a javascript date object.
 
 - `nowOnInvalid` If set to true will return the current date-time whenever the value being parsed is not a valid date.
 
-#### bool
+#### .bool()
 
 ```javascript
 parse().bool([options = {}])
@@ -172,7 +306,7 @@ Converts the selected value to a boolean value.
   - `defaultValue` when the value being parsed is `undefined` what should be set as the default value.
   - `reverseTo` configures the datatype to which the boolean values are reversed. Valid options are `BOOLEAN`, `STRING` or `NUMBER`.
 
-#### number
+#### .number()
 
 ```javascript
 parse().number([options = {}])
@@ -186,7 +320,7 @@ Converts the selected value to a number.
   - `base` the base in which the value is expressed. (default: `10`)
 
 
-#### string
+#### .string()
 
 ```javascript
 parse().string([options = {}])
@@ -198,7 +332,7 @@ The selected value will be concatenated with an empty string which will call the
 - `options`
   - `defaultValue` the value to return whenever the selected value is `undefined`.
 
-#### array
+#### .array()
 
 ```javascript
 parse().array([options = {}])
@@ -210,7 +344,7 @@ This transformer will ensure that the selected value will be converted to an arr
   - `mode` the methods that are allowed to be used to convert values to arrays. (default: `ANY`). Valid options are `ANY`, `JSON` and `SEPARATOR`.
   - `separator` the separator to be used when `mode` is set to `ANY` or `SEPARATOR`. (default: `,`)
 
-#### base64
+#### .base64()
 
 ```javascript
 parse().base64([options = {}])
@@ -221,7 +355,7 @@ Handles conversion from and to base64 strings.
 - `options`
   - `allowBinary` when this option is set to `true` the `isPrintable` check will be disabled. Because of this any valid base64 formatted string will be decoded.
 
-#### json
+#### .json()
 
 ```javascript
 parse().json([options = {}])
@@ -232,7 +366,7 @@ Converts the selected value from and to a JSON string.
 - `options`
   - `defaultValue` will be returned whenever no valid JSON string is selected.
 
-#### spec
+#### .spec()
 
 ```javascript
 parse().spec(specification)
@@ -264,7 +398,7 @@ parse().spec({
 // }
 ```
 
-#### multilingual
+#### .multilingual()
 
 ```javascript
 parse().multilingual(languages)
@@ -286,7 +420,7 @@ parse().multilingual(['en', 'nl', 'fr', 'de']).parse({
 // }
 ```
 
-#### stripPrefix
+#### .stripPrefix()
 
 ```javascript
 parse().stripPrefix(prefix)
