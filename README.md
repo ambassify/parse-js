@@ -16,6 +16,7 @@ Utility library for object structure conversion.
   - [.rename()](#rename)
   - [.map()](#map)
   - [.group()](#group)
+  - [.oneOf()](#oneOf)
   - [.equals()](#equals)
   - [.constant()](#constant)
   - [.date()](#date)
@@ -263,6 +264,31 @@ parse().group(/(a|b|c)-(name|value)/, 1, 2).parse({
 //    b: { value: 'b-value', name: 'b-name' },
 //    c: { value: 'c-value', name: 'c-name' }
 // }
+```
+
+#### .oneOf()
+
+```javascript
+parse().oneOf(parsers, [options = {}])
+```
+
+`oneOf` lets you define multiple parsers of which the first in the list with a
+result that is valid according to the `test` option will be used.
+
+- `parsers` an array of `parse-js` parsers to go through.
+- `options`
+  - `test` a method which returns true if the result of a parser is valid. (default: `!isEmpty(v)`)
+  - `reverseAll` controls whether all parsers are called to reverse the value or only the first one. (default: `true`)
+
+Example:
+
+```javascript
+parse().oneOf([
+    parse().select('givenName').string(),
+    parse().select('firstName').string(),
+    parse().select('email')
+]).parse({ 'firstName': 'John', email: 'john.doe@gmail.com' });
+// 'John'
 ```
 
 #### .equals()

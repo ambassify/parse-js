@@ -106,6 +106,7 @@ Parse.register('match', require('./transformers/match'));
 Parse.register('rename', require('./transformers/rename'));
 Parse.register('map', require('./transformers/map'));
 Parse.register('group', require('./transformers/group'));
+Parse.register('oneOf', require('./transformers/oneOf'));
 Parse.register('equals', require('./transformers/equals'));
 
 Parse.register('constant', require('./transformers/constant'));
