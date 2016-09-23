@@ -77,7 +77,7 @@ describe('array', function() {
             });
             const result = instance.parse('1,2,4,5');
 
-            assert.deepEqual(result, null);
+            assert.deepEqual(result, []);
         })
 
         it('Should cast non-string values', function() {

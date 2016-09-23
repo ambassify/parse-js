@@ -388,7 +388,7 @@ The selected value will be concatenated with an empty string which will call the
 parse().array([options = {}])
 ```
 
-This transformer will ensure that the selected value will be converted to an array. Whenever this fails it will set `null`.
+This transformer will ensure that the selected value will be converted to an array. Whenever this fails it will return an empty array.
 
 - `options`
   - `mode` the methods that are allowed to be used to convert values to arrays. (default: `ANY`). Valid options are `ANY`, `JSON` and `SEPARATOR`.
