@@ -19,6 +19,9 @@ ArrayTransformer.JSON = MODE_JSON;
 ArrayTransformer.SEPARATOR = MODE_SEPARATOR;
 
 ArrayTransformer.prototype.parse = function(value) {
+    if (!value && typeof value !== 'number')
+        return [];
+
     if (isArray(value))
         return value;
 

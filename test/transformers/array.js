@@ -82,9 +82,9 @@ describe('array', function() {
 
         it('Should cast non-string values', function() {
             const instance = new ArrayTransformer();
-            const result = instance.parse(123);
 
-            assert.deepEqual(result, [123]);
+            assert.deepEqual(instance.parse(123), [123]);
+            assert.deepEqual(instance.parse(0), [0]);
         })
 
         it('Should ignore arrays', function() {
@@ -92,6 +92,14 @@ describe('array', function() {
             const result = instance.parse([123]);
 
             assert.deepEqual(result, [123]);
+        })
+
+        it('Should ignore empty input', function() {
+            const instance = new ArrayTransformer();
+
+            assert.deepEqual(instance.parse(''), []);
+            assert.deepEqual(instance.parse(null), []);
+            assert.deepEqual(instance.parse(false), []);
         })
     })
 
