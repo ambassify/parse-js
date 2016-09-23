@@ -36,6 +36,9 @@ ArrayTransformer.prototype.parse = function(value) {
     if (this._mode === MODE_SEPARATOR || (this._mode === MODE_ANY && !result))
         result = value.split(this._separator);
 
+    if (!isArray(result))
+        result = [];
+
     return result;
 };
 
