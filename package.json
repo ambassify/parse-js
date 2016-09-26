@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/bubobox/parse-js#readme",
   "dependencies": {
-    "js-base64": "^2.1.9",
+    "compact-base64": "^1.1.0",
     "lodash": "^4.10.0"
   },
   "devDependencies": {

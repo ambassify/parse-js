@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-describe('lib/base64', function() {
+describe('lib/json', function() {
     let JSONLib = null;
 
     before(function() {

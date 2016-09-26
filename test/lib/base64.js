@@ -57,4 +57,10 @@ describe('lib/base64', function() {
             assert(!Base64.isBase64Printable(new Date()), 'No valid strings');
         })
     })
+
+    describe('#encode', function() {
+        it('Should decode UTF-8 correctly', function() {
+            assert(Base64.encode('💩'), '8J+SqQ==');
+        })
+    })
 });
