@@ -1,4 +1,5 @@
 const assert = require('assert');
+const _ = require('lodash');
 
 describe('spec', function() {
     let Spec = null;
@@ -112,6 +113,37 @@ describe('spec', function() {
                 key3: 'value',
                 key4: 'test'
             });
+        })
+        it('Should provide correct value to reverser', function() {
+            const obj = {
+                key1: 'test',
+                key2: 'test',
+                some: {
+                    data: 'a',
+                    value: 'c'
+                }
+            };
+
+            const ValidateParse = (key) => {
+                const p = new Parse(null, null);
+                p.reverse = function(v) {
+                    const result = _.get(obj, key);
+                    assert.deepEqual(v, result);
+                    return result;
+                }
+                return p;
+            };
+
+            const spec = {
+                key1: ValidateParse('key1'),
+                key2: ValidateParse('key2'),
+                some: {
+                    data: ValidateParse('some.data'),
+                    value: ValidateParse('some.value')
+                }
+            };
+            const instance = new Spec(spec);
+            const result = instance.reverse(obj);
         })
     })
 });
