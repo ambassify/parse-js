@@ -40,11 +40,13 @@ SpecTransformer.prototype.reverse = function(source) {
 };
 
 SpecTransformer.prototype._fromSpec = function(spec, data) {
-    return _transform(spec, (r, v) => {
+    return _transform(spec, (r, v, k) => {
+        const value = data && data[k];
+
         if (_isPlainObject(v))
-            _merge(r, this._fromSpec(v, data));
+            _merge(r, this._fromSpec(v, value));
         else
-            _merge(r, v.reverse(data));
+            _merge(r, v.reverse(value));
     }, {});
 };
 
