@@ -16,7 +16,7 @@ Utility library for object structure conversion.
   - [.rename()](#rename)
   - [.map()](#map)
   - [.group()](#group)
-  - [.oneOf()](#oneOf)
+  - [.oneOf()](#oneof)
   - [.equals()](#equals)
   - [.constant()](#constant)
   - [.date()](#date)
@@ -28,7 +28,7 @@ Utility library for object structure conversion.
   - [.json()](#json)
   - [.spec()](#spec)
   - [.multilingual()](#multilingual)
-  - [.stripPrefix()](#stripPrefix)
+  - [.stripPrefix()](#stripprefix)
 
 ## Installation
 
