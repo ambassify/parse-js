@@ -1,7 +1,16 @@
 {
   "name": "parse-js",
   "version": "0.4.14",
-  "description": "",
+  "description": "Utility library for object structure conversion.",
+  "keywords": [
+    "object",
+    "conversion",
+    "object conversion",
+    "format",
+    "util",
+    "casting",
+    "type cast"
+  ],
   "main": "dist/parse.js",
   "engines": {
     "node": "6.x.x"
