@@ -64,6 +64,22 @@ describe('string', function() {
             assert.equal(result, 'hello world');
         })
 
+        it('Should ignore undefined', function() {
+            const instance = new StringTransformer();
+            const result = instance.reverse(undefined);
+
+            assert.equal(result, undefined);
+        })
+
+        it('Should return default if not set', function() {
+            const instance = new StringTransformer({
+                reverseDefaultValue: 'test-1'
+            });
+            const result = instance.reverse(undefined);
+
+            assert.equal(result, 'test-1');
+        })
+
         it('Should cast anything else to a string', function() {
             const instance = new StringTransformer();
             const result = instance.reverse({});

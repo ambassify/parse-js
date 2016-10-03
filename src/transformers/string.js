@@ -4,6 +4,7 @@ function StringTransformer(options = {}) {
     }
 
     this._defaultValue = options.defaultValue;
+    this._reverseDefaultValue = options.reverseDefaultValue;
 }
 
 StringTransformer.prototype.parse = function(value) {
@@ -17,6 +18,9 @@ StringTransformer.prototype.parse = function(value) {
 };
 
 StringTransformer.prototype.reverse = function(value) {
+    if (typeof value === 'undefined')
+        return this._reverseDefaultValue;
+
     if (typeof value === 'string')
         return value;
 
