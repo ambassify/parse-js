@@ -12,13 +12,13 @@ function MapTransformer(callback) {
 }
 
 MapTransformer.prototype._createParse = (function() {
-    const Parse = require('../parse');
+    const parse = require('../parse');
 
     return function(key) {
         const cache = this._cache;
 
         if (!(key in cache)) {
-            cache[key] = this._callback(new Parse(key));
+            cache[key] = this._callback(parse().select(key));
         }
 
         return cache[key];
