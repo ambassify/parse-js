@@ -38,7 +38,7 @@ MapTransformer.prototype.reverse = function(source) {
     return _transform(source, (result, value, key) => {
         const reverse = this._createParse(key).reverse(source[key]);
         if (isArray)
-            result[key] = reverse;
+            result[key] = reverse[key];
         else
             _merge(result, reverse);
     }, accumulator);
