@@ -119,8 +119,12 @@ describe('map', function() {
         it('Should detect object or array', function() {
             const callback = function(p) {
                 assert(p instanceof Parse);
+                assert(p._chain[0]);
+                assert.notEqual(typeof p._chain[0]._path, 'undefined');
+
+                const id = p._chain[0]._path;
                 return {
-                    reverse: (v) => '_' + v
+                    reverse: (v) => ({ [id]: '_' + v })
                 };
             }
             const instance = new Map(callback);
