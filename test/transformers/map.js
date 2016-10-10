@@ -65,6 +65,25 @@ describe('map', function() {
             });
         })
 
+        it('Should parse an array correctly', function() {
+            const callback = function(p) {
+                assert(p instanceof Parse);
+                assert(p._chain[0]);
+                assert.notEqual(typeof p._chain[0]._path, 'undefined');
+
+                return {
+                    parse: (v) => '_' + v[p._chain[0]._path]
+                };
+            }
+            const instance = new Map(callback);
+            const result = instance.parse([ 'test', 'abcd' ]);
+
+            assert.deepEqual(result, [
+                '_test',
+                '_abcd'
+            ]);
+        })
+
         it('Should detect object or array', function() {
             const callback = function(p) {
                 assert(p instanceof Parse);
