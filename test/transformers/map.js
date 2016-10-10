@@ -1,4 +1,5 @@
 const assert = require('assert');
+const isArray = require('lodash/isArray');
 
 describe('map', function() {
     let Map = null;
@@ -63,6 +64,23 @@ describe('map', function() {
                 test2: 'testabcd'
             });
         })
+
+        it('Should detect object or array', function() {
+            const callback = function(p) {
+                assert(p instanceof Parse);
+                return {
+                    parse: () => 'testabcd'
+                };
+            }
+            const instance = new Map(callback);
+            const result = instance.parse([ 'test', 'abcde' ]);
+
+            assert.ok(isArray(result));
+            assert.deepEqual(result, [
+                'testabcd',
+                'testabcd'
+            ]);
+        })
     })
 
     describe('#reverse', function() {
@@ -77,6 +95,20 @@ describe('map', function() {
             const result = instance.reverse({ test1: 'test', test2: 'abcd' });
 
             assert.deepEqual(result, { test1: 'abcd' });
+        })
+
+        it('Should detect object or array', function() {
+            const callback = function(p) {
+                assert(p instanceof Parse);
+                return {
+                    reverse: (v) => '_' + v
+                };
+            }
+            const instance = new Map(callback);
+            const result = instance.reverse([ 'test', 'abcd' ]);
+
+            assert.ok(isArray(result));
+            assert.deepEqual(result, [ '_test', '_abcd' ]);
         })
     })
 });
