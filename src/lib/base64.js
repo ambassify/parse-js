@@ -24,9 +24,14 @@ function isBase64Printable(v) {
     if (typeof v !== 'string')
         return false;
 
-    const value = Base64.decode(v);
+    try {
+        const value = Base64.decode(v);
+        return !_rNonPrintable.test(value);
+    } catch (err) {
+        // compact-base64 can't handle some Base64 binary strings correctly.
+    }
 
-    return !_rNonPrintable.test(value);
+    return false;
 }
 
 function isBase64(v, { allowBinary = false } = {}) {

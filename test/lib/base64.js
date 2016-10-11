@@ -50,6 +50,7 @@ describe('lib/base64', function() {
             assert(!Base64.isBase64Printable('abcd'));
             assert(Base64.isBase64Printable('YQ==')); // a
             assert(Base64.isBase64Printable('w6o=')); // ê
+            assert(!Base64.isBase64Printable('gergergerger')); // Passes all format based Base64 checks but is not
         })
 
         it('Should check that value is string', function() {
