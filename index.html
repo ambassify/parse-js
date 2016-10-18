@@ -1,0 +1,621 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Parse-js by bubobox</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Parse-js</h1>
+        <p class="header">Utility library for object structure conversion.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/bubobox/parse-js/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/bubobox/parse-js/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/bubobox/parse-js">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/bubobox">bubobox</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a id="parse-js-" class="anchor" href="#parse-js-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>parse-js <a href="https://circleci.com/gh/bubobox/parse-js"><img src="https://circleci.com/gh/bubobox/parse-js.svg?style=svg" alt="CircleCI"></a>
+</h1>
+
+<p>Utility library for object structure conversion.</p>
+
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li>
+<a href="#usage">Usage</a>
+
+<ul>
+<li><a href="#parse">.parse()</a></li>
+<li><a href="#reverse">.reverse()</a></li>
+<li><a href="#transform">.transform()</a></li>
+<li><a href="#chain">.chain()</a></li>
+</ul>
+</li>
+<li>
+<a href="#configuration">Configuration</a>
+
+<ul>
+<li><a href="#configuration">.setOption() / .getOption()</a></li>
+</ul>
+</li>
+<li>
+<a href="#transformers">Transformers</a>
+
+<ul>
+<li><a href="#select">.select()</a></li>
+<li><a href="#match">.match()</a></li>
+<li><a href="#rename">.rename()</a></li>
+<li><a href="#map">.map()</a></li>
+<li><a href="#group">.group()</a></li>
+<li><a href="#oneof">.oneOf()</a></li>
+<li><a href="#equals">.equals()</a></li>
+<li><a href="#constant">.constant()</a></li>
+<li><a href="#date">.date()</a></li>
+<li><a href="#bool">.bool()</a></li>
+<li><a href="#number">.number()</a></li>
+<li><a href="#string">.string()</a></li>
+<li><a href="#array">.array()</a></li>
+<li><a href="#base64">.base64()</a></li>
+<li><a href="#json">.json()</a></li>
+<li><a href="#spec">.spec()</a></li>
+<li><a href="#multilingual">.multilingual()</a></li>
+<li><a href="#stripprefix">.stripPrefix()</a></li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<div class="highlight highlight-source-shell"><pre>npm install --save parse-js</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>A parser always starts with a call to <code>parse()</code>, next you can chain any transformer of of that as is required.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">parse</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>parse-js<span class="pl-pds">'</span></span>);
+
+<span class="pl-en">parse</span>().<span class="pl-en">bool</span>().<span class="pl-c1">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>true<span class="pl-pds">'</span></span>); <span class="pl-c">// true</span>
+<span class="pl-en">parse</span>().<span class="pl-c1">match</span>(<span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>).<span class="pl-c1">parse</span>({
+    atest<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test123<span class="pl-pds">'</span></span>,
+    btest<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test456<span class="pl-pds">'</span></span>
+}); <span class="pl-c">// { atest: 'test123' }</span></pre></div>
+
+<p>Parse also accepts one argument which can be the key to extract from the object to parse. Passing this argument will automatically chain the <code>select</code> transformer.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">parse</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>parse-js<span class="pl-pds">'</span></span>);
+
+<span class="pl-en">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>a-key<span class="pl-pds">'</span></span>).<span class="pl-c1">parse</span>({
+    <span class="pl-s"><span class="pl-pds">'</span>a-key<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>a-value<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>some-key<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>some-value<span class="pl-pds">'</span></span>
+}); <span class="pl-c">// 'a-value'</span></pre></div>
+
+<p>This is equivalent to:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">parse</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>parse-js<span class="pl-pds">'</span></span>);
+
+<span class="pl-en">parse</span>().<span class="pl-c1">select</span>(<span class="pl-s"><span class="pl-pds">'</span>a-key<span class="pl-pds">'</span></span>).<span class="pl-c1">parse</span>({
+    <span class="pl-s"><span class="pl-pds">'</span>a-key<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>a-value<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>some-key<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>some-value<span class="pl-pds">'</span></span>
+}); <span class="pl-c">// 'a-value'</span></pre></div>
+
+<h4>
+<a id="parse" class="anchor" href="#parse" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.parse()</h4>
+
+<div class="highlight highlight-source-js"><pre>.<span class="pl-c1">parse</span>(data)</pre></div>
+
+<p>Whenever <code>.parse()</code> is called the configured chain will be executed on the first argument <code>data</code>.</p>
+
+<p>If the option <code>direction</code> is set to <code>REVERSE</code> this method will simply return
+the <code>data</code> argument as is without modifying it.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>test-key<span class="pl-pds">'</span></span>).<span class="pl-en">base64</span>().<span class="pl-c1">parse</span>({ <span class="pl-s"><span class="pl-pds">'</span>test-key<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>SGVsbG8gV29ybGQ=<span class="pl-pds">'</span></span> });
+<span class="pl-c">// Hello World</span></pre></div>
+
+<h4>
+<a id="reverse" class="anchor" href="#reverse" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.reverse()</h4>
+
+<div class="highlight highlight-source-js"><pre>.<span class="pl-c1">reverse</span>(sourceData)</pre></div>
+
+<p>The <code>.reverse()</code> method will apply all the <code>reverse</code> methods of each transformer
+and attempts to reassembly the original object based on the sourceData.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>test-key<span class="pl-pds">'</span></span>).<span class="pl-en">base64</span>().<span class="pl-c1">reverse</span>(<span class="pl-s"><span class="pl-pds">'</span>Hello World<span class="pl-pds">'</span></span>);
+<span class="pl-c">// {</span>
+<span class="pl-c">//    'test-key': 'SGVsbG8gV29ybGQ='</span>
+<span class="pl-c">// }</span></pre></div>
+
+<h4>
+<a id="transform" class="anchor" href="#transform" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.transform()</h4>
+
+<div class="highlight highlight-source-js"><pre>.<span class="pl-en">transform</span>(parser, [reverser])</pre></div>
+
+<p>This method allows you to chain your own custom <code>parser</code> and <code>reverser</code>. Both
+the <code>parser</code> and <code>reverser</code> take one argument as input which is the value to
+be parsed or reversed.</p>
+
+<p>Instead of supplying both methods as separator arguments you can also pass
+the <code>parser</code> and <code>reverser</code> as an object with both the keys defined.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Increment / decrement transformer</span>
+<span class="pl-k">function</span> <span class="pl-en">parser</span>(<span class="pl-smi">v</span>) { <span class="pl-k">return</span> v <span class="pl-k">+</span> <span class="pl-c1">1</span>; };
+<span class="pl-k">function</span> <span class="pl-en">reverser</span>(<span class="pl-smi">v</span>) { <span class="pl-k">return</span> v <span class="pl-k">-</span> <span class="pl-c1">1</span>; };
+
+<span class="pl-en">parse</span>().<span class="pl-en">transform</span>(parser, reverser).<span class="pl-c1">parse</span>(<span class="pl-c1">1</span>); <span class="pl-c">// 2</span>
+<span class="pl-en">parse</span>().<span class="pl-en">transform</span>(parser, reverser).<span class="pl-c1">reverse</span>(<span class="pl-c1">3</span>); <span class="pl-c">// 2</span>
+
+<span class="pl-c">// or alternatively</span>
+<span class="pl-k">const</span> <span class="pl-c1">transformer</span> <span class="pl-k">=</span> {
+    parser<span class="pl-k">:</span> parser,
+    reverser<span class="pl-k">:</span> reverser
+}
+
+<span class="pl-en">parse</span>().<span class="pl-en">transform</span>(transformer).<span class="pl-c1">parse</span>(<span class="pl-c1">1</span>); <span class="pl-c">// 2</span></pre></div>
+
+<h4>
+<a id="chain" class="anchor" href="#chain" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.chain()</h4>
+
+<div class="highlight highlight-source-js"><pre>.<span class="pl-en">chain</span>(configurator)</pre></div>
+
+<p>The <code>.chain()</code> method allows your to create pre-defined chains which can be
+easily re-used for different parsers.</p>
+
+<p>Example:</p>
+
+<p>This example created a pre-defined one-way base64 parser.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">base64_decode</span>(<span class="pl-smi">p</span>) {
+    <span class="pl-k">return</span> <span class="pl-smi">p</span>.<span class="pl-en">base64</span>().<span class="pl-en">setOption</span>(<span class="pl-s"><span class="pl-pds">'</span>direction<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>PARSE<span class="pl-pds">'</span></span>);
+}
+
+<span class="pl-en">parse</span>().<span class="pl-c1">select</span>(<span class="pl-s"><span class="pl-pds">'</span>some-key<span class="pl-pds">'</span></span>)
+    .<span class="pl-en">chain</span>(base64_decode)
+    .<span class="pl-c1">parse</span>({ <span class="pl-s"><span class="pl-pds">'</span>some-key<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>SGVsbG8gV29ybGQ=<span class="pl-pds">'</span></span> }); <span class="pl-c">// Hello World</span></pre></div>
+
+<h3>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h3>
+
+<p>Both <code>parse-js</code> instances and the <code>parse</code> method have methods to set global
+options <code>setOption</code> and <code>getOption</code>, these can be used to configure
+transformers that have global settings.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">Parse</span>.<span class="pl-en">setOption</span>(key, value);
+<span class="pl-smi">Parse</span>.<span class="pl-en">getOption</span>(key);
+
+<span class="pl-en">parse</span>().<span class="pl-en">setOption</span>(key, value);
+<span class="pl-en">parse</span>().<span class="pl-en">getOption</span>(key);</pre></div>
+
+<p>Currently only the <a href="#multilingual">multilingual transformer</a> has such options.</p>
+
+<p>The behaviour of a <code>parse-js</code> chain can be altered using the <code>direction</code> option
+which configures in which directions the transformers should be applied. When
+set to <code>PARSE</code> the <code>.reverse()</code> calls will not touch the data supplied. Similarly
+setting <code>direction</code> to <code>REVERSE</code> will leave the data untouched as <code>.parse()</code> is
+called. By default both directions are enabled and the option is set to <code>ANY</code>.</p>
+
+<h3>
+<a id="transformers" class="anchor" href="#transformers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Transformers</h3>
+
+<h4>
+<a id="select" class="anchor" href="#select" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.select()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-c1">select</span>(key)</pre></div>
+
+<p>Selects a value from the object provided to the final <code>.parse()</code> call, the key supplied here can be any key supported by <a href="https://lodash.com/docs/4.16.0#get">lodash get</a>.</p>
+
+<h4>
+<a id="match" class="anchor" href="#match" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.match()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-c1">match</span>(valueToMatch)</pre></div>
+
+<p>Only selects those properties from an object that match <code>valueToMatch</code>.</p>
+
+<ul>
+<li>
+<code>valueToMatch</code> can either be a string or a regular expression.</li>
+</ul>
+
+<h4>
+<a id="rename" class="anchor" href="#rename" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.rename()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">rename</span>(nameParser, nameReverser);</pre></div>
+
+<p>Converts key names using a function for each transition.</p>
+
+<ul>
+<li>
+<code>nameParser(key, value)</code> will be called with the original key and value as arguments and should return the new key.</li>
+<li>
+<code>nameReverser(key, value)</code> will be called with the generated key and the value set on the object and should return the key to which this value should be written.</li>
+</ul>
+
+<h4>
+<a id="map" class="anchor" href="#map" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.map()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">map</span>(callback)</pre></div>
+
+<p>Map will walk each key of a select value and call the <code>callback</code> function with a new instance of <code>parse-js</code> specific to that key.</p>
+
+<ul>
+<li>
+<code>callback(parse)</code> will be called with a new instance of parse for each key, which you can then customize by adding new chained transformers.</li>
+</ul>
+
+<p>Example</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">map</span>(<span class="pl-smi">p</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">p</span>.<span class="pl-en">number</span>()).<span class="pl-c1">parse</span>({
+    a<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>123<span class="pl-pds">'</span></span>,
+    b<span class="pl-k">:</span> <span class="pl-c1">0</span>,
+    c<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>12.222,3<span class="pl-pds">'</span></span>
+}); <span class="pl-c">// { a: 123, b: 0, c: 12222.3 }</span></pre></div>
+
+<h4>
+<a id="group" class="anchor" href="#group" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.group()</h4>
+
+<pre><code>parse().group(regex, key, index)
+</code></pre>
+
+<p><code>group</code> will walk over each key of an object matching it against regular expression <code>regex</code>. If it matches the value will be stored at <code>result[match[key]][match[index]]</code>, where <code>match</code> is the set of matching groups from <code>regex</code>. If a key does not match the <code>regex</code> it will be re-attached to the object untouched.</p>
+
+<ul>
+<li>The <code>key</code> argument should be set to the index of the matching group that selects the new key to use.</li>
+<li>The <code>index</code> arguments should be set to the index of the matching group that selects the sub-key under which to store the value.</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">group</span>(<span class="pl-sr"><span class="pl-pds">/</span>(a<span class="pl-k">|</span>b<span class="pl-k">|</span>c)-(name<span class="pl-k">|</span>value)<span class="pl-pds">/</span></span>, <span class="pl-c1">1</span>, <span class="pl-c1">2</span>).<span class="pl-c1">parse</span>({
+    <span class="pl-s"><span class="pl-pds">'</span>a-name<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>a-name<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>b-name<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>b-name<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>c-value<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c-value<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>b-value<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>b-value<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>c-name<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c-name<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>a-value<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>a-value<span class="pl-pds">'</span></span>
+});
+<span class="pl-c">// {</span>
+<span class="pl-c">//    a: { value: 'a-value', name: 'a-name' },</span>
+<span class="pl-c">//    b: { value: 'b-value', name: 'b-name' },</span>
+<span class="pl-c">//    c: { value: 'c-value', name: 'c-name' }</span>
+<span class="pl-c">// }</span></pre></div>
+
+<h4>
+<a id="oneof" class="anchor" href="#oneof" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.oneOf()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">oneOf</span>(parsers, [options <span class="pl-k">=</span> {}])</pre></div>
+
+<p><code>oneOf</code> lets you define multiple parsers of which the first in the list with a
+result that is valid according to the <code>test</code> option will be used.</p>
+
+<ul>
+<li>
+<code>parsers</code> an array of <code>parse-js</code> parsers to go through.</li>
+<li>
+<code>options</code>
+
+<ul>
+<li>
+<code>test</code> a method which returns true if the result of a parser is valid. (default: <code>!isEmpty(v)</code>)</li>
+<li>
+<code>reverseAll</code> controls whether all parsers are called to reverse the value or only the first one. (default: <code>true</code>)</li>
+</ul>
+</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">oneOf</span>([
+    <span class="pl-en">parse</span>().<span class="pl-c1">select</span>(<span class="pl-s"><span class="pl-pds">'</span>givenName<span class="pl-pds">'</span></span>).<span class="pl-en">string</span>(),
+    <span class="pl-en">parse</span>().<span class="pl-c1">select</span>(<span class="pl-s"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span>).<span class="pl-en">string</span>(),
+    <span class="pl-en">parse</span>().<span class="pl-c1">select</span>(<span class="pl-s"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span>)
+]).<span class="pl-c1">parse</span>({ <span class="pl-s"><span class="pl-pds">'</span>firstName<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>John<span class="pl-pds">'</span></span>, email<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>john.doe@gmail.com<span class="pl-pds">'</span></span> });
+<span class="pl-c">// 'John'</span></pre></div>
+
+<h4>
+<a id="equals" class="anchor" href="#equals" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.equals()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">equals</span>(valueToMatch, [options <span class="pl-k">=</span> {}])</pre></div>
+
+<p>If the selected value matched <code>valueToMatch</code> it will return <code>true</code>, if it does not it will return <code>false</code>.</p>
+
+<ul>
+<li>
+<code>valueToMatch</code> can be either a regular expressions, function or simply any value.</li>
+<li>
+<code>options</code> can be used to change behaviour of the transformer
+
+<ul>
+<li>
+<code>strict</code> will ensure <code>===</code> comparison is used when comparing. (default: <code>false</code>).</li>
+<li>
+<code>reverse</code> can be set to the value that should be set when reversing a <code>true</code> value. (default: <code>valueToMatch</code>)</li>
+</ul>
+</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">equals</span>(<span class="pl-s"><span class="pl-pds">'</span>some-value<span class="pl-pds">'</span></span>).<span class="pl-c1">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>some-other-value<span class="pl-pds">'</span></span>); <span class="pl-c">// false</span>
+<span class="pl-en">parse</span>().<span class="pl-en">equals</span>(<span class="pl-s"><span class="pl-pds">'</span>some-value<span class="pl-pds">'</span></span>).<span class="pl-c1">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>some-value<span class="pl-pds">'</span></span>); <span class="pl-c">// true</span></pre></div>
+
+<h4>
+<a id="constant" class="anchor" href="#constant" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.constant()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">constant</span>(constantValue, [options <span class="pl-k">=</span> {}])</pre></div>
+
+<p>Always returns <code>constantValue</code> from <code>parse</code> and <code>reverse</code>.
+The value returned from <code>reverse</code> can be different from <code>constantValue</code>
+using the <code>reverseValue</code> option.</p>
+
+<ul>
+<li>
+<code>constantValue</code> the value that will be returned by this transformer.</li>
+<li>
+<code>options</code>
+
+<ul>
+<li>
+<code>reverseValue</code> If <code>reverse</code> should return a different value it can be configured using this option.</li>
+</ul>
+</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">constant</span>(<span class="pl-s"><span class="pl-pds">'</span>a-constant<span class="pl-pds">'</span></span>).<span class="pl-c1">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>some-value<span class="pl-pds">'</span></span>); <span class="pl-c">// 'a-constant'</span>
+<span class="pl-en">parse</span>().<span class="pl-en">constant</span>(<span class="pl-s"><span class="pl-pds">'</span>a-constant<span class="pl-pds">'</span></span>, {
+    reverseValue<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>b-constant<span class="pl-pds">'</span></span>
+}).<span class="pl-c1">reverse</span>(<span class="pl-s"><span class="pl-pds">'</span>some-value<span class="pl-pds">'</span></span>); <span class="pl-c">// 'b-constant'</span></pre></div>
+
+<h4>
+<a id="date" class="anchor" href="#date" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.date()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">date</span>([nowOnInvalid <span class="pl-k">=</span> <span class="pl-c1">false</span>])</pre></div>
+
+<p>Converts the selected value into a javascript date object.</p>
+
+<ul>
+<li>
+<code>nowOnInvalid</code> If set to true will return the current date-time whenever the value being parsed is not a valid date.</li>
+</ul>
+
+<h4>
+<a id="bool" class="anchor" href="#bool" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.bool()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">bool</span>([options <span class="pl-k">=</span> {}])</pre></div>
+
+<p>Converts the selected value to a boolean value.</p>
+
+<ul>
+<li>
+<code>options</code>
+
+<ul>
+<li>
+<code>defaultValue</code> when the value being parsed is <code>undefined</code> what should be set as the default value.</li>
+<li>
+<code>reverseTo</code> configures the datatype to which the boolean values are reversed. Valid options are <code>BOOLEAN</code>, <code>STRING</code> or <code>NUMBER</code>.</li>
+</ul>
+</li>
+</ul>
+
+<h4>
+<a id="number" class="anchor" href="#number" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.number()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">number</span>([options <span class="pl-k">=</span> {}])</pre></div>
+
+<p>Converts the selected value to a number.</p>
+
+<ul>
+<li>
+<code>options</code>
+
+<ul>
+<li>
+<code>NaNValue</code> the value that will be set when the selected value can not be converted. (default: <code>0</code>)</li>
+<li>
+<code>normalizer</code> a function used to normalize strings to number-like strings. The default handles removing multiple comma or dots in the string.</li>
+<li>
+<code>base</code> the base in which the value is expressed. (default: <code>10</code>)</li>
+</ul>
+</li>
+</ul>
+
+<h4>
+<a id="string" class="anchor" href="#string" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.string()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">string</span>([options <span class="pl-k">=</span> {}])</pre></div>
+
+<p>Converts the selected value to a string.
+The selected value will be concatenated with an empty string which will call the <code>toString()</code> method of most values.</p>
+
+<ul>
+<li>
+<code>options</code>
+
+<ul>
+<li>
+<code>defaultValue</code> the value to return whenever the selected value is <code>undefined</code>.</li>
+</ul>
+</li>
+</ul>
+
+<h4>
+<a id="array" class="anchor" href="#array" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.array()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">array</span>([options <span class="pl-k">=</span> {}])</pre></div>
+
+<p>This transformer will ensure that the selected value will be converted to an array. Whenever this fails it will return an empty array.</p>
+
+<ul>
+<li>
+<code>options</code>
+
+<ul>
+<li>
+<code>mode</code> the methods that are allowed to be used to convert values to arrays. (default: <code>ANY</code>). Valid options are <code>ANY</code>, <code>JSON</code> and <code>SEPARATOR</code>.</li>
+<li>
+<code>separator</code> the separator to be used when <code>mode</code> is set to <code>ANY</code> or <code>SEPARATOR</code>. (default: <code>,</code>)</li>
+</ul>
+</li>
+</ul>
+
+<h4>
+<a id="base64" class="anchor" href="#base64" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.base64()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">base64</span>([options <span class="pl-k">=</span> {}])</pre></div>
+
+<p>Handles conversion from and to base64 strings.</p>
+
+<ul>
+<li>
+<code>options</code>
+
+<ul>
+<li>
+<code>allowBinary</code> when this option is set to <code>true</code> the <code>isPrintable</code> check will be disabled. Because of this any valid base64 formatted string will be decoded.</li>
+</ul>
+</li>
+</ul>
+
+<h4>
+<a id="json" class="anchor" href="#json" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.json()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">json</span>([options <span class="pl-k">=</span> {}])</pre></div>
+
+<p>Converts the selected value from and to a JSON string.</p>
+
+<ul>
+<li>
+<code>options</code>
+
+<ul>
+<li>
+<code>defaultValue</code> will be returned whenever no valid JSON string is selected.</li>
+</ul>
+</li>
+</ul>
+
+<h4>
+<a id="spec" class="anchor" href="#spec" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.spec()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">spec</span>(specification)</pre></div>
+
+<p>A specification is an object that has the desired properties of the target format, where the values are the parsers that generate the value to store with this property. This allows a source format to be converted to the desired format using <code>parse-js</code>.</p>
+
+<ul>
+<li>
+<code>specification</code> an object containing <code>key</code> - <code>parser</code> combinations.</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">spec</span>({
+    one<span class="pl-k">:</span> <span class="pl-en">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>two<span class="pl-pds">'</span></span>),
+    two<span class="pl-k">:</span> <span class="pl-en">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>one<span class="pl-pds">'</span></span>).<span class="pl-en">number</span>(),
+    three<span class="pl-k">:</span> <span class="pl-en">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>four<span class="pl-pds">'</span></span>).<span class="pl-en">array</span>(),
+    nested<span class="pl-k">:</span> {
+        one<span class="pl-k">:</span> <span class="pl-en">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>one<span class="pl-pds">'</span></span>),
+        two<span class="pl-k">:</span> <span class="pl-en">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>four<span class="pl-pds">'</span></span>).<span class="pl-en">json</span>()
+    }
+}).<span class="pl-c1">parse</span>({ one<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>15.333.23<span class="pl-pds">'</span></span>, two<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>two<span class="pl-pds">'</span></span>, four<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>[1,2,3,4,5]<span class="pl-pds">'</span></span> });
+<span class="pl-c">// {</span>
+<span class="pl-c">//     one: 'two',</span>
+<span class="pl-c">//     two: 15333.23,</span>
+<span class="pl-c">//     three: [1, 2, 3, 4, 5],</span>
+<span class="pl-c">//     nested: {</span>
+<span class="pl-c">//         one: '15.333.23',</span>
+<span class="pl-c">//         two: [1, 2, 3, 4, 5]</span>
+<span class="pl-c">//     }</span>
+<span class="pl-c">// }</span></pre></div>
+
+<h4>
+<a id="multilingual" class="anchor" href="#multilingual" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.multilingual()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">multilingual</span>(languages)</pre></div>
+
+<p>Will group keys with language suffixes as defined by <code>group()</code></p>
+
+<ul>
+<li>
+<code>languages</code> configures the languages that are supported. This option can also be set using the <code>setOption()</code> method of the parse-js instance or <code>Parse.setOption()</code>. When using <code>setOption()</code> this option is configured using the key <code>multilingual.languages</code>.</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">multilingual</span>([<span class="pl-s"><span class="pl-pds">'</span>en<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>nl<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>fr<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>]).<span class="pl-c1">parse</span>({
+    keyEn<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>english text<span class="pl-pds">'</span></span>,
+    keyNl<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>dutch text<span class="pl-pds">'</span></span>
+});
+<span class="pl-c">// {</span>
+<span class="pl-c">//     key: { en: 'english text', nl: 'dutch text' }</span>
+<span class="pl-c">// }</span></pre></div>
+
+<h4>
+<a id="stripprefix" class="anchor" href="#stripprefix" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.stripPrefix()</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">stripPrefix</span>(prefix)</pre></div>
+
+<p>Selects keys that start with <code>prefix</code> and removes that <code>prefix</code> from the target object.</p>
+
+<ul>
+<li>
+<code>prefix</code> the prefix that keys should contain and that will be removed.</li>
+</ul>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">parse</span>().<span class="pl-en">stripPrefix</span>(<span class="pl-s"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span>).<span class="pl-c1">parse</span>({
+    atest<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value-1<span class="pl-pds">'</span></span>,
+    test1<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value-2<span class="pl-pds">'</span></span>,
+    test2<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value-3<span class="pl-pds">'</span></span>
+});
+<span class="pl-c">// { 1: 'value-2', 2: 'value-3' }</span></pre></div>
+
+<h2>
+<a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contribute</h2>
+
+<p>We really appreciate any contribution you would like to make, so don't
+hesitate to report issues or submit pull requests.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>This project is released under a MIT license.</p>
+
+<h2>
+<a id="about-us" class="anchor" href="#about-us" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About us</h2>
+
+<p>If you would like to know more about us, be sure to have a look at <a href="https://www.bubobox.com">our website</a>, or our Twitter accounts <a href="https://twitter.com/BuboBox">BuboBox</a>, <a href="https://twitter.com/Sitebase">Sitebase</a>, <a href="https://twitter.com/JorgenEvens">JorgenEvens</a></p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
