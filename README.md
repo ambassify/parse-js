@@ -1,4 +1,5 @@
-# parse-js [![CircleCI](https://circleci.com/gh/bubobox/parse-js.svg?style=svg)](https://circleci.com/gh/bubobox/parse-js)
+# parse-js
+[![CircleCI](https://circleci.com/gh/bubobox/parse-js.svg?style=svg)](https://circleci.com/gh/bubobox/parse-js)
 
 Utility library for object structure conversion.
 
