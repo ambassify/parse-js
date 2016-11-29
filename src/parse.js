@@ -1,4 +1,6 @@
-const _ = require('lodash');
+const _set = require('lodash/set');
+const _get = require('lodash/get');
+const isString = require('lodash/isString');
 const CustomTransformer = require('./transformers/custom');
 
 const DIRECTION_ANY = 'ANY';
@@ -12,7 +14,7 @@ function Parse(path, options = {}) {
     this._chain = [];
     this._options = options;
 
-    if (_.isString(path))
+    if (isString(path))
         return this.select(path);
 
     return this;
@@ -34,21 +36,21 @@ Parse.register = function(name, handler, { overwrite = false } = {}) {
 };
 
 Parse.setOption = function(key, value) {
-    _.set(Parse.options, key, value);
+    _set(Parse.options, key, value);
     return Parse;
 };
 
 Parse.getOption = function(key) {
-    return _.get(Parse.options, key);
+    return _get(Parse.options, key);
 };
 
 Parse.prototype.setOption = function(key, value) {
-    _.set(this._options, key, value);
+    _set(this._options, key, value);
     return this;
 };
 
 Parse.prototype.getOption = function(key) {
-    return _.get(this._options, key, Parse.getOption(key));
+    return _get(this._options, key, Parse.getOption(key));
 };
 
 Parse.prototype.transform = function(parse, reverse) {
