@@ -27,14 +27,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bubobox/parse-js.git"
+    "url": "git+https://github.com/ambassify/parse-js.git"
   },
-  "author": "Jorgen Evens <jorgen@bubobox.com>",
+  "author": "Jorgen Evens <jorgen@ambassify.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bubobox/parse-js/issues"
+    "url": "https://github.com/ambassify/parse-js/issues"
   },
-  "homepage": "https://github.com/bubobox/parse-js#readme",
+  "homepage": "https://github.com/ambassify/parse-js#readme",
   "dependencies": {
     "compact-base64": "^1.1.0",
     "lodash": "^4.10.0",
