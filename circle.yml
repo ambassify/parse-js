@@ -11,4 +11,4 @@ machine:
 
 notify:
   webhooks:
-    - url: http://bot.bubobox.com/publish/circleci/master
+    - url: http://bot.ambassify.com/publish/circleci/master
