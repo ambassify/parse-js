@@ -5,23 +5,16 @@ function ucfirst(str) {
     return str.replace(/^[a-z]/, l => l.toUpperCase());
 }
 
-function createLanguageSuffix(language, casing) {
-    if (casing === CAMEL_CASE)
-        language = ucfirst(language);
-    else if (casing === SNAKE_CASE)
-        language = '_' + language;
-
-    return language;
-}
-
-function restoreLanguageSuffix(suffix, casing) {
-    if (casing === CAMEL_CASE)
-        suffix = suffix.toLowerCase();
-    else if (casing === SNAKE_CASE)
-        suffix = suffix.replace(/^_/, '');
-
-    return suffix;
-}
+const SUFFIXES = {
+    SNAKE_CASE: {
+        create: language => '_' + language,
+        restore: suffix => suffix.replace(/^_/, '')
+    },
+    CAMEL_CASE: {
+        create: language => ucfirst(language),
+        restore: suffix => suffix.toLowerCase()
+    }
+};
 
 function compileRegex(languages, suffixer) {
     const langSuffix = languages
@@ -32,18 +25,26 @@ function compileRegex(languages, suffixer) {
 }
 
 function createRestorer(casing) {
-    return function(suffix) {
-        return restoreLanguageSuffix(suffix, casing);
-    };
+    if (typeof casing != 'object')
+        casing = SUFFIXES[casing];
+
+    if (!casing || typeof casing.restore != 'function')
+        throw new Error('Invalid multilingual suffixer specified');
+
+    return casing.restore;
 }
 
 function createSuffixer(casing) {
-    return function(language) {
-        return createLanguageSuffix(language, casing);
-    };
+    if (typeof casing != 'object')
+        casing = SUFFIXES[casing];
+
+    if (!casing || typeof casing.create != 'function')
+        throw new Error('Invalid multilingual suffixer specified');
+
+    return casing.create;
 }
 
-function MultilingualTransformer(languages, languageCase) {
+function MultilingualTransformer(languages, { languageCase } = {}) {
     languages = languages || this.getOption('multilingual.languages') || [];
     languageCase = languageCase || this.getOption('multilingual.languageCase') || CAMEL_CASE;
 

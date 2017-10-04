@@ -11,7 +11,7 @@ describe('multilingual', function() {
         it('Should parse flat multilingual keys into objects', function() {
             const multilingual = function() {};
             const map = function() { return multilingual; };
-            const group = function(regex, m1, m2) {
+            const group = function(regex) {
                 assert.equal(regex.toString(), '/(.+)(En|Nl)$/');
                 return { map: map };
             };
@@ -24,7 +24,10 @@ describe('multilingual', function() {
                 multilingual: Multilingual,
                 match: match
             };
-            const instance = obj.multilingual(['en', 'nl'], Multilingual.CAMEL_CASE);
+            const options = {
+                languageCase: Multilingual.CAMEL_CASE
+            };
+            const instance = obj.multilingual(['en', 'nl'], options);
 
             assert.equal(instance, multilingual);
         })
@@ -32,7 +35,7 @@ describe('multilingual', function() {
         it('Should read languages from options', function() {
             const multilingual = function() {};
             const map = function() { return multilingual; };
-            const group = function(regex, m1, m2) {
+            const group = function(regex) {
                 assert.equal(regex.toString(), '/(.+)(En|Nl|Fr)$/');
                 return { map: map };
             };
@@ -57,7 +60,7 @@ describe('multilingual', function() {
         it('Should ignore languages if not set', function() {
             const multilingual = function() {};
             const map = function() { return multilingual; };
-            const group = function(regex, m1, m2) {
+            const group = function(regex) {
                 assert.equal(regex.toString(), '/(.+)()$/');
                 return { map: map };
             };
@@ -113,7 +116,7 @@ describe('multilingual', function() {
 
                 return multilingual;
             };
-            const group = function(regex, m1, m2) {
+            const group = function(regex) {
                 assert.equal(regex.toString(), '/(.+)()$/');
                 return { map: map };
             };
@@ -147,7 +150,7 @@ describe('multilingual', function() {
 
                 return multilingual;
             };
-            const group = function(regex, m1, m2) {
+            const group = function(regex) {
                 assert.equal(regex.toString(), '/(.+)(_en|_fr)$/');
                 return { map: map };
             };
@@ -161,7 +164,10 @@ describe('multilingual', function() {
                 match: match,
                 getOption: function() { }
             };
-            const instance = obj.multilingual([ 'en', 'fr' ], Multilingual.SNAKE_CASE);
+            const options = {
+                languageCase: Multilingual.SNAKE_CASE
+            };
+            const instance = obj.multilingual([ 'en', 'fr' ], options);
 
             assert.equal(instance, multilingual);
         })
