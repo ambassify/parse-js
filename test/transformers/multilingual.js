@@ -11,7 +11,7 @@ describe('multilingual', function() {
         it('Should parse flat multilingual keys into objects', function() {
             const multilingual = function() {};
             const map = function() { return multilingual; };
-            const group = function(regex, m1, m2) {
+            const group = function(regex) {
                 assert.equal(regex.toString(), '/(.+)(En|Nl)$/');
                 return { map: map };
             };
@@ -24,7 +24,10 @@ describe('multilingual', function() {
                 multilingual: Multilingual,
                 match: match
             };
-            const instance = obj.multilingual(['en', 'nl']);
+            const options = {
+                languageCase: Multilingual.CAMEL_CASE
+            };
+            const instance = obj.multilingual(['en', 'nl'], options);
 
             assert.equal(instance, multilingual);
         })
@@ -32,7 +35,7 @@ describe('multilingual', function() {
         it('Should read languages from options', function() {
             const multilingual = function() {};
             const map = function() { return multilingual; };
-            const group = function(regex, m1, m2) {
+            const group = function(regex) {
                 assert.equal(regex.toString(), '/(.+)(En|Nl|Fr)$/');
                 return { map: map };
             };
@@ -44,7 +47,10 @@ describe('multilingual', function() {
             const obj = {
                 multilingual: Multilingual,
                 match: match,
-                getOption: function() { return ['en', 'nl', 'fr']; }
+                getOption: function(key) {
+                    if (key == 'multilingual.languages')
+                        return ['en', 'nl', 'fr'];
+                }
             };
             const instance = obj.multilingual();
 
@@ -54,7 +60,7 @@ describe('multilingual', function() {
         it('Should ignore languages if not set', function() {
             const multilingual = function() {};
             const map = function() { return multilingual; };
-            const group = function(regex, m1, m2) {
+            const group = function(regex) {
                 assert.equal(regex.toString(), '/(.+)()$/');
                 return { map: map };
             };
@@ -110,7 +116,7 @@ describe('multilingual', function() {
 
                 return multilingual;
             };
-            const group = function(regex, m1, m2) {
+            const group = function(regex) {
                 assert.equal(regex.toString(), '/(.+)()$/');
                 return { map: map };
             };
@@ -125,6 +131,84 @@ describe('multilingual', function() {
                 getOption: function() { }
             };
             const instance = obj.multilingual();
+
+            assert.equal(instance, multilingual);
+        })
+
+        it('Should support snake case', function () {
+            const multilingual = function() {};
+            const renamer = function(restorer, suffixer) {
+                assert.equal(typeof restorer, 'function');
+                assert.equal(typeof suffixer, 'function');
+
+                assert.equal(restorer('_abc'), 'abc');
+                assert.equal(suffixer('abc'), '_abc');
+            }
+            const map = function(f) {
+                assert.equal(typeof f, 'function');
+                f({ rename: renamer });
+
+                return multilingual;
+            };
+            const group = function(regex) {
+                assert.equal(regex.toString(), '/(.+)(_en|_fr)$/');
+                return { map: map };
+            };
+            const match = function(regex) {
+                assert.equal(regex.toString(), '/(.+)(_en|_fr)$/');
+                return { group: group };
+            };
+
+            const obj = {
+                multilingual: Multilingual,
+                match: match,
+                getOption: function() { }
+            };
+            const options = {
+                languageCase: Multilingual.SNAKE_CASE
+            };
+            const instance = obj.multilingual([ 'en', 'fr' ], options);
+
+            assert.equal(instance, multilingual);
+        })
+
+        it('Should support custom casing', function () {
+            const multilingual = function() {};
+            const casing = {
+                create: language => language.replace(/[a-z]$/, m => m.toUpperCase()),
+                restore: suffix => suffix.toLowerCase()
+            };
+            const renamer = function(restorer, suffixer) {
+                assert.equal(typeof restorer, 'function');
+                assert.equal(typeof suffixer, 'function');
+
+                assert.equal(restorer('abC'), 'abc');
+                assert.equal(suffixer('abc'), 'abC');
+            }
+            const map = function(f) {
+                assert.equal(typeof f, 'function');
+                f({ rename: renamer });
+
+                return multilingual;
+            };
+            const group = function(regex) {
+                assert.equal(regex.toString(), '/(.+)(eN|fR)$/');
+                return { map: map };
+            };
+            const match = function(regex) {
+                assert.equal(regex.toString(), '/(.+)(eN|fR)$/');
+                return { group: group };
+            };
+
+            const obj = {
+                multilingual: Multilingual,
+                match: match,
+                getOption: function() { }
+            };
+            const options = {
+                languageCase: casing
+            };
+            const instance = obj.multilingual([ 'en', 'fr' ], options);
 
             assert.equal(instance, multilingual);
         })
