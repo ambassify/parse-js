@@ -171,5 +171,46 @@ describe('multilingual', function() {
 
             assert.equal(instance, multilingual);
         })
+
+        it('Should support custom casing', function () {
+            const multilingual = function() {};
+            const casing = {
+                create: language => language.replace(/[a-z]$/, m => m.toUpperCase()),
+                restore: suffix => suffix.toLowerCase()
+            };
+            const renamer = function(restorer, suffixer) {
+                assert.equal(typeof restorer, 'function');
+                assert.equal(typeof suffixer, 'function');
+
+                assert.equal(restorer('abC'), 'abc');
+                assert.equal(suffixer('abc'), 'abC');
+            }
+            const map = function(f) {
+                assert.equal(typeof f, 'function');
+                f({ rename: renamer });
+
+                return multilingual;
+            };
+            const group = function(regex) {
+                assert.equal(regex.toString(), '/(.+)(eN|fR)$/');
+                return { map: map };
+            };
+            const match = function(regex) {
+                assert.equal(regex.toString(), '/(.+)(eN|fR)$/');
+                return { group: group };
+            };
+
+            const obj = {
+                multilingual: Multilingual,
+                match: match,
+                getOption: function() { }
+            };
+            const options = {
+                languageCase: casing
+            };
+            const instance = obj.multilingual([ 'en', 'fr' ], options);
+
+            assert.equal(instance, multilingual);
+        })
     })
 });
