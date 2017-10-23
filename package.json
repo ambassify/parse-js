@@ -1,6 +1,6 @@
 {
   "name": "parse-js",
-  "version": "0.4.29",
+  "version": "0.4.30",
   "description": "Utility library for object structure conversion.",
   "keywords": [
     "object",
@@ -38,7 +38,7 @@
   "dependencies": {
     "compact-base64": "^1.1.0",
     "lodash": "^4.10.0",
-    "mocha": "^3.1.2"
+    "mocha": "^4.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.14.0",
