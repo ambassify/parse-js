@@ -2,28 +2,26 @@ const _transform = require('lodash/transform');
 const _merge = require('lodash/merge');
 const _isArray = require('lodash/isArray');
 
-function MapTransformer(callback) {
+function MapTransformer(callback, parse) {
     if( !(this instanceof MapTransformer) ) {
-        return this.transform(new MapTransformer(callback));
+        return this.transform(new MapTransformer(callback, this.constructor));
     }
 
+    this._parse = parse || require('../index');
     this._callback = callback;
     this._cache = {};
 }
 
-MapTransformer.prototype._createParse = (function() {
-    const parse = require('../parse');
+MapTransformer.prototype._createParse = function(key) {
+    const parse = this._parse;
+    const cache = this._cache;
 
-    return function(key) {
-        const cache = this._cache;
+    if (!(key in cache)) {
+        cache[key] = this._callback(parse().select(key));
+    }
 
-        if (!(key in cache)) {
-            cache[key] = this._callback(parse().select(key));
-        }
-
-        return cache[key];
-    };
-}());
+    return cache[key];
+};
 
 MapTransformer.prototype.parse = function(source) {
     const accumulator = _isArray(source) ? [] : {};

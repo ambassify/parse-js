@@ -7,7 +7,7 @@ describe('map', function() {
 
     before(function() {
         Map = require('src/transformers/map');
-        Parse = require('src/parse');
+        Parse = require('src/index');
     })
 
     describe('#constructor', function() {
