@@ -1,3 +1,4 @@
 -r babel-register
+--timeout 3000
 --recursive
 --reporter mocha-circleci-reporter

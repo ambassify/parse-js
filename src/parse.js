@@ -9,7 +9,7 @@ const DIRECTION_REVERSE = 'REVERSE';
 
 function Parse(path, options = {}) {
     if (!(this instanceof Parse))
-        return new Parse(path);
+        return new Parse(path, options);
 
     this._chain = [];
     this._options = options;
@@ -29,19 +29,19 @@ module.exports = Parse;
 Parse.options = {};
 
 Parse.register = function(name, handler, { overwrite = false } = {}) {
-    if( !overwrite && Parse.prototype[name] )
+    if( !overwrite && this.prototype[name] )
         throw new Error(`${name} already has a handler.`);
 
-    Parse.prototype[name] = handler;
+    this.prototype[name] = handler;
 };
 
 Parse.setOption = function(key, value) {
-    _set(Parse.options, key, value);
+    _set(this.options, key, value);
     return Parse;
 };
 
 Parse.getOption = function(key) {
-    return _get(Parse.options, key);
+    return _get(this.options, key);
 };
 
 Parse.prototype.setOption = function(key, value) {
@@ -50,7 +50,7 @@ Parse.prototype.setOption = function(key, value) {
 };
 
 Parse.prototype.getOption = function(key) {
-    return _get(this._options, key, Parse.getOption(key));
+    return _get(this._options, key, this.constructor.getOption(key));
 };
 
 Parse.prototype.transform = function(parse, reverse) {
@@ -103,23 +103,3 @@ Parse.prototype.reverse = function(obj) {
     return obj;
 };
 
-Parse.register('select', require('./transformers/select'));
-Parse.register('match', require('./transformers/match'));
-Parse.register('rename', require('./transformers/rename'));
-Parse.register('map', require('./transformers/map'));
-Parse.register('group', require('./transformers/group'));
-Parse.register('oneOf', require('./transformers/oneOf'));
-Parse.register('equals', require('./transformers/equals'));
-
-Parse.register('constant', require('./transformers/constant'));
-Parse.register('date', require('./transformers/date'));
-Parse.register('bool', require('./transformers/bool'));
-Parse.register('number', require('./transformers/number'));
-Parse.register('string', require('./transformers/string'));
-Parse.register('array', require('./transformers/array'));
-Parse.register('base64', require('./transformers/base64'));
-Parse.register('json', require('./transformers/json'));
-
-Parse.register('spec', require('./transformers/spec'));
-Parse.register('multilingual', require('./transformers/multilingual'));
-Parse.register('stripPrefix', require('./transformers/stripPrefix'));

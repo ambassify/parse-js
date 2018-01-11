@@ -1,17 +1,19 @@
 const _isPlainObject = require('lodash/isPlainObject');
 const _transform = require('lodash/transform');
 const _merge = require('lodash/merge');
-const parse = require('../parse');
 
-function SpecTransformer(spec) {
+function SpecTransformer(spec, parse) {
     if( !(this instanceof SpecTransformer) ) {
-        return this.transform(new SpecTransformer(spec));
+        return this.transform(new SpecTransformer(spec, this.constructor));
     }
 
+    this._parse = parse || require('../index');
     this._spec = this._completeSpec(spec);
 }
 
 SpecTransformer.prototype._completeSpec = function(spec) {
+    const parse = this._parse;
+
     return _transform(spec, (r, v, k) => {
         if (typeof v === 'string')
             v = parse(v);
