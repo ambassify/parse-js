@@ -11,7 +11,7 @@
     "casting",
     "type cast"
   ],
-  "main": "dist/parse.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=4"
   },
