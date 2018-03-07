@@ -33,6 +33,7 @@ function factory() {
     Parse.register('group', require('./transformers/group'));
     Parse.register('oneOf', require('./transformers/oneOf'));
     Parse.register('equals', require('./transformers/equals'));
+    Parse.register('switch', require('./transformers/switch'));
 
     Parse.register('constant', require('./transformers/constant'));
     Parse.register('date', require('./transformers/date'));
