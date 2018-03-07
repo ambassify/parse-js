@@ -24,6 +24,7 @@ Utility library for object structure conversion.
   - [.bool()](#bool)
   - [.number()](#number)
   - [.string()](#string)
+  - [.switch()](#switch)
   - [.array()](#array)
   - [.base64()](#base64)
   - [.json()](#json)
@@ -382,6 +383,44 @@ The selected value will be concatenated with an empty string which will call the
 
 - `options`
   - `defaultValue` the value to return whenever the selected value is `undefined`.
+
+#### .switch()
+
+```javascript
+parse().switch(cases, parseSelector, reverseSelector)
+```
+
+Selects a different parser from the `cases` object by looking up the value at
+`parseSelector` / `reverseSelector` in the cases object and executing it.
+
+If the `cases` object does not define a key for the value at returned by the selector,
+the `_default_` key will be called if defined. If neither of these exist `undefined` will be returned.
+
+Both `parseSelector ` and `reverseSelector` can be any key supported by [lodash get](https://lodash.com/docs/4.16.0#get)
+or a method which is passed the object to transform. Passing `null` or `undefined` will
+disable the selector and `.switch()` will always return `undefined`.
+
+- `cases` an object containing the different possible values for the field at `selector`.
+- `parseSelector` a key that specifies which key to look up in the `cases` object when performing a `.parse()` operation.
+- `reverseSelector` a key that specifies which key to look up in the `cases` object when performing a `.reverse()` operation.
+
+Example:
+
+```javascript
+parse('test-key')
+    .switch({
+        'string': parse('value').string(),
+        'number': parse('value').number(),
+        '_default_': parse('value').string()
+    }, 'type', (v) => typeof v)
+    .parse({
+        'test-key': {
+            type: 'number',
+            value: '123'
+        }
+    });
+    // 123
+```
 
 #### .array()
 
