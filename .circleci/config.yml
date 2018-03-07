@@ -1,0 +1,25 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:6
+    environment:
+      - MOCHA_FILE: mocha/tests.[hash].xml
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependencies-{{ checksum "package.json" }}
+      - run: npm install
+      - save_cache:
+          key: dependencies-{{ checksum "package.json" }}-{{ .BuildNum }}
+          paths:
+            - node_modules
+      - run: npm test
+      - store_test_results:
+          path: mocha
+      - store_artifacts:
+          path: coverage
+
+notify:
+  webhooks:
+    - url: http://bot.ambassify.com/publish/circleci/master
