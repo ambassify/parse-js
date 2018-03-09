@@ -1,6 +1,6 @@
 {
   "name": "parse-js",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Utility library for object structure conversion.",
   "keywords": [
     "object",
