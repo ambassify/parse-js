@@ -25,7 +25,7 @@ BooleanTransformer.prototype.parse = function(value) {
         return this._defaultValue;
 
     return (typeof value === 'string') ?
-        _includes(TRUE, value) : !!value;
+        _includes(TRUE, value.toLowerCase()) : !!value;
 };
 
 BooleanTransformer.prototype.reverse = function(source) {
