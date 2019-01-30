@@ -1,41 +1,47 @@
 const isString = require('lodash/isString');
 
+function detectDecimalSeparator(number) {
+    const dots = (number.match(/\./g) || []).length;
+    const commas = (number.match(/,/g) || []).length;
+
+    // this number is invalid
+    if (dots > 1 && commas > 1)
+        return null;
+
+    // many dots, comma is the decimal separator
+    if (dots > 1)
+        return ',';
+
+    // many commas, dot is the decimal separator
+    if (commas > 1)
+        return '.';
+
+    // one of both, the last one is the decimal separator
+    if (dots && commas)
+        return number.indexOf(',') > number.indexOf('.') ? ',' : '.';
+
+    // there is only one, let's use it as decimal separator
+    return commas ? ',' : '.';
+}
+
 function normalizer(number, decimalSeparator) {
     if (!isString(number))
         return number;
 
     // autodetect separator
-    if (decimalSeparator !== '.' && decimalSeparator !== ',') {
-        const dots = (number.match(/\./g) || []).length;
-        const commas = (number.match(/,/g) || []).length;
+    if (decimalSeparator !== '.' && decimalSeparator !== ',')
+        decimalSeparator = detectDecimalSeparator(number);
 
-        // this number is invalid
-        if (dots > 1 && commas > 1)
-            return NaN;
-
-        // many dots, comma is the decimal separator
-        if (dots > 1)
-            decimalSeparator = ',';
-        // many commas, dot is the decimal separator
-        else if (commas > 1)
-            decimalSeparator = '.';
-        // one of both, the last one is the decimal separator
-        else if (dots && commas)
-            decimalSeparator = number.indexOf(',') > number.indexOf('.') ? ',' : '.';
-        // there is only one, let's use it as decimal separator
-        else
-            decimalSeparator = commas ? ',' : '.';
-    }
+    if (decimalSeparator !== '.' && decimalSeparator !== ',')
+        return NaN;
 
     if (decimalSeparator === '.') {
         // strip all commas
-        number = number.replace(/,/g, '');
-    } else if (decimalSeparator === ',') {
-        // strip all dots and replace comma with dot
-        number = number.replace(/\./g, '').replace(',', '.');
+        return number.replace(/,/g, '');
     }
 
-    return number;
+    // strip all dots and replace comma with dot
+    return number.replace(/\./g, '').replace(',', '.');
 }
 
 function NumberTransformer(options = {}) {
