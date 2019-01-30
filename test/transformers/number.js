@@ -18,7 +18,7 @@ describe('number', function() {
                     assert.equal(instance._base, 10);
 
                     assert.equal(instance._normalizer('10.100,20'), '10100.20');
-                    assert.equal(instance._normalizer('2.100.100.30'), '2100100.30');
+                    assert.equal(instance._normalizer('2,100,100.30'), '2100100.30');
                     assert.equal(instance._normalizer(1000.1), 1000.1);
                 }
             };
@@ -72,7 +72,7 @@ describe('number', function() {
 
         it('Should parse float numbers in strings', function() {
             const instance = new NumberTransformer();
-            const result = instance.parse('55.222.123');
+            const result = instance.parse('55.222,123');
 
             assert.equal(result, 55222.123);
         })
@@ -82,6 +82,29 @@ describe('number', function() {
             const result = instance.parse(null);
 
             assert.equal(result, 0);
+        })
+
+        it('Should be able to detect decimal separator', function () {
+            const instance = new NumberTransformer();
+
+            assert.equal(instance.parse('99.99'), 99.99);
+            assert.equal(instance.parse('99,99'), 99.99);
+            assert.equal(instance.parse('99,999,999'), 99999999);
+            assert.equal(instance.parse('99.999.999'), 99999999);
+            assert.equal(instance.parse('99,999,999.99'), 99999999.99);
+            assert.equal(instance.parse('99.999.999,99'), 99999999.99);
+
+            // these are ambiguous, we're choosing to prefer parsing as a decimal
+            // separator when there is onle one dot or comma
+            assert.equal(instance.parse('9,999'), 9.999);
+            assert.equal(instance.parse('9.999'), 9.999);
+        })
+
+        it('Should let you choose decimal separator', function () {
+            const instance = new NumberTransformer({ decimalSeparator: ',' });
+            const result = instance.parse('55.23');
+
+            assert.equal(result, 5523);
         })
 
         it('Should use correct NaNValue', function() {
