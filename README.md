@@ -370,6 +370,7 @@ Converts the selected value to a number.
   - `NaNValue` the value that will be set when the selected value can not be converted. (default: `0`)
   - `normalizer` a function used to normalize strings to number-like strings. The default handles removing multiple comma or dots in the string.
   - `base` the base in which the value is expressed. (default: `10`)
+  - `decimalSeparator` the sign to use as decimal separator (`.` or `,`), if not configured, the library does its best to auto-detect
 
 
 #### .string()
