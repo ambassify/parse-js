@@ -47,6 +47,8 @@ describe('bool', function() {
             assert.equal(instance.parse('1'), true);
             assert.equal(instance.parse('yes'), true);
             assert.equal(instance.parse('y'), true);
+            assert.equal(instance.parse('TRUE'), true);
+            assert.equal(instance.parse('YES'), true);
             assert.equal(instance.parse(1), true);
             assert.equal(instance.parse(2), true);
             assert.equal(instance.parse(true), true);
