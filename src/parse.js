@@ -85,7 +85,7 @@ Parse.prototype.parse = function(obj) {
     const len = this._chain.length;
 
     for (let i = 0; i < len; i++)
-        obj = this._chain[i].parse(obj);
+        obj = this._chain[i].parse(obj, this);
 
     return obj;
 };
@@ -97,7 +97,7 @@ Parse.prototype.reverse = function(obj) {
     let i = this._chain.length;
 
     while( i-- ) {
-        obj = this._chain[i].reverse(obj);
+        obj = this._chain[i].reverse(obj, this);
     }
 
     return obj;

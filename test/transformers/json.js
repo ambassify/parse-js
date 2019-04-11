@@ -3,6 +3,12 @@ const assert = require('assert');
 describe('json', function() {
     let JSONTransformer = null;
 
+    const parse = {
+        getOption: function() {
+            return undefined;
+        }
+    };
+
     before(function() {
         JSONTransformer = require('src/transformers/json');
     })
@@ -34,7 +40,7 @@ describe('json', function() {
     describe('#parse', function() {
         it('Should parse JSON', function() {
             const instance = new JSONTransformer();
-            const result = instance.parse('{"hello":"world"}');
+            const result = instance.parse('{"hello":"world"}', parse);
 
             assert.deepEqual(result, {hello: 'world'});
         })
@@ -43,14 +49,14 @@ describe('json', function() {
             const instance = new JSONTransformer({
                 defaultValue: {'default': 'object'}
             });
-            const result = instance.parse('}{');
+            const result = instance.parse('}{', parse);
 
             assert.deepEqual(result, {default: 'object'});
         })
 
         it('Should return null when invalid without default', function() {
             const instance = new JSONTransformer();
-            const result = instance.parse('}{');
+            const result = instance.parse('}{', parse);
 
             assert.deepEqual(result, null);
         })
@@ -58,9 +64,20 @@ describe('json', function() {
         it('Should ignore non-string values', function() {
             const test = { hello: 'world' };
             const instance = new JSONTransformer();
-            const result = instance.parse(test);
+            const result = instance.parse(test, parse);
 
             assert.equal(result, test);
+        })
+
+        it('Should honor allow-default option', function() {
+            const instance = new JSONTransformer();
+            const result = instance.parse(undefined, {
+                getOption: function(key) {
+                    assert.equal(key, 'allow-default');
+                }
+            });
+
+            assert.equal(typeof result, 'undefined');
         })
     })
 
@@ -68,9 +85,20 @@ describe('json', function() {
         it('Should convert to JSON', function() {
             const test = { hello: 'world' };
             const instance = new JSONTransformer();
-            const result = instance.reverse(test);
+            const result = instance.reverse(test, parse);
 
             assert.equal(result, '{"hello":"world"}');
+        })
+
+        it('Should honor allow-default option', function() {
+            const instance = new JSONTransformer();
+            const result = instance.reverse(undefined, {
+                getOption: function(key) {
+                    assert.equal(key, 'allow-default');
+                }
+            });
+
+            assert.equal(typeof result, 'undefined');
         })
     })
 });

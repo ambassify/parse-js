@@ -3,6 +3,12 @@ const assert = require('assert');
 describe('string', function() {
     let StringTransformer = null;
 
+    const parse = {
+        getOption: function() {
+            return undefined;
+        }
+    };
+
     before(function() {
         StringTransformer = require('src/transformers/string');
     })
@@ -34,7 +40,7 @@ describe('string', function() {
     describe('#parse', function() {
         it('Should ignore strings', function() {
             const instance = new StringTransformer();
-            const result = instance.parse('hello world');
+            const result = instance.parse('hello world', parse);
 
             assert.equal(result, 'hello world');
         })
@@ -43,30 +49,41 @@ describe('string', function() {
             const instance = new StringTransformer({
                 defaultValue: 'default test'
             });
-            const result = instance.parse(undefined);
+            const result = instance.parse(undefined, parse);
 
             assert.equal(result, 'default test');
         })
 
         it('Should convert anything else to a string', function() {
             const instance = new StringTransformer();
-            const result = instance.parse({});
+            const result = instance.parse({}, parse);
 
             assert.equal(result, '[object Object]');
+        })
+
+        it('Should honor allow-default option', function() {
+            const instance = new StringTransformer();
+            const result = instance.parse(undefined, {
+                getOption: function(key) {
+                    assert.equal(key, 'allow-default');
+                }
+            });
+
+            assert.equal(typeof result, 'undefined');
         })
     })
 
     describe('#reverse', function() {
         it('Should ignore strings', function() {
             const instance = new StringTransformer();
-            const result = instance.reverse('hello world');
+            const result = instance.reverse('hello world', parse);
 
             assert.equal(result, 'hello world');
         })
 
         it('Should ignore undefined', function() {
             const instance = new StringTransformer();
-            const result = instance.reverse(undefined);
+            const result = instance.reverse(undefined, parse);
 
             assert.equal(result, undefined);
         })
@@ -75,16 +92,27 @@ describe('string', function() {
             const instance = new StringTransformer({
                 reverseDefaultValue: 'test-1'
             });
-            const result = instance.reverse(undefined);
+            const result = instance.reverse(undefined, parse);
 
             assert.equal(result, 'test-1');
         })
 
         it('Should cast anything else to a string', function() {
             const instance = new StringTransformer();
-            const result = instance.reverse({});
+            const result = instance.reverse({}, parse);
 
             assert.equal(result, '[object Object]');
+        })
+
+        it('Should honor allow-default option', function() {
+            const instance = new StringTransformer();
+            const result = instance.reverse(undefined, {
+                getOption: function(key) {
+                    assert.equal(key, 'allow-default');
+                }
+            });
+
+            assert.equal(typeof result, 'undefined');
         })
     })
 
