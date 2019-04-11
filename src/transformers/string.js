@@ -1,3 +1,5 @@
+const getDefault = require('../lib/default').getDefault;
+
 function StringTransformer(options = {}) {
     if( !(this instanceof StringTransformer) ) {
         return this.transform(new StringTransformer(options));
@@ -7,19 +9,19 @@ function StringTransformer(options = {}) {
     this._reverseDefaultValue = options.reverseDefaultValue;
 }
 
-StringTransformer.prototype.parse = function(value) {
+StringTransformer.prototype.parse = function(value, parse) {
     if (typeof value === 'string')
         return value;
 
     if (typeof value === 'undefined')
-        return this._defaultValue;
+        return getDefault(parse, this._defaultValue);
 
     return (value + '');
 };
 
-StringTransformer.prototype.reverse = function(value) {
+StringTransformer.prototype.reverse = function(value, parse) {
     if (typeof value === 'undefined')
-        return this._reverseDefaultValue;
+        return getDefault(parse, this._reverseDefaultValue);
 
     if (typeof value === 'string')
         return value;

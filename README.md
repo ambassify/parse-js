@@ -13,6 +13,7 @@ Utility library for object structure conversion.
   - [.setOption() / .getOption()](#configuration)
 - [Transformers](#transformers)
   - [.select()](#select)
+  - [.default()](#default)
   - [.match()](#match)
   - [.rename()](#rename)
   - [.map()](#map)
@@ -196,6 +197,16 @@ parse().select(key)
 
 Selects a value from the object provided to the final `.parse()` call, the key supplied here can be any key supported by [lodash get](https://lodash.com/docs/4.16.0#get).
 
+#### .default()
+
+```javascript
+parse().default(defaultValue, reverseDefaultValue)
+```
+
+Sets a default value when either the selected value or the reversed value is `undefined`.
+
+- `defaultValue` the value to return whenever the selected value is `undefined`
+- `reverseDefaultValue` the value to return whenever the value to reverse is `undefined`
 
 #### .match()
 
