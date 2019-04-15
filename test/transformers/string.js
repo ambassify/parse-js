@@ -54,6 +54,15 @@ describe('string', function() {
             assert.equal(result, 'default test');
         })
 
+        it('Should return default (empty string) value when undefined', function() {
+            const instance = new StringTransformer({
+                defaultValue: ''
+            });
+            const result = instance.parse(undefined, parse);
+
+            assert.strictEqual(result, '');
+        })
+
         it('Should convert anything else to a string', function() {
             const instance = new StringTransformer();
             const result = instance.parse({}, parse);

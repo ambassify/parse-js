@@ -3,10 +3,13 @@ function isDefaultEnabled(parse) {
 }
 
 function getDefault(parse, defaultValue, currentValue) {
-    if (isDefaultEnabled(parse))
-        return defaultValue || currentValue;
+    if (!isDefaultEnabled(parse))
+        return currentValue;
 
-    return (void 0);
+    if (typeof defaultValue === 'undefined')
+        return currentValue;
+
+    return defaultValue;
 }
 
 module.exports = {
