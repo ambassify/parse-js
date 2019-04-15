@@ -90,9 +90,6 @@ describe('Parse', function() {
 
             const instance = new Parse('test');
             const result = instance.getOption('test4');
-            console.log(instance.constructor.toString());
-            console.log(Parse.toString());
-            console.log(instance.constructor.options);
 
             assert.equal(result, '0000');
         })
