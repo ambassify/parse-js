@@ -27,11 +27,11 @@ function SwitchTransformer(cases = {}, parseSelector, reverseSelector) {
     this._reverseSelector = wrapPath(reverseSelector);
 }
 
-SwitchTransformer.prototype._getParser = function(source, selector) {
+SwitchTransformer.prototype._getParser = function(source, root, selector) {
     if (!selector)
         return nullSelector;
 
-    const value = selector(source);
+    const value = selector(source, root);
     const next = this._cases[value];
 
     if (next)
@@ -40,22 +40,22 @@ SwitchTransformer.prototype._getParser = function(source, selector) {
     return this._cases['_default_'];
 };
 
-SwitchTransformer.prototype.parse = function(source) {
-    const next = this._getParser(source, this._parseSelector);
+SwitchTransformer.prototype.parse = function(source, instance, root) {
+    const next = this._getParser(source, root, this._parseSelector);
 
     if (!next || !_isFunction(next.parse))
         return (void 0);
 
-    return next.parse(source);
+    return next.parse(source, instance, root);
 };
 
-SwitchTransformer.prototype.reverse = function(source) {
-    const next = this._getParser(source, this._reverseSelector);
+SwitchTransformer.prototype.reverse = function(source, instance, root) {
+    const next = this._getParser(source, root, this._reverseSelector);
 
     if (!next || !_isFunction(next.reverse))
         return (void 0);
 
-    return next.reverse(source);
+    return next.reverse(source, instance, root);
 };
 
 module.exports = SwitchTransformer;

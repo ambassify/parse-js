@@ -24,31 +24,31 @@ SpecTransformer.prototype._completeSpec = function(spec) {
     }, {});
 };
 
-SpecTransformer.prototype.parse = function(source) {
-    return this._toSpec(this._spec, source);
+SpecTransformer.prototype.parse = function(source, instance, root) {
+    return this._toSpec(this._spec, source, instance, root);
 };
 
-SpecTransformer.prototype._toSpec = function(spec, data) {
+SpecTransformer.prototype._toSpec = function(spec, data, instance, root) {
     return _transform(spec, (r, v, k) => {
         if (_isPlainObject(v))
-            r[k] = this._toSpec(v, data);
+            r[k] = this._toSpec(v, data, instance, root);
         else
-            r[k] = v.parse(data);
+            r[k] = v.parse(data, instance, root);
     }, {});
 };
 
-SpecTransformer.prototype.reverse = function(source) {
-    return this._fromSpec(this._spec, source);
+SpecTransformer.prototype.reverse = function(source, instance, root) {
+    return this._fromSpec(this._spec, source, instance, root);
 };
 
-SpecTransformer.prototype._fromSpec = function(spec, data) {
+SpecTransformer.prototype._fromSpec = function(spec, data, instance, root) {
     return _transform(spec, (r, v, k) => {
         const value = data && data[k];
 
         if (_isPlainObject(v))
-            _merge(r, this._fromSpec(v, value));
+            _merge(r, this._fromSpec(v, value, instance, root));
         else
-            _merge(r, v.reverse(value));
+            _merge(r, v.reverse(value, instance, root));
     }, {});
 };
 

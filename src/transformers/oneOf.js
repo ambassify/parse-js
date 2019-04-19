@@ -22,13 +22,13 @@ function OneOfTransformer(parsers, options = {}) {
         this._reverseAll = options.reverseAll;
 }
 
-OneOfTransformer.prototype.parse = function(v) {
+OneOfTransformer.prototype.parse = function(v, instance, root) {
     const parsers = this._parsers;
     const len = parsers.length;
     const test = this._test;
 
     for (let i = 0; i < len; i++) {
-        const result = parsers[i].parse(v);
+        const result = parsers[i].parse(v, instance, root);
 
         if (test(result))
             return result;
@@ -37,7 +37,7 @@ OneOfTransformer.prototype.parse = function(v) {
     return;
 };
 
-OneOfTransformer.prototype.reverse = function(v) {
+OneOfTransformer.prototype.reverse = function(v, instance, root) {
     const parsers = this._parsers;
     const len = parsers.length;
 
@@ -49,7 +49,7 @@ OneOfTransformer.prototype.reverse = function(v) {
 
     let reversed = {};
     for (let i = 0; i < len; i++) {
-        const result = parsers[i].reverse(v);
+        const result = parsers[i].reverse(v, instance, root);
 
         if (typeof result === 'undefined')
             continue;
