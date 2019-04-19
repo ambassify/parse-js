@@ -409,7 +409,7 @@ If the `cases` object does not define a key for the value at returned by the sel
 the `_default_` key will be called if defined. If neither of these exist `undefined` will be returned.
 
 Both `parseSelector ` and `reverseSelector` can be any key supported by [lodash get](https://lodash.com/docs/4.16.0#get)
-or a method which is passed the object to transform. Passing `null` or `undefined` will
+or a method which is passed the object to transform and the root object of this transform. Passing `null` or `undefined` will
 disable the selector and `.switch()` will always return `undefined`.
 
 - `cases` an object containing the different possible values for the field at `selector`.

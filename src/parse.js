@@ -78,26 +78,26 @@ Parse.prototype.isDirectionEnabled = function(direction) {
     return ([DIRECTION_ANY, enabledDirection].indexOf(direction) > -1);
 };
 
-Parse.prototype.parse = function(obj) {
+Parse.prototype.parse = function(obj, instance, root = obj) {
     if (!this.isDirectionEnabled(DIRECTION_PARSE))
         return obj;
 
     const len = this._chain.length;
 
     for (let i = 0; i < len; i++)
-        obj = this._chain[i].parse(obj, this);
+        obj = this._chain[i].parse(obj, this, root);
 
     return obj;
 };
 
-Parse.prototype.reverse = function(obj) {
+Parse.prototype.reverse = function(obj, instance, root = obj) {
     if (!this.isDirectionEnabled(DIRECTION_REVERSE))
         return obj;
 
     let i = this._chain.length;
 
     while( i-- ) {
-        obj = this._chain[i].reverse(obj, this);
+        obj = this._chain[i].reverse(obj, this, root);
     }
 
     return obj;

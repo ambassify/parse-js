@@ -53,6 +53,22 @@ describe('switch', function() {
 
             assert.equal(result, 'correct');
         })
+
+        it('Should reverse an object based on a root property', function() {
+            const instance = new Switch({
+                'not-this': {},
+                'value': {
+                    reverse: () => 'correct'
+                },
+                'not-this-either': {}
+            }, 'path', (src, root) => root.path);
+
+            const result = instance.reverse('value', {}, {
+                path: 'value'
+            });
+
+            assert.equal(result, 'correct');
+        })
     })
 
     describe('#default', function() {
