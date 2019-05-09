@@ -37,5 +37,12 @@ describe('select', function() {
 
             assert.deepEqual(result, { path: 'value' });
         })
+
+        it('Should not set undefined values to anything', function() {
+            const instance = new Select('path');
+            const result = instance.reverse(undefined);
+
+            assert.deepEqual(typeof result, 'undefined');
+        })
     })
 });

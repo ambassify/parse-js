@@ -14,9 +14,10 @@ SelectTransformer.prototype.parse = function(source) {
 };
 
 SelectTransformer.prototype.reverse = function(source) {
-    const result = {};
-    _set(result, this._path, source);
-    return result;
+    if (typeof source === 'undefined')
+        return source;
+
+    return _set({}, this._path, source);
 };
 
 module.exports = SelectTransformer;
