@@ -1,4 +1,4 @@
-const _transform = require('lodash/transform');
+const _transform = require('../lib/transform');
 
 function RenameTransformer(parser, reverser) {
     if( !(this instanceof RenameTransformer) ) {

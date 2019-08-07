@@ -1,5 +1,5 @@
 const _isPlainObject = require('lodash/isPlainObject');
-const _transform = require('lodash/transform');
+const _transform = require('../lib/transform');
 const _merge = require('lodash/merge');
 
 function SpecTransformer(spec, parse) {

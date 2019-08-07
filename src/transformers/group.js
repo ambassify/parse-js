@@ -1,5 +1,5 @@
 const _each = require('lodash/each');
-const _transform = require('lodash/transform');
+const _transform = require('../lib/transform');
 const _isPlainObject = require('lodash/isPlainObject');
 
 function GroupTransformer(regex, key, index) {
