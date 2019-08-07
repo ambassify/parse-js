@@ -16,12 +16,17 @@ const SUFFIXES = {
     }
 };
 
+const regexCache = {};
+
 function compileRegex(languages, suffixer) {
     const langSuffix = languages
         .map(l => suffixer(l))
         .join('|');
 
-    return new RegExp(`(.+)(${langSuffix})$`);
+    if (!regexCache[langSuffix])
+        regexCache[langSuffix] = new RegExp(`(.+)(${langSuffix})$`);
+
+    return regexCache[langSuffix];
 }
 
 function createRestorer(casing) {
