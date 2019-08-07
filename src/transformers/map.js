@@ -1,4 +1,4 @@
-const _transform = require('lodash/transform');
+const _transform = require('../lib/transform');
 const _merge = require('lodash/merge');
 const _isArray = require('lodash/isArray');
 
