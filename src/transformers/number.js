@@ -50,7 +50,7 @@ function NumberTransformer(options = {}) {
     }
 
     this._decimalSeparator = options.decimalSeparator || undefined;
-    this._NaNValue = options.NaNValue || 0;
+    this._NaNValue = options.hasOwnProperty('NaNValue') ? options.NaNValue : 0;
     this._normalizer = options.normalizer || normalizer;
     this._base = options.base || 10;
 }
