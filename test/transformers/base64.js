@@ -99,5 +99,17 @@ describe('base64', function() {
 
             assert.equal(instance.reverse('<div>test</div>'), 'PGRpdj50ZXN0PC9kaXY+');
         })
+
+        it('Should reverse empty, non-string values', function() {
+            const instance = new Base64Transformer();
+
+            let value = null;
+
+            value = instance.reverse(null);
+            assert.strictEqual(value, null);
+
+            value = instance.reverse(undefined);
+            assert.equal(typeof value, 'undefined');
+        })
     })
 });

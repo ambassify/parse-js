@@ -23,6 +23,9 @@ Base64Transformer.prototype.parse = function(value) {
 };
 
 Base64Transformer.prototype.reverse = function(source) {
+    if (!source && typeof source != 'string')
+        return source;
+
     return Base64.encode(source);
 };
 
