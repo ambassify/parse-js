@@ -1,3 +1,5 @@
+'use strict';
+
 const parseJSON = require('../lib/json').parse;
 const getDefault = require('../lib/default').getDefault;
 const isDefaultEnabled = require('../lib/default').isDefaultEnabled;

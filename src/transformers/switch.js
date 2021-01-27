@@ -1,3 +1,5 @@
+'use strict';
+
 const _get = require('lodash/get');
 const _isNil = require('lodash/isNil');
 const _isFunction = require('lodash/isFunction');

@@ -1,3 +1,5 @@
+'use strict';
+
 const Base64 = require('../lib/base64');
 
 function Base64Transformer(options = {}) {

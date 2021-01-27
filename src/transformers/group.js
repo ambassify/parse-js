@@ -1,3 +1,5 @@
+'use strict';
+
 const _each = require('lodash/each');
 const _transform = require('../lib/transform');
 const _isPlainObject = require('lodash/isPlainObject');

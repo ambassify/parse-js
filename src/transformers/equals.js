@@ -1,3 +1,5 @@
+'use strict';
+
 function EqualsTransformer(match, options = {}) {
     if( !(this instanceof EqualsTransformer) ) {
         return this.transform(new EqualsTransformer(match, options));

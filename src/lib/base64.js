@@ -1,6 +1,10 @@
+'use strict';
+
 const Base64 = require('compact-base64');
 
 const _rBase64 = /^[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/]+=*$/;
+
+// eslint-disable-next-line no-control-regex
 const _rNonPrintable = /[\x00-\x08\x0E-\x1F\x7F\x80-\x9F]/;
 
 function isBase64SizeCorrect(v) {

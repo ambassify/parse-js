@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function _transform(obj, fn, acc = {}) {
     if (!obj)
         return acc;

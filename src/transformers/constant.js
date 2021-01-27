@@ -1,3 +1,5 @@
+'use strict';
+
 function ConstantTransformer(value, options = {}) {
     if( !(this instanceof ConstantTransformer) ) {
         return this.transform(new ConstantTransformer(value, options));

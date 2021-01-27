@@ -1,3 +1,5 @@
+'use strict';
+
 const getDefault = require('../lib/default').getDefault;
 
 function StringTransformer(options = {}) {

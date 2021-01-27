@@ -1,3 +1,5 @@
+'use strict';
+
 const _transform = require('../lib/transform');
 const _merge = require('lodash/merge');
 const _isArray = require('lodash/isArray');

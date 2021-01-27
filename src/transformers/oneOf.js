@@ -1,3 +1,5 @@
+'use strict';
+
 const _isEmpty = require('lodash/isEmpty');
 const _isObject = require('lodash/isObject');
 const _merge = require('lodash/merge');
