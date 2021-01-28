@@ -1,3 +1,5 @@
+'use strict';
+
 const INVALID_DATE = 'Invalid Date';
 
 function DateTransformer(nowOnInvalid = false) {

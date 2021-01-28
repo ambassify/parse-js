@@ -1,3 +1,5 @@
+'use strict';
+
 function CustomTransformer(parse, reverse) {
     if( !(this instanceof CustomTransformer) ) {
         return this.transform(new CustomTransformer(parse, reverse));

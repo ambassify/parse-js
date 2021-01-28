@@ -1,3 +1,5 @@
+'use strict';
+
 const _transform = require('../lib/transform');
 
 function RenameTransformer(parser, reverser) {

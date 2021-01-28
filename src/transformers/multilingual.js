@@ -1,3 +1,5 @@
+'use strict';
+
 const SNAKE_CASE = 'SNAKE_CASE';
 const CAMEL_CASE = 'CAMEL_CASE';
 

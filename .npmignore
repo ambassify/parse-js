@@ -6,5 +6,5 @@ test
 .DS_Store
 circle.yml
 nodemon.json
-test-results.xml
+test-results
 .eslintrc

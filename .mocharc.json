@@ -1,0 +1,5 @@
+{
+    "timeout": 3000,
+    "recursive": true,
+    "reporter": "@ambassify/mocha-reporter"
+}

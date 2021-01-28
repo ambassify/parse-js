@@ -1,3 +1,5 @@
+'use strict';
+
 const _set = require('lodash/set');
 const _get = require('lodash/get');
 const isString = require('lodash/isString');

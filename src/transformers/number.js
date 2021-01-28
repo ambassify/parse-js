@@ -1,3 +1,6 @@
+'use strict';
+
+const has = require('lodash/has');
 const isString = require('lodash/isString');
 
 function detectDecimalSeparator(number) {
@@ -50,7 +53,7 @@ function NumberTransformer(options = {}) {
     }
 
     this._decimalSeparator = options.decimalSeparator || undefined;
-    this._NaNValue = options.hasOwnProperty('NaNValue') ? options.NaNValue : 0;
+    this._NaNValue = has(options, 'NaNValue') ? options.NaNValue : 0;
     this._normalizer = options.normalizer || normalizer;
     this._base = options.base || 10;
 }

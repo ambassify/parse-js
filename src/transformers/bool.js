@@ -1,3 +1,5 @@
+'use strict';
+
 const _isUndefined = require('lodash/isUndefined');
 const _includes = require('lodash/includes');
 

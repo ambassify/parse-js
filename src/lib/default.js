@@ -1,3 +1,5 @@
+'use strict';
+
 function isDefaultEnabled(parse) {
     return parse.getOption('allow-default') !== false;
 }

@@ -1,3 +1,5 @@
+'use strict';
+
 const isArray = require('lodash/isArray');
 const parseJSON = require('../lib/json').parse;
 

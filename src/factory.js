@@ -1,7 +1,10 @@
+'use strict';
+
+const has = require('lodash/has');
 const ParseClass = require('./parse');
 
 const staticMethods = Object.keys(ParseClass).reduce((out, k) => {
-    if (ParseClass.hasOwnProperty(k))
+    if (has(ParseClass, k))
         out[k] = ParseClass[k];
     return out;
 }, {});
