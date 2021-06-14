@@ -6,7 +6,7 @@ const _merge = require('lodash/merge');
 
 function isEmpty(v) {
     if (['boolean', 'number'].indexOf(typeof v) > -1)
-        return v;
+        return false;
 
     return _isEmpty(v);
 }
