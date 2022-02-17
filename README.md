@@ -41,7 +41,7 @@ npm install --save parse-js
 
 ## Usage
 
-A parser always starts with a call to `parse()`, next you can chain any transformer of of that as is required.
+A parser always starts with a call to `parse()`, next you can chain any transformer off of that as is required.
 
 ```javascript
 const parse = require('parse-js');
@@ -99,7 +99,7 @@ parse('test-key').base64().parse({ 'test-key': 'SGVsbG8gV29ybGQ=' });
 ```
 
 The `.reverse()` method will apply all the `reverse` methods of each transformer
-and attempts to reassembly the original object based on the sourceData.
+and attempts to reassemble the original object based on the sourceData.
 
 Example:
 
@@ -120,7 +120,7 @@ This method allows you to chain your own custom `parser` and `reverser`. Both
 the `parser` and `reverser` take one argument as input which is the value to
 be parsed or reversed.
 
-Instead of supplying both methods as separator arguments you can also pass
+Instead of supplying both methods as separate arguments you can also pass
 the `parser` and `reverser` as an object with both the keys defined.
 
 Example:
@@ -148,12 +148,12 @@ parse().transform(transformer).parse(1); // 2
 .chain(configurator)
 ```
 
-The `.chain()` method allows your to create pre-defined chains which can be
+The `.chain()` method allows you to create predefined chains which can be
 easily re-used for different parsers.
 
 Example:
 
-This example created a pre-defined one-way base64 parser.
+This example creates a predefined one-way base64 parser.
 
 ```javascript
 function base64_decode(p) {
@@ -182,7 +182,7 @@ parse().getOption(key);
 Currently only the [multilingual transformer](#multilingual) has such options.
 
 The behaviour of a `parse-js` chain can be altered using the `direction` option
-which configures in which directions the transformers should be applied. When
+which configures in which direction the transformers should be applied. When
 set to `PARSE` the `.reverse()` calls will not touch the data supplied. Similarly
 setting `direction` to `REVERSE` will leave the data untouched as `.parse()` is
 called. By default both directions are enabled and the option is set to `ANY`.
@@ -235,7 +235,7 @@ Converts key names using a function for each transition.
 parse().map(callback)
 ```
 
-Map will walk each key of a select value and call the `callback` function with a new instance of `parse-js` specific to that key.
+Map will go over each key of a select value and call the `callback` function with a new instance of `parse-js` specific to that key.
 
 - `callback(parse)` will be called with a new instance of parse for each key, which you can then customize by adding new chained transformers.
 
@@ -256,7 +256,7 @@ parse().map(p => p.number()).parse({
 parse().group(regex, key, index)
 ```
 
-`group` will walk over each key of an object matching it against regular expression `regex`. If it matches the value will be stored at `result[match[key]][match[index]]`, where `match` is the set of matching groups from `regex`. If a key does not match the `regex` it will be re-attached to the object untouched.
+`group` will go over each key of an object matching it against regular expression `regex`. If it matches, the value will be stored at `result[match[key]][match[index]]`, where `match` is the set of matching groups from `regex`. If a key does not match the `regex`, it will be re-attached to the object untouched.
 
 - The `key` argument should be set to the index of the matching group that selects the new key to use.
 - The `index` arguments should be set to the index of the matching group that selects the sub-key under which to store the value.
@@ -310,12 +310,12 @@ parse().oneOf([
 parse().equals(valueToMatch, [options = {}])
 ```
 
-If the selected value matched `valueToMatch` it will return `true`, if it does not it will return `false`.
+If the selected value matches `valueToMatch` it will return `true`, if it does not it will return `false`.
 
-- `valueToMatch` can be either a regular expressions, function or simply any value.
-- `options` can be used to change behaviour of the transformer
+- `valueToMatch` can be either a regular expression, function or simply any value.
+- `options` can be used to change the behaviour of the transformer.
   - `strict` will ensure `===` comparison is used when comparing. (default: `false`).
-  - `reverse` can be set to the value that should be set when reversing a `true` value. (default: `valueToMatch`)
+  - `reverse` can be set to the value that should be set when reversing a `true` value. (default: `valueToMatch`).
 
 Example:
 
@@ -381,7 +381,7 @@ Converts the selected value to a number.
   - `NaNValue` the value that will be set when the selected value can not be converted. (default: `0`)
   - `normalizer` a function used to normalize strings to number-like strings. The default handles removing multiple comma or dots in the string.
   - `base` the base in which the value is expressed. (default: `10`)
-  - `decimalSeparator` the sign to use as decimal separator (`.` or `,`), if not configured, the library does its best to auto-detect
+  - `decimalSeparator` the sign to use as decimal separator (`.` or `,`), if not configured, the library does its best to auto-detect.
 
 
 #### .string()
@@ -405,10 +405,10 @@ parse().switch(cases, parseSelector, reverseSelector)
 Selects a different parser from the `cases` object by looking up the value at
 `parseSelector` / `reverseSelector` in the cases object and executing it.
 
-If the `cases` object does not define a key for the value at returned by the selector,
+If the `cases` object does not define a key for the value returned by the selector,
 the `_default_` key will be called if defined. If neither of these exist `undefined` will be returned.
 
-Both `parseSelector ` and `reverseSelector` can be any key supported by [lodash get](https://lodash.com/docs/4.16.0#get)
+Both `parseSelector` and `reverseSelector` can be any key supported by [lodash get](https://lodash.com/docs/4.16.0#get)
 or a method which is passed the object to transform and the root object of this transform. Passing `null` or `undefined` will
 disable the selector and `.switch()` will always return `undefined`.
 
@@ -440,7 +440,7 @@ parse('test-key')
 parse().array([options = {}])
 ```
 
-This transformer will ensure that the selected value will be converted to an array. Whenever this fails it will return an empty array.
+This transformer ensures that the selected value will be converted to an array. Whenever this fails it will return an empty array.
 
 - `options`
   - `mode` the methods that are allowed to be used to convert values to arrays. (default: `ANY`). Valid options are `ANY`, `JSON` and `SEPARATOR`.
@@ -455,7 +455,7 @@ parse().base64([options = {}])
 Handles conversion from and to base64 strings.
 
 - `options`
-  - `allowBinary` when this option is set to `true` the `isPrintable` check will be disabled. Because of this any valid base64 formatted string will be decoded.
+  - `allowBinary` when this option is set to `true` the `isPrintable` check will be disabled. Because of this, any valid base64 formatted string will be decoded.
 
 #### .json()
 
@@ -506,9 +506,9 @@ parse().spec({
 parse().multilingual(languages)
 ```
 
-Will group keys with language suffixes as defined by `group()`
+Will group keys with language suffixes as defined by `group()`.
 
-- `languages` configures the languages that are supported. This option can also be set using the `setOption()` method of the parse-js instance or `Parse.setOption()`. When using `setOption()` this option is configured using the key `multilingual.languages`.
+- `languages` configures the languages that are supported. This option can also be set using the `setOption()` method of the parse-js instance or `Parse.setOption()`. When using `setOption()`, this option is configured using the key `multilingual.languages`.
 
 Example:
 
@@ -554,4 +554,4 @@ This project is released under a MIT license.
 
 ## About us
 
-If you would like to know more about us, be sure to have a look at [our website](https://www.ambassify.com), or our Twitter accounts [Ambassify](https://twitter.com/Ambassify), [Sitebase](https://twitter.com/Sitebase), [JorgenEvens](https://twitter.com/JorgenEvens)
+If you would like to know more about us, be sure to have a look at [our website](https://www.ambassify.com), or our Twitter accounts [Ambassify](https://twitter.com/Ambassify), [Sitebase](https://twitter.com/Sitebase), [JorgenEvens](https://twitter.com/JorgenEvens).
