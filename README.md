@@ -455,7 +455,7 @@ parse().base64([options = {}])
 Handles conversion from and to base64 strings.
 
 - `options`
-  - `allowBinary` when this option is set to `true` the `isPrintable` check will be disabled. Because of this, any valid base64 formatted string will be decoded.
+  - `allowBinary` when this option is set to `true` the `isPrintable` check will be disabled. Because of this any valid base64 formatted string will be decoded.
 
 #### .json()
 
@@ -508,7 +508,7 @@ parse().multilingual(languages)
 
 Will group keys with language suffixes as defined by `group()`.
 
-- `languages` configures the languages that are supported. This option can also be set using the `setOption()` method of the parse-js instance or `Parse.setOption()`. When using `setOption()`, this option is configured using the key `multilingual.languages`.
+- `languages` configures the languages that are supported. This option can also be set using the `setOption()` method of the parse-js instance or `Parse.setOption()`. When using `setOption()` this option is configured using the key `multilingual.languages`.
 
 Example:
 
