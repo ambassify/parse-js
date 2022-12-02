@@ -5,9 +5,14 @@ const _get = require('lodash/get');
 const isString = require('lodash/isString');
 const CustomTransformer = require('./transformers/custom');
 
+const OPT_DIRECTION = 'direction';
 const DIRECTION_ANY = 'ANY';
 const DIRECTION_PARSE = 'PARSE';
 const DIRECTION_REVERSE = 'REVERSE';
+
+const OPT_SELECT_MODE = 'select-mode';
+const SELECT_MODE_JS = 'js';
+const SELECT_MODE_LODASH = 'lodash';
 
 function Parse(path, options = {}) {
     if (!(this instanceof Parse))
@@ -22,9 +27,14 @@ function Parse(path, options = {}) {
     return this;
 }
 
+Parse.OPT_DIRECTION = OPT_DIRECTION;
 Parse.DIRECTION_ANY = DIRECTION_ANY;
 Parse.DIRECTION_PARSE = DIRECTION_PARSE;
 Parse.DIRECTION_REVERSE = DIRECTION_REVERSE;
+
+Parse.OPT_SELECT_MODE = OPT_SELECT_MODE;
+Parse.SELECT_MODE_JS = SELECT_MODE_JS;
+Parse.SELECT_MODE_LODASH = SELECT_MODE_LODASH;
 
 module.exports = Parse;
 
@@ -71,7 +81,7 @@ Parse.prototype.chain = function(configurator) {
 
 Parse.prototype.isDirectionEnabled = function(direction) {
     direction = direction.toUpperCase();
-    const configuredDirection = (this.getOption('direction') || DIRECTION_ANY);
+    const configuredDirection = (this.getOption(OPT_DIRECTION) || DIRECTION_ANY);
     const enabledDirection = configuredDirection.toUpperCase();
 
     if (DIRECTION_ANY == enabledDirection)

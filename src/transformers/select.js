@@ -2,11 +2,20 @@
 
 const _get = require('lodash/get');
 const _set = require('lodash/set');
+const Parse = require('../parse');
 
-function SelectTransformer(path) {
-    if( !(this instanceof SelectTransformer) ) {
-        return this.transform(new SelectTransformer(path));
-    }
+function SelectTransformer(path, { mode } = {}) {
+    if (this instanceof Parse && !mode)
+        mode = this.getOption(Parse.OPT_SELECT_MODE);
+
+    if (!mode)
+        mode = Parse.SELECT_MODE_LODASH;
+
+    if (!(this instanceof SelectTransformer))
+        return this.transform(new SelectTransformer(path, { mode }));
+
+    if (mode === Parse.SELECT_MODE_JS)
+        path = `["${path}"]`;
 
     this._path = path;
 }
