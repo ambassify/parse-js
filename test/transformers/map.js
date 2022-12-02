@@ -67,7 +67,8 @@ describe('map', function() {
         })
 
         it('Should parse an array correctly', function() {
-            const callback = function() {
+            const callback = function(p) {
+                assert(p instanceof Parse);
                 return {
                     parse: (v) => '_' + v
                 };
