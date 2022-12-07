@@ -12,6 +12,8 @@ describe('map', function() {
 
     describe('#constructor', function() {
         it('Should create an instance without new keyword when attached', function() {
+            const callback = function() {};
+
             const obj = {
                 map: Map,
                 transform: instance => {
@@ -20,7 +22,6 @@ describe('map', function() {
                 }
             };
 
-            const callback = function() {};
             obj.map(callback);
         })
     })
@@ -68,11 +69,8 @@ describe('map', function() {
         it('Should parse an array correctly', function() {
             const callback = function(p) {
                 assert(p instanceof Parse);
-                assert(p._chain[0]);
-                assert.notEqual(typeof p._chain[0]._path, 'undefined');
-
                 return {
-                    parse: (v) => '_' + v[p._chain[0]._path]
+                    parse: (v) => '_' + v
                 };
             }
             const instance = new Map(callback);
@@ -107,24 +105,43 @@ describe('map', function() {
             const callback = function(p) {
                 assert(p instanceof Parse);
                 return {
-                    reverse: (v) => ({ test1: v })
+                    reverse: () => 'abcd'
                 };
             }
             const instance = new Map(callback);
             const result = instance.reverse({ test1: 'test', test2: 'abcd' });
 
-            assert.deepEqual(result, { test1: 'abcd' });
+            assert.deepEqual(result, { test1: 'abcd', test2: 'abcd' });
+        })
+
+        it('Should reverse an object with dots in keys correctly', function() {
+            const callback = function(p) {
+                assert(p instanceof Parse);
+
+                return {
+                    reverse: (v) => '_' + v
+                };
+            }
+
+            const instance = new Map(callback);
+
+            const result = instance.reverse({
+                test1: 'test',
+                'test1.subTest': 'subTest'
+            });
+
+            assert.deepEqual(result, {
+                test1: '_test',
+                'test1.subTest': '_subTest'
+            });
         })
 
         it('Should detect object or array', function() {
             const callback = function(p) {
                 assert(p instanceof Parse);
-                assert(p._chain[0]);
-                assert.notEqual(typeof p._chain[0]._path, 'undefined');
 
-                const id = p._chain[0]._path;
                 return {
-                    reverse: (v) => ({ [id]: '_' + v })
+                    reverse: (v) => '_' + v
                 };
             }
             const instance = new Map(callback);
