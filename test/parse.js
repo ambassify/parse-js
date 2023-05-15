@@ -154,7 +154,7 @@ describe('Parse', function() {
 
         it('Should return original when parse is disabled', function() {
             const instance = new Parse('test');
-            instance.setOption('direction', Parse.DIRECTION_REVERSE);
+            instance.setOption(Parse.OPT_DIRECTION, Parse.DIRECTION_REVERSE);
 
             const obj = {
                 test: 'abc'
@@ -167,7 +167,7 @@ describe('Parse', function() {
 
         it('Should parse when reverse is disabled', function() {
             const instance = new Parse('test');
-            instance.setOption('direction', Parse.DIRECTION_PARSE);
+            instance.setOption(Parse.OPT_DIRECTION, Parse.DIRECTION_PARSE);
 
             const obj = {
                 test: 'abc'
@@ -211,7 +211,7 @@ describe('Parse', function() {
 
         it('Should return original when reverse is disabled', function() {
             const instance = new Parse('test');
-            instance.setOption('direction', Parse.DIRECTION_PARSE);
+            instance.setOption(Parse.OPT_DIRECTION, Parse.DIRECTION_PARSE);
 
             const obj = {
                 test: 'abc'
@@ -222,7 +222,7 @@ describe('Parse', function() {
 
         it('Should reverse when parse is disabled', function() {
             const instance = new Parse('test');
-            instance.setOption('direction', Parse.DIRECTION_REVERSE);
+            instance.setOption(Parse.OPT_DIRECTION, Parse.DIRECTION_REVERSE);
 
             const obj = {
                 test: 'abc'
