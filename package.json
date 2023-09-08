@@ -46,7 +46,7 @@
     "@babel/preset-env": "^7.12.11",
     "eslint": "^7.18.0",
     "istanbul": "^1.1.0-alpha.1",
-    "mocha": "^8.2.1",
-    "nodemon": "^1.10.2"
+    "mocha": "^10.2.0",
+    "nodemon": "^3.0.1"
   }
 }
